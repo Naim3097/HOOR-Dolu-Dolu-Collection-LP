@@ -36,7 +36,9 @@ export const CONFIG = {
     email: 'hooriemodestwear@gmail.com',     // from hoor.my return policy
     hours: 'Every day, 10am – 8pm',          // from hoor.my return policy
     instagram: '@we.are.hoor',
-    whatsapp: ''                             // ⚑ add number to enable WhatsApp help
+    // ⚑ Set to enable the floating WhatsApp button, digits only with country
+    //   code, e.g. '60123456789'. Empty = the button never renders.
+    whatsapp: ''
   },
 
   policy: {

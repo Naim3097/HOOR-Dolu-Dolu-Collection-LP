@@ -236,7 +236,7 @@ function track(event, data = {}) {
   const FB = {
     view_item: 'ViewContent', add_to_cart: 'AddToCart', view_cart: 'ViewCart',
     begin_checkout: 'InitiateCheckout', add_payment_info: 'AddPaymentInfo',
-    purchase: 'Purchase', search: 'Search'
+    purchase: 'Purchase', search: 'Search', contact_whatsapp: 'Contact'
   }[event];
   if (FB && typeof window.fbq === 'function') {
     window.fbq('track', FB, {
@@ -271,6 +271,17 @@ function renderChrome() {
   mail.textContent = CONFIG.support.email;
   $('[data-support-hours]').textContent = CONFIG.support.hours;
   $('[data-support-ig]').textContent = CONFIG.support.instagram;
+
+  // WhatsApp support: one config field turns it on. No number, no button.
+  const waBtn = $('[data-wa]');
+  const waNum = (CONFIG.support.whatsapp || '').replace(/[^0-9]/g, '');
+  if (waNum) {
+    const msg = `Hi HOOR! I'm looking at the ${CONFIG.collection} collection and have a question.`;
+    waBtn.href = `https://wa.me/${waNum}?text=${encodeURIComponent(msg)}`;
+    waBtn.hidden = false;
+    waBtn.addEventListener('click', () =>
+      track('contact_whatsapp', { location: 'floating_button' }));
+  }
 
   const NAMES = {
     visa: 'Visa', mastercard: 'Mastercard', unionpay: 'UnionPay',
@@ -1455,6 +1466,7 @@ function wireScroll() {
     const y = window.scrollY;
     const past = y > innerHeight * 0.7;
     header.classList.toggle('is-shown', past);
+    $('[data-wa]')?.classList.toggle('is-shown', past);
 
     // The mobile bar hides once the shop grid is on screen — the cards have
     // their own buttons and a second CTA there is just noise.

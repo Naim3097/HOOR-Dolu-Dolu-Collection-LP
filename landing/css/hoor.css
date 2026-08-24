@@ -1200,3 +1200,41 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
 /* Recommendation states pick up the sage wash instead of flat cream */
 .finder__out .rec b { color: var(--sage-deep); }
+
+/* ---------- 29. WHATSAPP SUPPORT --------------------------------------- */
+/* Official green on purpose: recognition is the affordance. Appears with
+   the header after the first scroll, rides above the mobile sticky bar,
+   and sits below drawers and checkout so it can never block a purchase. */
+.wa-fab {
+  position: fixed;
+  right: clamp(1rem, 3vw, 1.5rem);
+  bottom: calc(1.1rem + env(safe-area-inset-bottom));
+  z-index: 65;
+  display: grid;
+  place-items: center;
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 50%;
+  background: #25D366;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(18, 16, 14, .22);
+  opacity: 0;
+  transform: translateY(12px) scale(.9);
+  pointer-events: none;
+  transition: opacity .4s var(--ease), transform .4s var(--ease), bottom .4s var(--ease);
+}
+.wa-fab.is-shown {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+.wa-fab svg { width: 1.8rem; height: 1.8rem; }
+.wa-fab:hover { transform: scale(1.07); }
+.wa-fab:focus-visible { outline: 2px solid var(--sage-deep); outline-offset: 3px; }
+/* the mobile sticky bar owns the bottom edge; step above it when it shows */
+@media (max-width: 899px) {
+  .sticky-bar.is-shown ~ .wa-fab { bottom: calc(5.6rem + env(safe-area-inset-bottom)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wa-fab { transition: opacity .2s; transform: none; }
+}

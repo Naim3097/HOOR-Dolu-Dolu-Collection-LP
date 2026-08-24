@@ -30,6 +30,7 @@ HOOR to confirm before money goes into ads.
 | 7 | **Colour swatches** | `data.js` → each `swatch` | Sampled from the photography. Check against physical fabric. |
 | 8 | **The RIMBUN shawl** | `data.js` → `rimbun.note` | The page says only "Shown styled with a shawl" and claims nothing. If it is included, say so — it is a selling point. |
 | 9 | **Payment gateway** | `app.js` → `createOrder()` | Simulated. One function to replace — see §4. |
+| 10 | **WhatsApp number** | `data.js` → `CONFIG.support.whatsapp` | Empty, so the floating WhatsApp button does not render. Set it (digits with country code, e.g. `60123456789`) and the button appears after the first scroll, with a prefilled message and `contact_whatsapp` tracking. |
 
 Confirmed facts, taken from HOOR's own material and **not** invented: the
 collection name and its hyphenation, the size chart, all product claims, the
@@ -199,6 +200,7 @@ with no further work.
 | `add_shipping_info` | Details step passes validation | — |
 | `select_payment_method` / `add_payment_info` | Method chosen / pay pressed | AddPaymentInfo |
 | `play_video` | A film is tapped on mobile | — |
+| `contact_whatsapp` | The floating WhatsApp button is tapped | Contact |
 | `purchase` | Order confirmed, with `transaction_id` | Purchase |
 
 Append `?debug=1` to any URL to log every event to the console.
