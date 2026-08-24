@@ -1070,9 +1070,13 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 /* As a bottom sheet the gallery must not push the size selector off screen —
    name, price and sizes have to be reachable without a scroll. */
 @media (max-width: 859px) {
-  .pd__slides { height: 46svh; }
+  .pd__slides { height: 54svh; }
   .pd__slides > * { height: 100%; aspect-ratio: auto; }
-  .pd__slides .ph img { object-position: 50% 20%; }
+  /* The photography is 2:3 and the sheet window is not: cover-fit would cut
+     the hem and sleeves. Contain shows the entire garment; the slide's own
+     blurred placeholder (already painted as the background) fills the sides,
+     so the letterbox reads as ambient colour, not empty bars. */
+  .pd__slides .ph img { object-fit: contain; object-position: 50% 50%; }
   .pd__info { padding-top: 1.25rem; }
 }
 
