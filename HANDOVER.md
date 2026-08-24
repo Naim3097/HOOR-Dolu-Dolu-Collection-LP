@@ -276,7 +276,7 @@ trapped in every drawer, Escape closes, focus returns to where it came from,
 - [ ] Add the Meta Pixel and GTM to `<head>`
 - [ ] Point the footer policy links at final URLs
 - [ ] Set the canonical domain in the `og:image` meta tag
-- [ ] Serve over HTTPS with long `Cache-Control` on `assets/` (they are content-hashed by width)
+- [ ] Deploy: `vercel.json` is included — import the repo on Vercel and deploy with defaults. It serves only `landing/` (originals and dev tools stay private) and sets cache headers. Note: image/video renders reuse their filenames when the pipeline re-runs, so cache is 7 days, not immutable
 - [ ] Re-run the image pipeline if any photography changes — the map is
       `landing/assets/manifest.json`, the tools are `tools/optimize.html` and
       `tools/video.html` (see `tools/README.md`). Do not deploy `tools/` or the dev server.
