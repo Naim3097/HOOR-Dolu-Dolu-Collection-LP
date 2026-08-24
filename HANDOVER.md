@@ -30,7 +30,7 @@ HOOR to confirm before money goes into ads.
 | 7 | **Colour swatches** | `data.js` → each `swatch` | Sampled from the photography. Check against physical fabric. |
 | 8 | **The RIMBUN shawl** | `data.js` → `rimbun.note` | The page says only "Shown styled with a shawl" and claims nothing. If it is included, say so — it is a selling point. |
 | 9 | **Payment gateway** | `app.js` → `createOrder()` | Simulated. One function to replace — see §4. |
-| 10 | **WhatsApp number** | `data.js` → `CONFIG.support.whatsapp` | Empty, so the floating WhatsApp button does not render. Set it (digits with country code, e.g. `60123456789`) and the button appears after the first scroll, with a prefilled message and `contact_whatsapp` tracking. |
+| 10 | **WhatsApp number** | `data.js` → `CONFIG.support.whatsapp` | Set to `60172500323`, taken from hoor.my's own storefront configuration (`whatsapp_phone`). ⚑ Confirm this is the channel HOOR wants campaign enquiries on; emptying the field hides the button. |
 
 Confirmed facts, taken from HOOR's own material and **not** invented: the
 collection name and its hyphenation, the size chart, all product claims, the
