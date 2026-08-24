@@ -1,0 +1,110 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>HOOR video pipeline</title>
+<style>
+  body{margin:0;padding:16px;background:#111;color:#ddd;font:13px/1.6 ui-monospace,Menlo,monospace}
+  #log{white-space:pre-wrap}
+  video,canvas{width:180px;vertical-align:top;background:#000}
+  .ok{color:#8ec98e}.err{color:#e08a8a}
+</style>
+<h3 style="font-family:system-ui">MOV → WebM (VP9, muted, 720w)</h3>
+<p style="font-family:system-ui;color:#999">Edit JOBS to point at the source files, then let the page run. Real-time encode — a 20s clip takes 20s.</p>
+<div id="stage"></div>
+<div id="log"></div>
+<script>
+const log = m => document.getElementById('log').innerHTML += m + '\n';
+
+// src is a path the dev server can reach; out becomes landing/assets/video/<out>.webm
+// poster is the timestamp (seconds) of the poster frame.
+// Per-job width and bitrate: hero-placement films earn more pixels than
+// gallery slides. Comment jobs in and out as needed — output is idempotent.
+const JOBS = [
+  { src: '/assets/IMG_2806.MOV', out: 'senja_midnight',   poster: 2.0, w: 900, kbps: 2400 },
+  { src: '/assets/IMG_2821.MOV', out: 'renda_camel',      poster: 1.0, w: 810, kbps: 2000 },
+  { src: '/assets/IMG_2815.MOV', out: 'pusaka_deep-teal', poster: 1.0, w: 720, kbps: 1400 }
+];
+
+const W = 720, BITRATE = 1_150_000; // defaults when a job sets no override
+
+const b64 = blob => new Promise(r => {
+  const fr = new FileReader();
+  fr.onload = () => r(fr.result.split(',')[1]);
+  fr.readAsDataURL(blob);
+});
+
+async function save(path, blob) {
+  const res = await fetch('/__save', {
+    method: 'POST',
+    body: JSON.stringify({ path, data: await b64(blob) })
+  });
+  return (await res.json()).bytes;
+}
+
+function pickMime() {
+  for (const m of ['video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm']) {
+    if (MediaRecorder.isTypeSupported(m)) return m;
+  }
+  return '';
+}
+
+async function run(job) {
+  const v = document.createElement('video');
+  v.src = job.src; v.muted = true; v.playsInline = true; v.preload = 'auto';
+  document.getElementById('stage').appendChild(v);
+  await new Promise(r => (v.onloadedmetadata = r));
+  // Fully buffer first — recording from a still-downloading source under-encodes.
+  await new Promise(r => { if (v.readyState >= 4) return r(); v.oncanplaythrough = r; });
+
+  const w = job.w || W;
+  const h = Math.round(v.videoHeight * (w / v.videoWidth) / 2) * 2;
+  const c = document.createElement('canvas');
+  c.width = w; c.height = h;
+  const cx = c.getContext('2d');
+  document.getElementById('stage').appendChild(c);
+
+  // poster frame
+  await new Promise(r => { v.onseeked = r; v.currentTime = job.poster; });
+  cx.drawImage(v, 0, 0, w, h);
+  const pblob = await new Promise(r => c.toBlob(r, 'image/webp', 0.8));
+  const pbytes = await save('landing/assets/video/' + job.out + '_poster.webp', pblob);
+
+  // re-encode
+  const mime = pickMime();
+  const rec = new MediaRecorder(c.captureStream(30), { mimeType: mime, videoBitsPerSecond: (job.kbps || BITRATE / 1000) * 1000 });
+  const chunks = [];
+  rec.ondataavailable = e => e.data.size && chunks.push(e.data);
+  const done = new Promise(r => (rec.onstop = r));
+
+  v.currentTime = 0;
+  await new Promise(r => (v.onseeked = r));
+  await new Promise(r => setTimeout(r, 400));
+  rec.start(200);
+
+  let raf;
+  const pump = () => { cx.drawImage(v, 0, 0, w, h); raf = requestAnimationFrame(pump); };
+  pump();
+  await v.play();
+  await new Promise(r => (v.onended = r));
+  cancelAnimationFrame(raf);
+  rec.stop();
+  await done;
+
+  const bytes = await save('landing/assets/video/' + job.out + '.webm',
+    new Blob(chunks, { type: mime }));
+
+  const orig = Number((await fetch(job.src, { method: 'HEAD' })).headers.get('content-length'));
+  log('<span class="ok">✓</span> ' + job.out.padEnd(18) +
+      w + 'x' + h + '  ' + (orig / 1048576).toFixed(1) + 'MB → ' +
+      (bytes / 1048576).toFixed(1) + 'MB   poster ' + Math.round(pbytes / 1024) + 'k');
+  v.remove(); c.remove();
+}
+
+(async () => {
+  log('codec: ' + pickMime());
+  for (const j of JOBS) {
+    try { await run(j); } catch (e) { log('<span class="err">✗ ' + j.out + ' — ' + e.message + '</span>'); }
+  }
+  document.title = 'DONE-VIDEO';
+  log('\nfinished');
+})();
+</script>

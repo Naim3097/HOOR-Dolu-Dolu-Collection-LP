@@ -1,0 +1,103 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>HOOR image pipeline</title>
+<style>
+  body{margin:0;padding:16px;background:#111;color:#ddd;font:13px/1.5 ui-monospace,Menlo,monospace}
+  #log{white-space:pre-wrap}
+  .ok{color:#8ec98e}.warn{color:#e0c07a}.err{color:#e08a8a}
+  b{color:#fff}
+</style>
+<h3 style="font-family:system-ui">HOOR → WebP pipeline</h3>
+<p style="font-family:system-ui;color:#999">Reads <code>landing/assets/manifest.json</code>, writes renders + LQIP via the dev server's <code>/__save</code>. See tools/README.md.</p>
+<div id="log">starting…</div>
+<script>
+const log = m => { document.getElementById('log').innerHTML += '\n' + m; };
+
+const load = src => new Promise((res, rej) => {
+  const i = new Image();
+  i.onload = () => res(i);
+  i.onerror = () => rej(new Error('load fail ' + src));
+  i.src = src;
+});
+
+const blobOf = (canvas, q) => new Promise(r => canvas.toBlob(r, 'image/webp', q));
+
+const b64 = blob => new Promise(r => {
+  const fr = new FileReader();
+  fr.onload = () => r(fr.result.split(',')[1]);
+  fr.readAsDataURL(blob);
+});
+
+async function save(path, blob) {
+  const r = await fetch('/__save', {
+    method: 'POST',
+    body: JSON.stringify({ path, data: await b64(blob) })
+  });
+  return (await r.json()).bytes;
+}
+
+// Progressive halving keeps detail far better than one big jump.
+function drawStepped(img, w) {
+  let cur = document.createElement('canvas');
+  cur.width = img.naturalWidth; cur.height = img.naturalHeight;
+  cur.getContext('2d').drawImage(img, 0, 0);
+  while (cur.width / 2 > w) {
+    const n = document.createElement('canvas');
+    n.width = Math.round(cur.width / 2);
+    n.height = Math.round(cur.height / 2);
+    const cx = n.getContext('2d');
+    cx.imageSmoothingQuality = 'high';
+    cx.drawImage(cur, 0, 0, n.width, n.height);
+    cur = n;
+  }
+  const h = Math.round(cur.height * (w / cur.width));
+  const out = document.createElement('canvas');
+  out.width = w; out.height = h;
+  const ox = out.getContext('2d');
+  ox.imageSmoothingQuality = 'high';
+  ox.drawImage(cur, 0, 0, w, h);
+  return out;
+}
+
+(async () => {
+  const man = await (await fetch('/landing/assets/manifest.json')).json();
+  let totalIn = 0, totalOut = 0, n = 0;
+  const lqip = {};
+  const dims = {};
+
+  for (const it of man.images) {
+    const src = '/assets/' + it.src;
+    let img;
+    try { img = await load(src); }
+    catch (e) { log('<span class="err">MISS ' + it.src + '</span>'); continue; }
+
+    const head = await fetch(src, { method: 'HEAD' });
+    totalIn += Number(head.headers.get('content-length') || 0);
+    dims[it.out] = [img.naturalWidth, img.naturalHeight];
+
+    const widths = it.widths || (it.type === 'sizechart' ? [900] : man.widths);
+    let line = '  ' + it.out.padEnd(34);
+    for (const w of widths) {
+      if (w > img.naturalWidth) continue;
+      const blob = await blobOf(drawStepped(img, w), man.quality);
+      const bytes = await save('landing/assets/img/' + it.out + '-' + w + '.webp', blob);
+      totalOut += bytes;
+      line += ' ' + w + 'w:' + Math.round(bytes / 1024) + 'k';
+    }
+
+    // 20px LQIP, inlined so frames never paint empty (this is the CLS=0 trick)
+    const tb = await blobOf(drawStepped(img, 20), 0.6);
+    lqip[it.out] = 'data:image/webp;base64,' + await b64(tb);
+
+    n++;
+    log('<span class="ok">✓</span>' + line);
+  }
+
+  await save('landing/assets/lqip.json',
+    new Blob([JSON.stringify({ lqip, dims }, null, 1)], { type: 'application/json' }));
+
+  log('\n<b>' + n + ' images</b>  source ' + (totalIn / 1048576).toFixed(1) +
+      ' MB → webp ' + (totalOut / 1048576).toFixed(1) + ' MB');
+  document.title = 'DONE-OPTIMIZE';
+})().catch(e => log('<span class="err">' + e.stack + '</span>'));
+</script>

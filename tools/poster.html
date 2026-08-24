@@ -1,0 +1,27 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>poster grab</title>
+<style>body{background:#111;color:#ddd;font:13px ui-monospace,monospace;padding:14px}canvas{width:200px;display:block;margin-top:8px}</style>
+<div id="log">running…</div>
+<script>
+// One-off: re-grab a poster frame from a source MOV without re-encoding.
+const JOB = { src: '/assets/IMG_2806.MOV', out: 'senja_midnight', t: 22.4, w: 900 };
+
+const b64 = b => new Promise(r => { const f = new FileReader(); f.onload = () => r(f.result.split(',')[1]); f.readAsDataURL(b); });
+
+(async () => {
+  const v = document.createElement('video');
+  v.src = JOB.src; v.muted = true; v.preload = 'auto';
+  await new Promise(r => v.onloadedmetadata = r);
+  await new Promise(r => { v.onseeked = r; v.currentTime = JOB.t; });
+  const h = Math.round(v.videoHeight * (JOB.w / v.videoWidth) / 2) * 2;
+  const c = document.createElement('canvas'); c.width = JOB.w; c.height = h;
+  c.getContext('2d').drawImage(v, 0, 0, JOB.w, h);
+  document.body.appendChild(c);
+  const blob = await new Promise(r => c.toBlob(r, 'image/webp', 0.82));
+  const res = await fetch('/__save', { method: 'POST', body: JSON.stringify({ path: 'landing/assets/video/' + JOB.out + '_poster.webp', data: await b64(blob) }) });
+  const j = await res.json();
+  document.getElementById('log').textContent = 'saved ' + Math.round(j.bytes / 1024) + 'KB @ ' + JOB.t + 's ' + JOB.w + 'x' + h;
+  document.title = 'DONE-POSTER';
+})();
+</script>
