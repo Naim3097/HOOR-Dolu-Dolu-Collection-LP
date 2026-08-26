@@ -22,6 +22,7 @@ export const CONFIG = {
     instagram: "@we.are.hoor",
     whatsapp: "60172500323", // ⚑
   },
+  payments: ["visa", "mastercard", "unionpay", "fpx", "maybank", "cimb", "banktransfer"],
   policy: { returnDays: 7, refundDays: 14, dispatchDays: 10 },
   showStockPressure: false,
 } as const;

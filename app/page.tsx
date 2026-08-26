@@ -1,17 +1,28 @@
-import { Hero } from "@/components/hero";
-import { Claims } from "@/components/claims";
-import { ProductGrid } from "@/components/product-grid";
-import { CONFIG } from "@/lib/products";
+import { StoreProvider } from "@/lib/store";
+import { Sprite } from "@/components/hoor/sprite";
+import { Chrome } from "@/components/hoor/chrome";
+import { Header } from "@/components/hoor/header";
+import { Hero, Claims, Story } from "@/components/hoor/hero";
+import { Shop } from "@/components/hoor/shop";
+import { Occasions, Fabric } from "@/components/hoor/occasions";
+import { Fit } from "@/components/hoor/fit";
+import { Faq, Closer, Footer, StickyBar, WaFab } from "@/components/hoor/tail";
+import { Overlays } from "@/components/hoor/overlays";
 
 export default function Page() {
   return (
-    <main>
-      <Hero />
-      <Claims />
-      <ProductGrid />
-      <footer className="border-t border-line px-gut py-10 text-sm text-ink-55">
-        © {CONFIG.brand} · {CONFIG.support.email} · {CONFIG.support.hours}
-      </footer>
-    </main>
+    <StoreProvider>
+      <Sprite />
+      <Chrome />
+      <a className="skip" href="#shop">Skip to the collection</a>
+      <Header />
+      <main id="top">
+        <Hero /><Claims /><Story /><Shop /><Occasions /><Fabric /><Fit /><Faq /><Closer />
+      </main>
+      <Footer />
+      <StickyBar />
+      <WaFab />
+      <Overlays />
+    </StoreProvider>
   );
 }

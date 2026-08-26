@@ -21,7 +21,8 @@ Run `supabase/migrations/*.sql` in order against your project (SQL editor or `su
 | Path | What |
 |---|---|
 | `app/` | routes: landing, `/checkout/return`, `/api/orders`, `/api/webhooks/leanx` |
-| `components/` | page sections; `components/ui/` is shadcn |
+| `components/hoor/` | page sections, drawers, checkout — React on the original `app/hoor.css` classes (design parity with the live site) |
+| `components/ui/` | shadcn (installed, for new non-campaign UI) |
 | `lib/products.ts` | products, prices, copy — edit here |
 | `lib/leanx.ts`, `lib/supabase/` | integrations (server-only where it matters) |
 | `supabase/migrations/` | schema, RLS, stock RPCs, seed |

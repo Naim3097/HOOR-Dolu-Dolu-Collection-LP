@@ -223,8 +223,8 @@ The static site is being rebuilt on a full stack. Content, design tokens, assets
 | Layer | Target | Replaces |
 |---|---|---|
 | Framework | Next.js (App Router) + TypeScript | `landing/index.html`, `app.js` |
-| Styling | Tailwind CSS (tokens from `hoor.css` as CSS variables) | `hoor.css` |
-| UI | shadcn/ui — Sheet, Dialog, Accordion, Form, Input, Select, RadioGroup, Button, Sonner, Skeleton | custom drawers/accordions |
+| Styling | **`app/hoor.css` — the original design system, verbatim** (pixel parity with the live site is a hard requirement). Tailwind v4 utilities are available for new UI (confirmation states, admin later) but the landing page uses the original class names | inline `<link>` |
+| UI | Original drawers / checkout / toast markup as React components (`components/hoor/*`). shadcn/ui is installed (`components/ui/*`) for any new surfaces that do not need to match the campaign design | — |
 | Data | Supabase Postgres — `products`, `colourways`, `variants`, `orders`, `order_items` | `data.js` |
 | Media | Supabase Storage public bucket + `next/image` (LQIP values kept as `blurDataURL`) | `tools/` pipeline, `landing/assets/img` |
 | Backend | Next.js Route Handlers + Supabase (service role, server-only) | simulated `createOrder()` |
@@ -236,12 +236,13 @@ The static site is being rebuilt on a full stack. Content, design tokens, assets
 
 ```
 app/
-  layout.tsx, page.tsx              landing (server component, fetches products)
+  hoor.css                          original design system (do not restyle — parity with live site)
+  layout.tsx, page.tsx              landing
   checkout/return/page.tsx          LeanX return → confirmation, fires `purchase`
   api/orders/route.ts               validate → insert order → decrement stock → create LeanX bill → { orderRef, redirectUrl }
   api/webhooks/leanx/route.ts       verify signature → mark paid / release stock
-components/                         hero, claims, story, product-grid, product-sheet, cart-sheet, checkout-form, occasions, fabric, fit, faq, closer
-components/ui/                      shadcn
+components/hoor/                    sprite, chrome (scroll/reveal), header, hero/claims/story, shop, occasions/fabric, fit, tail (faq/closer/footer/sticky/wa), overlays (drawers, toast), checkout, ph (LQIP image), video
+components/ui/                      shadcn (available, unused on the landing page)
 lib/supabase/{client,server}.ts
 lib/leanx.ts                        bill creation + signature verification
 lib/tracking.ts                     typed event helpers
@@ -275,7 +276,7 @@ supabase/migrations/                schema, RLS, seed
 1. [x] Scaffold Next.js + TS + Tailwind + shadcn
 2. [x] Port design tokens and fonts (`next/font/local`)
 3. [x] Port `data.js` → `lib/products.ts` (typed) + Supabase seed migration
-4. [~] Build sections as components — hero, claims, product grid done; product sheet, cart, checkout, occasions, fabric, fit, FAQ, closer pending; wire product sheet / cart / checkout with shadcn
+4. [x] All sections, drawers, checkout and toast ported 1:1 to React on the original CSS (`components/hoor/`); wire product sheet / cart / checkout with shadcn
 5. [ ] Supabase project: run migrations, upload assets to Storage, set RLS
 6. [~] LeanX: `lib/leanx.ts`, `/api/orders`, webhook and return page scaffolded (⚑ verify field names/hash against LeanX docs) — sandbox test pending; original: implement `lib/leanx.ts`, `/api/orders`, webhook, return page
 7. [ ] Tracking helpers + Pixel/GTM
