@@ -1,28 +1,29 @@
-# HOOR — Batik Dolu-Dolu campaign landing page
+# HOOR — Batik Dolu-Dolu campaign storefront
 
-A single-collection storefront for Meta Ads traffic: discover → choose → cart → checkout → confirmation, without leaving the page. No framework, no build step, no third-party requests.
+Next.js 16 · TypeScript · Tailwind v4 · shadcn/ui · Supabase · LeanX.io · Vercel.
 
-## Run locally
+See **[PROJECT.md](PROJECT.md)** for the full guide (stack → deployment, §10 for the migration status), **[HANDOVER.md](HANDOVER.md)** for business assumptions (⚑), **[ASSETS.md](ASSETS.md)** for the photo audit.
+
+## Run
 
 ```bash
-node .claude/server.js
+cp .env.example .env.local   # fill in Supabase + LeanX keys
+npm install
+npm run dev                  # http://localhost:3000
 ```
 
-Then open <http://localhost:5273/landing/>.
+## Supabase
 
-## Read first
+Run `supabase/migrations/*.sql` in order against your project (SQL editor or `supabase db push`).
 
-- **[HANDOVER.md](HANDOVER.md)** — every assumption to confirm before ad spend (⚑ list), the payment-gateway seam, tracking events, design-system decisions, performance numbers.
-- **[ASSETS.md](ASSETS.md)** — full audit of the supplied photography and film, naming scheme, colour swatches sampled from the garments.
-
-## Structure
+## Layout
 
 | Path | What |
 |---|---|
-| `landing/` | The deployable page (`index.html` + `css/` + `js/` + optimised `assets/`) |
-| `landing/js/data.js` | Products, prices, stock, sizes, copy — edit here, nothing else |
-| `assets/` | Untouched originals from HOOR |
-| `tools/` | Dev-only browser pipelines (image WebP renders, video WebM encodes). Never deploy |
-| `.claude/server.js` | Loopback-only dev server used by the tools |
-
-Deploy by hosting the `landing/` folder on any static host over HTTPS.
+| `app/` | routes: landing, `/checkout/return`, `/api/orders`, `/api/webhooks/leanx` |
+| `components/` | page sections; `components/ui/` is shadcn |
+| `lib/products.ts` | products, prices, copy — edit here |
+| `lib/leanx.ts`, `lib/supabase/` | integrations (server-only where it matters) |
+| `supabase/migrations/` | schema, RLS, stock RPCs, seed |
+| `public/assets/` | optimised images, video, fonts, brand |
+| `landing/`, `tools/`, `.claude/server.js` | **legacy static site** — kept for reference until parity; not deployed |
