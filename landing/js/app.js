@@ -203,6 +203,7 @@ const STORE_KEY = 'hoor_ddl_cart_v1';
 
 const state = {
   cart: [],
+  gridExpanded: false,   // first six cards show until the visitor asks for more
   filter: null,          // colourway id or null
   cardColour: {},        // productId -> colourway id currently shown on the card
   pd: null,              // { variant, size, qty, slide }
@@ -364,6 +365,7 @@ function renderFilters() {
 
 function setFilter(id) {
   state.filter = id;
+  expandGrid();
   renderFilters();
   $$('[data-grid] .card').forEach(card => {
     const shown = !id || card.dataset.colours.split(',').includes(id);
@@ -464,11 +466,30 @@ function selectCardColour(card, btn) {
   track('select_colour', { item_id: `${p.id}:${cw.id}`, colour: cw.name, item_name: p.name });
 }
 
+/* Six cards first; the rest wait behind one press. Filtering always works
+   across the full range, so any chip press expands the grid too. */
+function applyGridCollapse() {
+  const wrap = $('[data-more-wrap]');
+  const cards = $$('[data-grid] .card');
+  if (state.gridExpanded || state.filter) { wrap.hidden = true; return; }
+  cards.forEach((card, i) => card.classList.toggle('is-hidden', i >= 6));
+  wrap.hidden = false;
+}
+
+function expandGrid() {
+  if (state.gridExpanded) return;
+  state.gridExpanded = true;
+  $$('[data-grid] .card').forEach(card => card.classList.remove('is-hidden'));
+  $('[data-more-wrap]').hidden = true;
+  track('grid_expand');
+}
+
 function renderGrid() {
   const g = $('[data-grid]');
   g.innerHTML = '';
   PRODUCTS.forEach(p => g.appendChild(cardMarkup(p)));
   hydrateImages(g);
+  applyGridCollapse();
 }
 
 /* ---------- 7. PRODUCT DRAWER -------------------------------------------- */
@@ -1547,6 +1568,7 @@ function applyDeepLink() {
 
   const { product, cw } = findVariant(key);
   state.cardColour[product.id] = cw.id;
+  state.gridExpanded = true;
   renderGrid();
 
   requestAnimationFrame(() => {
@@ -1571,6 +1593,7 @@ async function boot() {
   renderGrid();
   renderSizeDrawer();
   wireFinder();
+  $('[data-more]').addEventListener('click', expandGrid);
   loadCart();
   renderCart();
   updateCartCount();

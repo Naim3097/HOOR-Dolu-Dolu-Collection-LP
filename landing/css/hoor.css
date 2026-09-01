@@ -1262,3 +1262,10 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   .visit { grid-template-columns: minmax(0, 24rem) 1fr; align-items: stretch; }
   .visit__photo .ph { aspect-ratio: auto; min-height: 100%; }
 }
+
+/* ---------- 31. GRID REVEAL --------------------------------------------- */
+.grid__more {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(2rem, 5vw, 3rem);
+}
