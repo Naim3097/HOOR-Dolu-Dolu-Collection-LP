@@ -241,7 +241,10 @@ PRODUCTS.forEach(p => {
    --------------------------------------------------------------------------- */
 export const CLAIMS = [
   'Premium Cotton Silk',
-  'Petite to Plus Size'
+  'Petite to Plus Size',
+  'Sizes S/M – 4XL',
+  'Pocket included',
+  'Lightweight & flowy'
 ];
 
 export const OCCASIONS = [
