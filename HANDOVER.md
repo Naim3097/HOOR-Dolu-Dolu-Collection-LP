@@ -32,7 +32,7 @@ HOOR to confirm before money goes into ads.
 | 9 | **Payment gateway** | `app.js` → `createOrder()` | Simulated. One function to replace — see §4. |
 | 10a | **Seventeen colours, not fifteen** | `data.js` → `PRODUCTS` | Every distinct look in the supplied assets is now purchasable: 16 products / 17 colourways (RENDA carries two). The client's stated count was fifteen; the folder verifiably holds seventeen (TENUN Monochrome and PUTERI Navy Blush are the two beyond fifteen). If any look is not for sale, remove its entry and restore the fifteen wording in the shop heading, closer and cart. |
 | 10b | **Shipping promise** | FAQ, product sheet, checkout, confirmation | Client instruction: dispatched within 24 hours, doorstep in 1–3 days — this **overrides hoor.my's published max-10-working-days policy** and is stated as a blanket promise including East Malaysia. Make sure operations can honour it before ads run. |
-| 10c | **Premise photo** | FAQ visit block | The store block shows a designed locator card (The Linc · Second Floor · Lot 2-5) plus a Google Maps link. Swap the card for a real premise photo when one exists. Address and phone came from hoor.my's own storefront config. |
+| 10c | ~~Premise photo~~ **Resolved** | FAQ visit block | The real storefront photograph (HOOR signage at The Linc) now leads the visit card, with address, 10am–9pm hours, phone and a Google Maps link beside it. |
 | 10 | **WhatsApp number** | `data.js` → `CONFIG.support.whatsapp` | Set to `60172500323`, taken from hoor.my's own storefront configuration (`whatsapp_phone`). ⚑ Confirm this is the channel HOOR wants campaign enquiries on; emptying the field hides the button. |
 
 Confirmed facts, taken from HOOR's own material and **not** invented: the

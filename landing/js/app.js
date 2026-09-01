@@ -45,13 +45,17 @@ const anyStock = cw => SIZES.some(s => inStock(cw, s));
 /* ---------- 1. IMAGES ---------------------------------------------------- */
 let LQIP = {}, DIMS = {};
 
-// Some source photographs are narrower than 1400px, so their largest render
-// is 900. Build the candidate list from what actually exists.
-const srcset = name => {
+// Renders exist at the standard widths capped to each source's real width,
+// plus the source width itself when it falls below 900 (e.g. the premise
+// photo at 765). Build candidates from what is actually on disk.
+const widthsFor = name => {
   const max = DIMS[name]?.[0] || Infinity;
-  return [480, 900, 1400].filter(w => w <= Math.max(480, max))
-    .map(w => `assets/img/${name}-${w}.webp ${w}w`).join(', ');
+  const ws = [480, 900, 1400].filter(w => w <= max);
+  if (Number.isFinite(max) && max < 900) ws.push(max);
+  return ws.length ? ws : [480];
 };
+const srcset = name =>
+  widthsFor(name).map(w => `assets/img/${name}-${w}.webp ${w}w`).join(', ');
 
 /**
  * Fill a .ph placeholder: LQIP background immediately, real image faded in.
@@ -78,7 +82,7 @@ function paint(box, opts = {}) {
     loading: opts.eager ? 'eager' : 'lazy',
     fetchpriority: opts.eager ? 'high' : null,
     width: d?.[0], height: d?.[1],
-    src: `assets/img/${name}-900.webp`
+    src: `assets/img/${name}-${widthsFor(name).at(-1)}.webp`
   });
   const pos = opts.pos || box.dataset.pos;
   if (pos) img.style.objectPosition = pos;

@@ -282,6 +282,16 @@
    "out": "puteri_navy-blush_full_01",
    "type": "full",
    "role": "card"
+  },
+  {
+   "src": "HOOR Storefront The Linc.webp",
+   "out": "visit_premise",
+   "type": "premise",
+   "role": "visit",
+   "widths": [
+    480,
+    765
+   ]
   }
  ]
 }
