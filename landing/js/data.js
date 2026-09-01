@@ -321,6 +321,31 @@ export const PRODUCTS = [
       stock: { SM: 5, LXL: 7, '2XL': 6, '3XL': 4, '4XL': 3 }
     }]
   }
+,
+  {
+    id: 'tenun',
+    name: 'TENUN',
+    story: 'White scrollwork and a field of woven diamonds on black. Batik that reads like songket.',
+    print: 'Damask batik',
+    colourways: [{
+      id: 'monochrome', name: 'Monochrome', swatch: '#232323',
+      images: ['tenun_monochrome_full_01'],
+      video: null,
+      stock: { SM: 5, LXL: 7, '2XL': 6, '3XL': 4, '4XL': 3 }
+    }]
+  },
+  {
+    id: 'puteri',
+    name: 'PUTERI',
+    story: 'Painted bouquets and ribbon flourishes on deep navy.',
+    print: 'Painted bouquet batik',
+    colourways: [{
+      id: 'navy-blush', name: 'Navy Blush', swatch: '#2C3A63',
+      images: ['puteri_navy-blush_full_01'],
+      video: null,
+      stock: { SM: 5, LXL: 8, '2XL': 6, '3XL': 4, '4XL': 2 }
+    }]
+  }
 ];
 
 /* Apply the shared spec to every product without repeating it above. */

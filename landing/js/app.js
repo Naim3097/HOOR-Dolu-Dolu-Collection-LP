@@ -266,7 +266,7 @@ function renderChrome() {
   const freeOver = $('[data-free-over]');
   if (CONFIG.freeShippingOver) freeOver.textContent = money(CONFIG.freeShippingOver);
   else freeOver.closest('p').textContent =
-    `Fifteen colours, sizes S/M to 4XL, ${money(CONFIG.basePrice)} each.`;
+    `Seventeen colours, sizes S/M to 4XL, ${money(CONFIG.basePrice)} each.`;
   $('[data-sticky-sub]').textContent = `${money(CONFIG.basePrice)} · S/M – 4XL`;
   $('[data-tagline]').textContent = CONFIG.tagline;
   $('[data-year]').textContent = new Date().getFullYear();
@@ -792,7 +792,7 @@ function renderCart() {
     body.innerHTML = `
       <div class="cart__empty">
         <span class="serif">Your bag is empty.</span>
-        <p>Fifteen colours are waiting. Everything is ${money(CONFIG.basePrice)}.</p>
+        <p>Seventeen colours are waiting. Everything is ${money(CONFIG.basePrice)}.</p>
         <p style="margin-top:1.5rem"><button class="btn" data-close-to-shop>See the collection</button></p>
       </div>`;
     body.querySelector('[data-close-to-shop]').addEventListener('click', () => {

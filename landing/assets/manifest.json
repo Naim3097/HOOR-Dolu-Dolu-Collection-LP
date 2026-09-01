@@ -270,6 +270,18 @@
    "out": "mekar_lilac_detail_01",
    "type": "detail",
    "role": "gallery"
+  },
+  {
+   "src": "6068796078267503237.jpg",
+   "out": "tenun_monochrome_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6068796078267503238.jpg",
+   "out": "puteri_navy-blush_full_01",
+   "type": "full",
+   "role": "card"
   }
  ]
 }
