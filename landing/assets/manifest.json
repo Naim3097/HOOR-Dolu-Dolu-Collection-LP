@@ -19,13 +19,13 @@
    ]
   },
   {
-   "src": "HOOR Hero Mobile v2.png",
+   "src": "HOOR Hero Mobile v3.png",
    "out": "hero_mobile",
    "type": "hero",
    "role": "hero",
    "widths": [
     480,
-    930
+    941
    ]
   },
   {
