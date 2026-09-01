@@ -34,7 +34,8 @@ export const CONFIG = {
 
   support: {
     email: 'hooriemodestwear@gmail.com',     // from hoor.my return policy
-    hours: 'Every day, 10am – 8pm',          // from hoor.my return policy
+    hours: 'Every day, 10am – 9pm',
+    phone: '+60 17-250 0323',                // hoor.my storefront config
     instagram: '@we.are.hoor',
     // HOOR's WhatsApp business number, taken from hoor.my's own storefront
     // configuration (whatsapp_phone). Digits only; empty hides the button.
@@ -43,8 +44,8 @@ export const CONFIG = {
 
   policy: {
     returnDays: 7,                           // hoor.my: within 7 days of receiving
-    refundDays: 14,                          // hoor.my: max 14 working days
-    dispatchDays: 10                         // hoor.my: max 10 working days
+    refundDays: 14                           // hoor.my: max 14 working days
+    // Dispatch/delivery promise per client: out in 24 hours, arrives 1–3 days.
   },
 
   // Turn on ONLY when the numbers below are real live stock.
@@ -102,13 +103,13 @@ export const LENGTH_GUIDE = [
    --------------------------------------------------------------------------- */
 
 const FABRIC =
-  'Premium crepe: matte, opaque and fluid. It falls straight from the shoulder ' +
-  'instead of clinging, and it does not crease across a long day.';   // ⚑ confirm exact fabric
+  'Premium cotton silk: soft, breathable and fluid. It falls straight from the shoulder ' +
+  'instead of clinging, and stays cool across a long Malaysian day.';
 
 const CARE = 'Hand wash cold or machine wash gentle, inside out. Hang dry in shade. Warm iron on reverse.'; // ⚑ confirm
 
 const SHARED_DETAILS = [
-  'A-cut silhouette that skims, never clings',
+  'A-Cut silhouette that skims, never clings',
   'Notched V-neckline with a soft stand collar',
   'Wide turned-back cuffs',
   'Side seam pockets, deep enough for a phone',
@@ -124,7 +125,7 @@ export const PRODUCTS = [
     colourways: [
       {
         id: 'deep-teal',
-        name: 'Deep Teal',
+        name: 'Teal Green',
         swatch: '#2A4A58',
         images: ['pusaka_deep-teal_full_01', 'pusaka_deep-teal_detail_01', 'pusaka_deep-teal_detail_02'],
         video: 'pusaka_deep-teal',
@@ -215,7 +216,7 @@ export const PRODUCTS = [
     colourways: [
       {
         id: 'lilac',
-        name: 'Lilac',
+        name: 'Soft Peach',
         swatch: '#D3BDCA',
         images: ['anggerik_lilac_full_01', 'anggerik_lilac_full_02', 'anggerik_lilac_detail_01'],
         video: null,
@@ -239,11 +240,8 @@ PRODUCTS.forEach(p => {
    three campaign videos they supplied. Nothing here is invented.
    --------------------------------------------------------------------------- */
 export const CLAIMS = [
-  'Pocket included',
-  'Lightweight & flowy',
-  'All-day comfy',
-  'Petite friendly',
-  'Sizes S/M – 4XL'
+  'Premium Cotton Silk',
+  'Petite to Plus Size'
 ];
 
 export const OCCASIONS = [
@@ -251,30 +249,35 @@ export const OCCASIONS = [
   { label: 'Dinner dates',       note: 'The print does the dressing up. Add earrings, leave.' },
   { label: 'Special occasions',  note: 'Reads formal without a fitting or a fuss.' },
   { label: 'Celebration moments', note: 'Raya, kenduri, birthdays. It survives a long day of them.' },
-  { label: 'Holiday getaway',    note: 'Packs flat, shakes out, needs no iron.' }
+  { label: 'Holiday getaway',    note: 'Packs flat, shakes out, needs no iron.' },
+  { label: 'Umrah friendly',     note: 'Modest, full coverage, and comfortable through long days of ibadah and travel.' }
 ];
 
 export const FAQ = [
   {
     q: 'How do I know which size to take?',
-    a: 'Measure around the fullest part of your bust and use the finder above; it reads straight off HOOR\'s A-Cut chart. The cut is loose and A-line, so it hangs from the shoulder rather than fitting the waist. If you fall between two sizes, take the smaller one unless you want extra length.',
+    a: 'Measure around the fullest part of your bust and use the finder above; it reads straight off HOOR\'s A-Cut chart. The A-Cut is loose, hanging from the shoulder rather than fitting the waist. If you fall between two sizes, take the smaller one unless you want extra length.',
     cta: 'size'
   },
   {
     q: 'Is it see-through? Is it hot?',
-    a: 'The crepe is opaque and unlined, and it sits away from the body instead of against it, which is why the campaign calls it lightweight and flowy. It is made for Malaysian weather, not for a European autumn.'
+    a: 'The cotton silk is opaque and unlined, and it sits away from the body instead of against it. Light, breathable and made for Malaysian weather.'
   },
   {
     q: 'Does it really have pockets?',
-    a: 'Yes. Side seam pockets on every piece, set into the A-line so they disappear when you are not using them. Deep enough for a phone.'
+    a: 'Yes. Side seam pockets on every piece, set into the A-Cut so they disappear when you are not using them. Deep enough for a phone.'
   },
   {
     q: 'When will it arrive?',
-    a: `Orders are dispatched within ${CONFIG.policy.dispatchDays} working days, then it is 1–3 days to Semenanjung and 3–7 days to Sabah, Sarawak and Labuan. You get a tracking number the moment it ships.`
+    a: 'Your order is dispatched within 24 hours and arrives at your doorstep within 1–3 days. You get a tracking number the moment it ships.'
   },
   {
     q: 'What if it does not fit?',
     a: `You have ${CONFIG.policy.returnDays} days from delivery to post it back for an exchange or refund, unworn and with tags on. Return postage is on you; refunds are processed within ${CONFIG.policy.refundDays} working days. Email ${CONFIG.support.email} with your order number to start.`
+  },
+  {
+    q: 'Can I see the dresses in person?',
+    a: `Yes. Visit us at Lot 2-5, Second Floor, The Linc, 360 Jalan Tun Razak, 50400 Kuala Lumpur, every day from 10am to 9pm. Call or WhatsApp ${CONFIG.support.phone}.`
   },
   {
     q: 'Is my payment secure?',

@@ -195,9 +195,12 @@ would not hold up as a hero — they are in shoot B and unused regardless.
 | `HOOR Hero Section.png` | 1672×941 (16:9) | Desktop hero, rendered at 900/1400/1672 |
 | `HOOR Mobile Hero Section.png` | 853×1844 (≈9:19.5) | Mobile hero, rendered at 480/853 |
 
-Both are the five-look group shot in the campaign apartment. The mobile master
-is the maximum sharpness available at 853px source width; a ~1200px-wide
-re-export would improve DPR-3 phones if one exists.
+Superseded Sep 2026 by v2 masters (`HOOR Hero Desktop v2.png` 1672×941,
+`HOOR Hero Mobile v2.png` 930×1691) — a five-look group shot in a warmer room.
+Same art direction: wall-left desktop, cover-format mobile.
+
+Colourway names were renamed on client instruction: Deep Teal → **Teal Green**,
+Lilac → **Soft Peach** (internal ids and filenames unchanged).
 
 ## 6. What was produced from these files
 

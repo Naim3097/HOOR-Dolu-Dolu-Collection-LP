@@ -8,7 +8,7 @@
  "quality": 0.82,
  "images": [
   {
-   "src": "HOOR Hero Section.png",
+   "src": "HOOR Hero Desktop v2.png",
    "out": "hero_desktop",
    "type": "hero",
    "role": "hero",
@@ -19,13 +19,13 @@
    ]
   },
   {
-   "src": "HOOR Mobile Hero Section.png",
+   "src": "HOOR Hero Mobile v2.png",
    "out": "hero_mobile",
    "type": "hero",
    "role": "hero",
    "widths": [
     480,
-    853
+    930
    ]
   },
   {
