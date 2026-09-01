@@ -1244,7 +1244,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
    Image flush to the card edge, information beside it, one action. */
 .visit {
   display: grid;
-  max-width: 60rem;
+  max-width: 62rem;   /* matches the FAQ list above, so the column reads as one */
   margin-top: clamp(2.5rem, 6vw, 4rem);
   background: var(--white);
   border: 1px solid var(--line);
