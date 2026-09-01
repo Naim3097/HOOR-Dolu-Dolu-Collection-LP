@@ -16,10 +16,12 @@ The 45 supplied files are not one collection.
 | **A — Batik Dolu-Dolu campaign** | 21 stills + 3 videos | 1706×2560 (2:3) | Editorial. Shot on location in a Kuala Lumpur apartment — upright piano, corduroy wingback, teak sideboard, checkerboard rug. One unveiled model throughout. |
 | **B — A different, earlier catalogue** | 17 stills | 965×1448 / 1086×1448 / 1254×1254 | Studio. Plain taupe or pink backdrops and terracotta tile floors. Hijabi models, several different faces. Different silhouettes and print families. |
 
-**Only shoot A is used on the campaign page.** Shoot B is a different product
-line photographed to a different brief; mixing it in would break the campaign's
-visual continuity with the Meta ad creative and confuse what is actually for
-sale. Shoot B is listed in §5 so nothing gets lost.
+**Correction (Sep 2026): the client confirmed shoot B is the same collection** —
+its looks are the remaining colourways. Eight of them (the ones with matching
+close-ups, plus KARANG) are now purchasable on the page, bringing the total to
+the client's stated fifteen. Two files (`…503237`, `…503238`) appear to be a
+different cut (buttoned jubah, no close-up pair) and were left out pending
+confirmation. See §5 for the mapping.
 
 The collection name is confirmed, not inferred: **"Batik Dolu-Dolu"** is burned
 into the title card of `IMG_2806.MOV`, hyphenated exactly that way.
@@ -163,7 +165,13 @@ line, not a copywriter's.
 
 ---
 
-## 5. Shoot B — not used, catalogued anyway
+## 5. Shoot B — the remaining colourways (client-confirmed, now on the page)
+
+Page names: 242=PUCUK Forest Green, 243=BAYU Steel Blue, 244=SERI Olive,
+245=KARANG Royal Blue, 246=MAHSURI Emerald, 247=MALAM Black Iris,
+248=DIRAJA Royal Purple, 260=MEKAR Lilac. 237/238 not used (different cut).
+
+### Original catalogue notes
 
 Studio catalogue photography of a different, earlier line. Seven products, each
 with a full-length shot and a matching close-up. Kept out of the campaign, listed

@@ -45,8 +45,13 @@ const anyStock = cw => SIZES.some(s => inStock(cw, s));
 /* ---------- 1. IMAGES ---------------------------------------------------- */
 let LQIP = {}, DIMS = {};
 
-const srcset = name =>
-  [480, 900, 1400].map(w => `assets/img/${name}-${w}.webp ${w}w`).join(', ');
+// Some source photographs are narrower than 1400px, so their largest render
+// is 900. Build the candidate list from what actually exists.
+const srcset = name => {
+  const max = DIMS[name]?.[0] || Infinity;
+  return [480, 900, 1400].filter(w => w <= Math.max(480, max))
+    .map(w => `assets/img/${name}-${w}.webp ${w}w`).join(', ');
+};
 
 /**
  * Fill a .ph placeholder: LQIP background immediately, real image faded in.

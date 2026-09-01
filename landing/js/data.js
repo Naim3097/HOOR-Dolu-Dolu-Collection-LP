@@ -224,6 +224,103 @@ export const PRODUCTS = [
       }
     ]
   }
+,
+  {
+    id: 'pucuk',
+    name: 'PUCUK',
+    story: 'Pucuk rebung paisley in deep forest green. The oldest motif in the batik book, worn quietly.',
+    print: 'Pucuk rebung batik',
+    colourways: [{
+      id: 'forest-green', name: 'Forest Green', swatch: '#263524',
+      images: ['pucuk_forest-green_full_01', 'pucuk_forest-green_detail_01'],
+      video: null,
+      stock: { SM: 5, LXL: 7, '2XL': 6, '3XL': 4, '4XL': 3 }
+    }]
+  },
+  {
+    id: 'bayu',
+    name: 'BAYU',
+    story: 'Blue paisley with scattered blooms, as easy as a sea breeze.',
+    print: 'Paisley batik',
+    colourways: [{
+      id: 'steel-blue', name: 'Steel Blue', swatch: '#586995',
+      images: ['bayu_steel-blue_full_01', 'bayu_steel-blue_detail_01'],
+      video: null,
+      stock: { SM: 5, LXL: 8, '2XL': 6, '3XL': 4, '4XL': 2 }
+    }]
+  },
+  {
+    id: 'seri',
+    name: 'SERI',
+    story: 'Rosette medallions front and centre on a calm olive ground.',
+    print: 'Rosette batik',
+    colourways: [{
+      id: 'olive', name: 'Olive', swatch: '#363829',
+      images: ['seri_olive_full_01', 'seri_olive_detail_01'],
+      video: null,
+      stock: { SM: 4, LXL: 7, '2XL': 6, '3XL': 5, '4XL': 3 }
+    }]
+  },
+  {
+    id: 'karang',
+    name: 'KARANG',
+    story: 'Coral blooms on royal blue, bright as a reef.',
+    print: 'Coral floral batik',
+    colourways: [{
+      id: 'royal-blue', name: 'Royal Blue', swatch: '#283C8F',
+      images: ['karang_royal-blue_full_01'],
+      video: null,
+      stock: { SM: 5, LXL: 6, '2XL': 7, '3XL': 4, '4XL': 3 }
+    }]
+  },
+  {
+    id: 'mahsuri',
+    name: 'MAHSURI',
+    story: 'Emerald with cream and gold scrollwork. The most regal of the fifteen.',
+    print: 'Gilded scroll batik',
+    colourways: [{
+      id: 'emerald', name: 'Emerald', swatch: '#3B6774',
+      images: ['mahsuri_emerald_full_01', 'mahsuri_emerald_detail_01'],
+      video: null,
+      stock: { SM: 5, LXL: 8, '2XL': 6, '3XL': 4, '4XL': 2 }
+    }]
+  },
+  {
+    id: 'malam',
+    name: 'MALAM',
+    story: 'Blue and white blooms floating on near-black.',
+    print: 'Night floral batik',
+    colourways: [{
+      id: 'black-iris', name: 'Black Iris', swatch: '#191A1A',
+      images: ['malam_black-iris_full_01', 'malam_black-iris_detail_01'],
+      video: null,
+      stock: { SM: 6, LXL: 8, '2XL': 6, '3XL': 4, '4XL': 3 }
+    }]
+  },
+  {
+    id: 'diraja',
+    name: 'DIRAJA',
+    story: 'Purple and teal baroque scrolls, cut for celebration.',
+    print: 'Baroque batik',
+    colourways: [{
+      id: 'royal-purple', name: 'Royal Purple', swatch: '#4E2B5F',
+      images: ['diraja_royal-purple_full_01', 'diraja_royal-purple_detail_01'],
+      video: null,
+      stock: { SM: 4, LXL: 7, '2XL': 6, '3XL': 4, '4XL': 2 }
+    }]
+  },
+  {
+    id: 'mekar',
+    name: 'MEKAR',
+    story: 'Cherry blossoms in watercolour on soft lilac.',
+    print: 'Blossom batik',
+    colourways: [{
+      id: 'lilac', name: 'Lilac', swatch: '#C58AA6',
+      images: ['mekar_lilac_full_01', 'mekar_lilac_detail_01'],
+      video: null,
+      stock: { SM: 5, LXL: 7, '2XL': 6, '3XL': 4, '4XL': 3 }
+    }]
+  }
 ];
 
 /* Apply the shared spec to every product without repeating it above. */
