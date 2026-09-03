@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { CONFIG, SIZE_LABELS, PRODUCTS, type Size } from "@/lib/products";
-import { money, imgSrc } from "@/lib/format";
+import { imgSrc } from "@/lib/format";
+import { rm } from "@/lib/money";
 import { Sprite } from "@/components/hoor/sprite";
 import { PurchaseEvent } from "./purchase-event";
 import { getBill } from "@/lib/billplz";
@@ -21,7 +22,7 @@ export default async function ReturnPage({ searchParams }: { searchParams: Promi
   if (o && o.status === "pending" && o.payment_ref) {
     try {
       const bill = await getBill(o.payment_ref);
-      if (bill.paid) await settleOrder(db, o, bill.id, bill.paid_at);
+      if (bill.paid) await settleOrder(db, o, bill.id, bill.paid_at, bill);
       else await abandonOrder(db, o);
       ({ data: o } = await db.from("orders").select("*").eq("ref", o.ref).single());
     } catch {
@@ -51,7 +52,7 @@ export default async function ReturnPage({ searchParams }: { searchParams: Promi
           <p className="done__lead">We have emailed a confirmation to <b>{c.email}</b>. Keep the order number below; it is the fastest way for us to find you.</p>
           <div className="done__ref">
             <div><span className="label">Order number</span><span className="v">{o.ref}</span></div>
-            <div><span className="label">Paid</span><span className="v">{money(Number(o.total))}</span></div>
+            <div><span className="label">Paid</span><span className="v">{rm(o.total_sen)}</span></div>
             <div><span className="label">Method</span><span className="v" style={{ fontSize: "1rem" }}>{method}</span></div>
           </div>
           <div style={{ marginTop: "2rem", border: "1px solid var(--line)", background: "var(--white)" }}>
@@ -61,13 +62,13 @@ export default async function ReturnPage({ searchParams }: { searchParams: Promi
               return (
                 <div key={l.id} className="ci">
                   <div className="ci__media"><span className="ph">{cw && /* eslint-disable-next-line @next/next/no-img-element */ <img className="loaded" src={imgSrc(cw.images[0], 480)} alt="" />}</span></div>
-                  <div><div className="ci__top"><div><h4>{p?.name}</h4><p className="meta">{cw?.name} · {SIZE_LABELS[l.size as Size]}</p></div><span className="price">{money(Number(l.unit_price) * l.qty)}</span></div><p className="meta" style={{ marginTop: ".35rem" }}>Qty {l.qty}</p></div>
+                  <div><div className="ci__top"><div><h4>{p?.name}</h4><p className="meta">{cw?.name} · {SIZE_LABELS[l.size as Size]}</p></div><span className="price">{rm(l.unit_price_sen * l.qty)}</span></div><p className="meta" style={{ marginTop: ".35rem" }}>Qty {l.qty}</p></div>
                 </div>);
             })}</div>
             <div className="summary__totals"><div className="totals" style={{ marginBottom: 0 }}>
-              <div><span>Subtotal</span><span>{money(Number(o.subtotal))}</span></div>
-              <div><span>Delivery · {CONFIG.shipping[d.region].label}</span><span>{Number(o.shipping) === 0 ? "Free" : money(Number(o.shipping))}</span></div>
-              <div className="grand"><span>Total paid</span><span>{money(Number(o.total))}</span></div>
+              <div><span>Subtotal</span><span>{rm(o.subtotal_sen)}</span></div>
+              <div><span>Delivery · {CONFIG.shipping[d.region].label}</span><span>{o.shipping_sen === 0 ? "Free" : rm(o.shipping_sen)}</span></div>
+              <div className="grand"><span>Total paid</span><span>{rm(o.total_sen)}</span></div>
             </div></div>
             <div className="summary__trust"><p style={{ lineHeight: 1.5 }}><b style={{ color: "var(--ink)" }}>Delivering to</b><br />{c.name}, {d.line1}{d.line2 ? `, ${d.line2}` : ""}, {d.postcode} {d.city}, {d.state}</p></div>
           </div>
@@ -81,7 +82,7 @@ export default async function ReturnPage({ searchParams }: { searchParams: Promi
             <a className="co__back" href={`mailto:${CONFIG.support.email}?subject=Order%20${encodeURIComponent(o.ref)}`}>Email us about this order</a>
           </div>
         </div>
-        <PurchaseEvent orderRef={o.ref} value={Number(o.total)} />
+        <PurchaseEvent orderRef={o.ref} value={o.total_sen / 100} />
       </div>
     </>
   );

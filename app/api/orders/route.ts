@@ -3,6 +3,7 @@ import { supabaseAdmin } from "@/lib/supabase/server";
 import { createBill } from "@/lib/billplz";
 import { orderInput, priceOrder, orderRef } from "@/lib/orders";
 import { CONFIG, sku } from "@/lib/products";
+import { toSen } from "@/lib/money";
 
 export async function POST(req: Request) {
   const parsed = orderInput.safeParse(await req.json().catch(() => null));
@@ -15,6 +16,7 @@ export async function POST(req: Request) {
   // Reserve stock atomically (RPC defined in supabase/migrations). Fails if any line is short.
   const { error: reserveErr } = await db.rpc("reserve_stock", {
     p_items: input.items.map((i) => ({ sku: sku(i.productId, i.colourwayId, i.size), qty: i.qty })),
+    p_order_ref: ref,
   });
   if (reserveErr) return NextResponse.json({ error: "Some items are no longer in stock." }, { status: 409 });
 
@@ -25,9 +27,9 @@ export async function POST(req: Request) {
     delivery: { ...input.delivery, region: pricing.region, notes: input.notes },
     payment_method: "billplz",
     attribution: input.attribution,
-    subtotal: pricing.subtotal,
-    shipping: pricing.shipping,
-    total: pricing.total,
+    subtotal_sen: toSen(pricing.subtotal),
+    shipping_sen: toSen(pricing.shipping),
+    total_sen: toSen(pricing.total),
     currency: CONFIG.currency,
   });
   if (insErr) return NextResponse.json({ error: insErr.message }, { status: 500 });
@@ -40,7 +42,7 @@ export async function POST(req: Request) {
       colourway_id: i.colourwayId,
       size: i.size,
       qty: i.qty,
-      unit_price: CONFIG.basePrice,
+      unit_price_sen: toSen(CONFIG.basePrice),
     })),
   );
 
@@ -57,9 +59,10 @@ export async function POST(req: Request) {
       callbackUrl: `${site}/api/webhooks/billplz`,
     });
     await db.from("orders").update({ payment_ref: bill.id }).eq("ref", ref);
+    await db.from("payments").insert({ order_ref: ref, provider: "billplz", provider_ref: bill.id, status: "pending", amount_sen: bill.amount, raw: bill });
     return NextResponse.json({ orderRef: ref, redirectUrl: bill.url });
   } catch (e) {
-    await db.rpc("release_stock", { p_order_ref: ref });
+    await db.rpc("release_stock", { p_order_ref: ref, p_type: "release", p_actor: "system" });
     await db.from("orders").update({ status: "failed" }).eq("ref", ref);
     return NextResponse.json({ error: (e as Error).message }, { status: 502 });
   }

@@ -20,6 +20,6 @@ export async function POST(req: Request) {
   const { data: order } = await db.from("orders").select("ref,status").eq("payment_ref", fields.id).single();
   if (!order) return NextResponse.json({ error: "unknown bill" }, { status: 404 });
 
-  if (fields.paid === "true") await settleOrder(db, order, fields.id, fields.paid_at);
+  if (fields.paid === "true") await settleOrder(db, order, fields.id, fields.paid_at, fields);
   return NextResponse.json({ ok: true });
 }
