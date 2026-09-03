@@ -54,8 +54,8 @@ Tick as done. Items marked ⚠ need something from the client before they can be
   Body → "The A-Cutline Dress falls just nicely, looking like custom-made on your body"
 - [x] **10. "Kind to pear shapes" point**
   Heading → "Kind to pear shape bodies". Body → "Neat at the shoulder, generous through the hip. It balances a pear body shape without clinging to your body"
-- [ ] **11. "Opaque, no inner needed" point** ⚠
-  Marked "Change to" twice but no replacement text was given. Ask the client whether to reword, drop it, or keep it. The same claim is covered in FAQ item 15.
+- [x] **11. "Opaque, no inner needed" point**
+  The "Change to" screenshot is the same point cropped after "no extra layer underneath": the closing phrase "no second-guessing in daylight" is dropped. Heading unchanged.
 - [x] **12. "Pockets, properly" point**
   Heading → "Pockets on both sides". Body → "Side seam pockets deep enough for your phone, keys, and your small purse"
 

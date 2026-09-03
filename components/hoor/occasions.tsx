@@ -32,7 +32,7 @@ export function Fabric() {
               <div><h3>Cotton silk, all day</h3><p>Lightweight, breathable and soft on the skin. It keeps you cool and comfortable from morning to night.</p></div>
               <div><h3>Flatters every figure</h3><p>The A-Cutline Dress falls just nicely, looking like it was custom-made for your body.</p></div>
               <div><h3>Kind to pear-shaped bodies</h3><p>Neat at the shoulder, generous through the hip. It balances a pear body shape without clinging to your body.</p></div>
-              <div><h3>Opaque, no inner needed</h3><p>The cotton silk is fully opaque on its own. No lining, no extra layer underneath, no second-guessing in daylight.</p></div>
+              <div><h3>Opaque, no inner needed</h3><p>The cotton silk is fully opaque on its own. No lining, no extra layer underneath.</p></div>
               <div><h3>Pockets on both sides</h3><p>Side seam pockets deep enough for your phone, keys and a small purse.</p></div>
             </div>
           </div>
