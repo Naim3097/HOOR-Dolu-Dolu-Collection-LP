@@ -14,7 +14,7 @@ Tick as done. Items marked ⚠ need something from the client before they can be
 
 ## Story
 
-- [ ] **4. Story copy rewritten** — `components/hoor/hero.tsx` (Story)
+- [x] **4. Story copy rewritten** — `components/hoor/hero.tsx` (Story)
   Change to:
   > Dolu-dolu is what you say about the old days. Feeling nostalgic, just like 90s era.
   >

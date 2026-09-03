@@ -387,6 +387,18 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .story__grid { display: grid; gap: clamp(2rem, 5vw, 4rem); }
 .story__body p { margin-bottom: 1.25rem; max-width: 52ch; color: var(--ink-80); }
 .story__body p:last-child { margin-bottom: 0; }
+.story__why {
+  margin-top: 1.75rem;
+  font-size: var(--t-label);
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--sage-deep);
+}
+.story__list { margin-top: .75rem; max-width: 52ch; color: var(--ink-80); }
+.story__list li { padding: .55rem 0; border-top: 1px solid var(--line-soft); }
+.story__list li:last-child { border-bottom: 1px solid var(--line-soft); }
+.story__list b { color: var(--ink); font-weight: 700; }
 .story__body .drop {
   font-family: var(--serif);
   font-size: var(--t-title);

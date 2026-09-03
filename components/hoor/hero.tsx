@@ -38,14 +38,26 @@ export function Claims() {
   return <section className="claims" id="claims" aria-label="What every piece has"><ul className="claims__track">{CLAIMS.map((c) => <li key={c}>{c}</li>)}</ul></section>;
 }
 
+const STORY_POINTS = [
+  { head: "Breathable & airy", body: "perfect for Malaysia's warm weather" },
+  { head: "Flowy & lightweight", body: "moves beautifully as you walk" },
+  { head: "Doesn't cling to the body", body: "giving you a relaxed, comfortable fit" },
+  { head: "Comfortable in the heat", body: "ideal for everyday wear, kenduri, and umrah too" },
+  { head: "Soft against the skin", body: "for all-day comfort" },
+];
+
 export function Story() {
   return (
-    <section className="story wrap">
+    <section className="story wrap" id="story">
       <div className="story__grid">
         <div className="story__body rv">
-          <p className="drop"><em>Dolu-dolu</em> is what you say about the old days. Not nostalgia exactly, more like recognition.</p>
-          <p>These prints come from that shelf. The tiles, the lace, the flowers you grew up seeing on every good baju, redrawn with care and put on a dress you can wear any day of the week.</p>
-          <p>Shot in a flat that still has the upright piano, the corduroy wingback and the checkerboard rug. Nothing was borrowed in.</p>
+          <p className="drop"><em>Dolu-dolu</em> is what you say about the old days. Feeling nostalgic, just like the 90s era.</p>
+          <p>These prints come from memories of the old days. The flowers you grew up seeing on every painting, abstract and kain batik, redrawn on a beautiful Premium Cotton Silk dress.</p>
+          <p>The fabric is soft, with an airy texture that drapes naturally over the body without clinging, giving you that comfortable feeling from morning to night.</p>
+          <h3 className="story__why">Why you&apos;ll love Cotton Silk</h3>
+          <ul className="story__list">
+            {STORY_POINTS.map((s) => <li key={s.head}><b>{s.head}</b> — {s.body}</li>)}
+          </ul>
         </div>
         <figure className="story__fig rv rv-d1">
           <div className="story__stack">
