@@ -47,3 +47,22 @@ NEXT_PUBLIC_SUPABASE_URL=https://mnxvffifdvcuuuqbtmqy.supabase.co SUPABASE_SERVI
 ```
 
 Adding a photo: restore or create `assets/`, drop the original in, add a line to `media/manifest.json`, run build and upload, then reference it by output name in `lib/products.ts`. Do not commit `assets/`.
+
+## Back office
+
+`/admin` is HOOR's back office, gated by `proxy.ts` on a Supabase Auth session. Every auth user is staff; the first one created becomes the owner. Create the first login in the Supabase dashboard (Authentication → Users → Add user), then sign in at `/admin/login`. The owner adds further staff under **Staff**, which hands out a one-time password.
+
+| Section | What it does |
+|---|---|
+| Dashboard | Sales today, orders, average order value, orders waiting to be packed, 14-day sales, top pieces |
+| Orders | List with status filters and search; detail with status workflow, refunds, parcels, notes, history; packing slips |
+| Products | Pieces, colours, photos (uploaded straight to the media bucket as WebP renders) and ledger-tracked stock |
+| Customers | Built from orders, grouped by email |
+| Discounts | Percent, fixed and free-delivery codes, applied at checkout |
+| Shipping | Delivery charges, EasyParcel connection and wallet, pickup address |
+| Settings | Store contact details, delivery charges, returns window (read live by the storefront) |
+| Staff, Audit log | Logins and roles; every change, by whom, when |
+
+Money is stored as integer sen. Stock only changes through the ledger (`stock_movements`): checkout reservations, releases, returns, restocks and corrections all leave a row with a reason. Pending orders unpaid after 24 hours are released by the `/api/orders/expire` cron.
+
+Customer emails (order confirmed, shipped, refunded) go through Resend, provisioned from the Vercel Marketplace. EasyParcel booking needs an Open API OAuth app; without it, parcels are added by hand and still trigger the shipped email.
