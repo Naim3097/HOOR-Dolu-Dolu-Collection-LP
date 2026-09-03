@@ -373,6 +373,14 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   .claims__track { justify-content: center; }
   .claims li:first-child { padding-left: clamp(1.1rem, 3.5vw, 2.5rem); }
 }
+/* Phones: every claim visible at once, wrapped into centred rows, no sideways scroll. */
+@media (max-width: 899px) {
+  .claims__track { flex-wrap: wrap; justify-content: center; gap: .4rem; overflow: visible; padding: .8rem var(--gut); }
+  .claims li, .claims li:first-child, .claims li:last-child {
+    padding: .42rem .7rem; font-size: .64rem; letter-spacing: .13em;
+    border: 1px solid var(--line-soft); background: var(--white);
+  }
+}
 
 /* ---------- 7. STORY ----------------------------------------------------- */
 .story { padding-block: var(--sect) clamp(3rem, 6vw, 4.5rem); }

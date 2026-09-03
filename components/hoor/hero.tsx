@@ -23,7 +23,7 @@ export function Hero() {
           <h1>Batik <span className="it serif">Dolu-Dolu</span></h1>
         </header>
         <div className="hero__deck">
-          <p className="hero__lead">Made from premium cotton silk, in an A-Cut with pockets. For every woman, from petite to plus size.</p>
+          <p className="hero__lead">Made from Premium Cotton Silk, in a comfortable A-Cutline for easy movement. Suitable for petite and plus size women.</p>
           <div className="hero__cta">
             <a className="btn btn--light" href="#shop" onClick={() => track("cta_click", { location: "hero_cta" })}>Shop the collection</a>
             <a className="btn btn--light" href="#occasions">Where you&apos;ll wear it</a>
@@ -35,7 +35,7 @@ export function Hero() {
 }
 
 export function Claims() {
-  return <section className="claims" aria-label="What every piece has"><ul className="claims__track">{CLAIMS.map((c) => <li key={c}>{c}</li>)}</ul></section>;
+  return <section className="claims" id="claims" aria-label="What every piece has"><ul className="claims__track">{CLAIMS.map((c) => <li key={c}>{c}</li>)}</ul></section>;
 }
 
 export function Story() {
