@@ -30,7 +30,7 @@ function LoginForm() {
         <Field label="Password"><input className={inputCls} type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} required /></Field>
         {error && <p className="text-[13px] text-rose-700">{error}</p>}
         <button className={`${btnCls} w-full`} disabled={busy}>{busy ? "Signing in…" : "Sign in"}</button>
-        <p className="text-[12px] text-[var(--ink-55)]">Staff accounts are created by the owner under Staff. Forgotten your password? Ask the owner to reset it.</p>
+        <p className="text-[12px] text-[var(--ink-55)]">Staff accounts are created by the owner under Staff, where you can also change your own password. Forgotten it? Ask the owner to reset it.</p>
       </form>
     </main>
   );

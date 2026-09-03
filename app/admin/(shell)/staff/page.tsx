@@ -2,6 +2,7 @@ import { getStaff } from "@/lib/auth";
 import { listStaff } from "@/lib/admin/config";
 import { PageHead } from "@/components/admin/ui";
 import { StaffTable } from "@/components/admin/config-forms";
+import { ChangePassword } from "@/components/admin/change-password";
 
 export const dynamic = "force-dynamic";
 
@@ -10,6 +11,7 @@ export default async function StaffPage() {
   return (
     <div className="space-y-6">
       <PageHead title="Staff" sub="Who can sign in to the back office. The owner adds people and hands them a one-time password." />
+      <ChangePassword />
       <StaffTable staff={staff} meId={me!.id} isOwner={me!.role === "owner"} />
     </div>
   );
