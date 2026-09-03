@@ -7,8 +7,8 @@ export function Occasions() {
       <div className="wrap">
         <div className="sect-head rv">
           <span className="label">One dress, every occasion</span>
-          <h2>You will not buy this for one day of the year.</h2>
-          <p className="sub">Long sleeve, full length, no zips and no fitting. It moves between a Monday desk and a Saturday kenduri without a change of plan.</p>
+          <h2>365 days of comfort. 365 days of HOOR. Kecantikan 360°.</h2>
+          <p className="sub">Because your favourite dress should be styled every day. Look pretty, feel pretty, in 360° view.</p>
         </div>
         <div className="occ__grid">
           <Video name="renda_camel" caption="RENDA in Camel Gold — campaign film" className="occ__video rv" />

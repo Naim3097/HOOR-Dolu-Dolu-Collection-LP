@@ -31,15 +31,15 @@ Tick as done. Items marked ⚠ need something from the client before they can be
 
 ## Collection
 
-- [ ] **5. Collection heading** — `components/hoor/shop.tsx`
+- [x] **5. Collection heading** — `components/hoor/shop.tsx`
   "Seventeen colours. One A-Cut." → "Different prints, all in One A-Cutline Dress"
 
 ## Occasions
 
-- [ ] **6. Occasions heading and sub** — `components/hoor/occasions.tsx`
+- [x] **6. Occasions heading and sub** — `components/hoor/occasions.tsx`
   Heading → "365 Days of Comfort. 365 Days of Hoor. Kecantikan 360°"
   Sub → "Because your favourite dress should be styled everyday. Look pretty, feel pretty in 360° view."
-- [ ] **7. Occasions list: four items, new copy** — `lib/products.ts` (OCCASIONS)
+- [x] **7. Occasions list: four items, new copy** — `lib/products.ts` (OCCASIONS)
   Drops "Dinner dates" and "Special occasions".
   1. Office wear — "Easy for movement at your desk, while sitting during meetings, pockets for your stationary and lanyard."
   2. Celebration moments — "Elegant for Raya, birthdays, kenduri, and even as Mak pengantin"

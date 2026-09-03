@@ -17,7 +17,7 @@ export function Shop() {
     <section className="shop wrap" id="shop">
       <div className="sect-head rv">
         <span className="label">The collection</span>
-        <h2>{numberWord(COLOUR_COUNT, true)} colours. One A-Cut.</h2>
+        <h2>Different prints, all in one A-Cutline Dress.</h2>
         <p className="sub">Pick a colour on the card to see it change. Everything is <span>{money(CONFIG.basePrice)}</span>, in every size we make.</p>
       </div>
       <div className="shop__bar rv" role="group" aria-label="Filter by colour">

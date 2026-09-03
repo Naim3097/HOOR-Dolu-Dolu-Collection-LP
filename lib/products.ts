@@ -200,11 +200,9 @@ export const STORE = {
 export const CLAIMS = ["Premium Cotton Silk", "Petite to Plus Size", "Sizes S/M – 4XL", "Pocket included", "Lightweight & flowy"];
 
 export const OCCASIONS = [
-  { label: "Office wear", note: "Long sleeve, full length, nothing to adjust at your desk." },
-  { label: "Dinner dates", note: "The print does the dressing up. Add earrings, leave." },
-  { label: "Special occasions", note: "Reads formal without a fitting or a fuss." },
-  { label: "Celebration moments", note: "Raya, kenduri, birthdays. It survives a long day of them." },
-  { label: "Holiday getaway", note: "Packs flat, shakes out, needs no iron." },
+  { label: "Office wear", note: "Easy movement at your desk and through long meetings, with pockets for your stationery and lanyard." },
+  { label: "Celebration moments", note: "Elegant for Raya, birthdays, kenduri, and even as mak pengantin." },
+  { label: "Holiday getaway", note: "Weighs only 400g, so your travel bag stays light. Designs made for your OOTD." },
   { label: "Umrah friendly", note: "Modest, full coverage, and comfortable through long days of ibadah and travel." },
 ];
 
