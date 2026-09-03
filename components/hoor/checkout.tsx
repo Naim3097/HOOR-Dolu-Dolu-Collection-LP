@@ -140,10 +140,10 @@ function CheckoutBody() {
                   </div>
                 ))}
               </div>
-              <div style={{ marginTop: "1.5rem" }}>
-                <span className="label" style={{ color: "var(--ink-55)" }}>Discount code</span>
-                <div style={{ display: "flex", gap: ".5rem", marginTop: ".5rem", maxWidth: "24rem" }}>
-                  <input className="input" style={{ flex: 1, textTransform: "uppercase" }} value={code} onChange={(e) => { setCode(e.target.value); if (applied) { setApplied(null); } }} placeholder="Enter a code" aria-label="Discount code" />
+              <div className="f" style={{ marginTop: "1.5rem", maxWidth: "24rem" }}>
+                <label htmlFor="f-code">Discount code<span style={{ color: "var(--ink-35)" }}> · optional</span></label>
+                <div style={{ display: "flex", gap: ".5rem", alignItems: "stretch" }}>
+                  <input id="f-code" style={{ flex: 1, textTransform: "uppercase" }} value={code} onChange={(e) => { setCode(e.target.value); if (applied) { setApplied(null); } }} placeholder="Enter a code" autoComplete="off" />
                   <button type="button" className="btn" disabled={codeBusy || !code.trim()} onClick={applyCode}>{codeBusy ? "Checking…" : applied ? "Applied" : "Apply"}</button>
                 </div>
                 {codeErr && <p className="err" style={{ display: "block", marginTop: ".5rem", color: "var(--error)" }}>{codeErr}</p>}

@@ -43,7 +43,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             </div>
           ))}
         </nav>
-        <div className="border-t border-white/10 px-5 py-4 text-[12px] text-white/50">
+        <div className="border-t border-white/10 px-5 py-4 pb-14 text-[12px] text-white/50">
           <p className="truncate text-white/80">{staff.name ?? staff.email}</p>
           <p className="mb-2 uppercase tracking-[0.2em] text-[10px]">{staff.role}</p>
           <SignOut />

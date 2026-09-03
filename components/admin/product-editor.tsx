@@ -103,9 +103,9 @@ function Photos({ productId, colourwayId, images }: { productId: string; colourw
       <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--ink-55)]">Photos · first one is the card image</p>
       <div className="flex flex-wrap gap-3">
         {images.map((i, idx) => (
-          <figure key={i.id} className="w-24">
+          <figure key={i.id} className="w-28">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={i.thumb} alt="" className="h-32 w-24 object-cover" />
+            <img src={i.thumb} alt="" className="h-36 w-28 object-cover" />
             <figcaption className="mt-1 flex items-center justify-between text-[10px] text-[var(--ink-55)]">
               <span>{idx === 0 ? "card" : idx + 1} · {i.width}px</span>
               <span className="flex gap-1">

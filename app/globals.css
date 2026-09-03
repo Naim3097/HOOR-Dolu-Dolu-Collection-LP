@@ -1,3 +1,4 @@
+@layer theme, base, components, utilities;
 @import "tailwindcss/theme" layer(theme);
 @import "tailwindcss/utilities" layer(utilities);
 
@@ -12,4 +13,5 @@
 @font-face{font-family:'Playfair Display';font-style:normal;font-weight:400;font-display:swap;src:url(/assets/fonts/playfair-display-400-normal-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 
 /* The HOOR design system, verbatim from the campaign site. Owns reset + all visuals. */
-@import "./hoor.css";
+/* In the base layer so the back office's Tailwind utilities (a later layer) can override its element rules. */
+@import "./hoor.css" layer(base);
