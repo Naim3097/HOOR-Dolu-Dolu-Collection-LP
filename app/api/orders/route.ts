@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
-import { createBill } from "@/lib/leanx";
+import { createBill } from "@/lib/billplz";
 import { orderInput, priceOrder, orderRef } from "@/lib/orders";
 import { CONFIG, sku } from "@/lib/products";
 
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
     status: "pending",
     customer: input.customer,
     delivery: { ...input.delivery, region: pricing.region, notes: input.notes },
-    payment_method: input.paymentMethod,
+    payment_method: "billplz",
     attribution: input.attribution,
     subtotal: pricing.subtotal,
     shipping: pricing.shipping,
@@ -54,10 +54,10 @@ export async function POST(req: Request) {
       phone: input.customer.phone,
       description: `${CONFIG.brand} ${CONFIG.collection} — ${ref}`,
       redirectUrl: `${site}/checkout/return?ref=${ref}`,
-      callbackUrl: `${site}/api/webhooks/leanx`,
+      callbackUrl: `${site}/api/webhooks/billplz`,
     });
-    await db.from("orders").update({ payment_ref: bill.billId }).eq("ref", ref);
-    return NextResponse.json({ orderRef: ref, redirectUrl: bill.redirectUrl });
+    await db.from("orders").update({ payment_ref: bill.id }).eq("ref", ref);
+    return NextResponse.json({ orderRef: ref, redirectUrl: bill.url });
   } catch (e) {
     await db.rpc("release_stock", { p_order_ref: ref });
     await db.from("orders").update({ status: "failed" }).eq("ref", ref);

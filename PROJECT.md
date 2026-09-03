@@ -214,7 +214,7 @@ Upload the contents of `landing/` to any HTTPS host (Netlify, Cloudflare Pages, 
 
 ---
 
-## 10. Migration plan — Next.js + Supabase + LeanX
+## 10. Migration plan — Next.js + Supabase + Billplz
 
 The static site is being rebuilt on a full stack. Content, design tokens, assets, tracking events and every HANDOVER decision carry over; the delivery mechanism changes.
 
@@ -228,7 +228,7 @@ The static site is being rebuilt on a full stack. Content, design tokens, assets
 | Data | Supabase Postgres — `products`, `colourways`, `variants`, `orders`, `order_items` | `data.js` |
 | Media | Supabase Storage public bucket + `next/image` (LQIP values kept as `blurDataURL`) | `tools/` pipeline, `landing/assets/img` |
 | Backend | Next.js Route Handlers + Supabase (service role, server-only) | simulated `createOrder()` |
-| Payment | LeanX.io hosted bill → redirect → webhook | simulated gateway |
+| Payment | Billplz hosted bill → redirect → callback | simulated gateway |
 | Tracking | same `dataLayer` / `fbq` event map, Pixel + GTM via `next/script` | inline script |
 | Deploy | Vercel, Next.js preset, env vars | `vercel.json` static |
 
@@ -238,13 +238,13 @@ The static site is being rebuilt on a full stack. Content, design tokens, assets
 app/
   hoor.css                          original design system (do not restyle — parity with live site)
   layout.tsx, page.tsx              landing
-  checkout/return/page.tsx          LeanX return → confirmation, fires `purchase`
-  api/orders/route.ts               validate → insert order → decrement stock → create LeanX bill → { orderRef, redirectUrl }
-  api/webhooks/leanx/route.ts       verify signature → mark paid / release stock
+  checkout/return/page.tsx          Billplz return → confirmation, fires `purchase`
+  api/orders/route.ts               validate → insert order → decrement stock → create Billplz bill → { orderRef, redirectUrl }
+  api/webhooks/billplz/route.ts     verify X Signature → mark paid (re-reserving stock if the order had lapsed)
 components/hoor/                    sprite, chrome (scroll/reveal), header, hero/claims/story, shop, occasions/fabric, fit, tail (faq/closer/footer/sticky/wa), overlays (drawers, toast), checkout, ph (LQIP image), video
 components/ui/                      shadcn (available, unused on the landing page)
 lib/supabase/{client,server}.ts
-lib/leanx.ts                        bill creation + signature verification
+lib/billplz.ts                        bill creation + signature verification
 lib/tracking.ts                     typed event helpers
 lib/products.ts                     types + seed data (ported from data.js)
 supabase/migrations/                schema, RLS, seed
@@ -253,10 +253,10 @@ supabase/migrations/                schema, RLS, seed
 ### Order flow
 
 1. Client posts cart + customer + attribution to `/api/orders`.
-2. Route validates (zod), inserts `orders` + `order_items` with status `pending`, reserves stock, creates a LeanX bill, stores the bill reference, returns `redirectUrl`.
-3. Customer pays on LeanX's hosted page (FPX / card / e-wallet).
-4. LeanX calls `/api/webhooks/leanx` → signature verified → order `paid` (or `failed`, stock released).
-5. LeanX redirects to `/checkout/return?ref=…` → page reads order status → shows confirmation → fires `purchase` only when status is `paid`.
+2. Route validates (zod), inserts `orders` + `order_items` with status `pending`, reserves stock, creates a Billplz bill, stores the bill reference, returns `redirectUrl`.
+3. Customer pays on Billplz's hosted page (FPX / card / e-wallet).
+4. Billplz calls `/api/webhooks/billplz` → signature verified → order `paid` (or `failed`, stock released).
+5. Billplz redirects to `/checkout/return?ref=…` → page reads order status → shows confirmation → fires `purchase` only when status is `paid`.
 
 ### Environment variables
 
@@ -265,10 +265,10 @@ supabase/migrations/                schema, RLS, seed
 | `NEXT_PUBLIC_SUPABASE_URL` | public | Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | public | read-only product access (RLS) |
 | `SUPABASE_SERVICE_ROLE_KEY` | server | orders, stock, webhooks |
-| `LEANX_AUTH_TOKEN` | server | LeanX API auth |
-| `LEANX_HASH_KEY` | server | webhook signature verification |
-| `LEANX_COLLECTION_UUID` | server | LeanX collection to bill against |
-| `LEANX_BASE_URL` | server | sandbox vs production API host |
+| `BILLPLZ_API_KEY` | server | Billplz API secret key |
+| `BILLPLZ_COLLECTION_ID` | server | collection the bills are created under |
+| `BILLPLZ_X_SIGNATURE_KEY` | server | callback and redirect signature verification |
+| `BILLPLZ_SANDBOX` | server | `true` for the sandbox host (local, preview) |
 | `NEXT_PUBLIC_SITE_URL` | public | absolute return/callback URLs |
 
 ### Steps
@@ -278,12 +278,12 @@ supabase/migrations/                schema, RLS, seed
 3. [x] Port `data.js` → `lib/products.ts` (typed) + Supabase seed migration
 4. [x] All sections, drawers, checkout and toast ported 1:1 to React on the original CSS (`components/hoor/`); wire product sheet / cart / checkout with shadcn
 5. [ ] Supabase project: run migrations, upload assets to Storage, set RLS
-6. [~] LeanX: `lib/leanx.ts`, `/api/orders`, webhook and return page scaffolded (⚑ verify field names/hash against LeanX docs) — sandbox test pending; original: implement `lib/leanx.ts`, `/api/orders`, webhook, return page
+6. [~] Billplz: `lib/billplz.ts`, `/api/orders`, webhook and return page scaffolded (⚑ verify field names/hash against Billplz docs) — sandbox test pending; original: implement `lib/billplz.ts`, `/api/orders`, webhook, return page
 7. [ ] Tracking helpers + Pixel/GTM
 8. [ ] Vercel: import repo, set env vars, attach domain
 9. [ ] Retire `landing/`, `tools/`, `.claude/server.js`, `vercel.json` once parity is verified
 
 ### Decisions pending from HOOR
-- LeanX: hosted redirect (assumed) vs. embedded; sandbox credentials.
+- Billplz: hosted redirect (assumed) vs. embedded; sandbox credentials.
 - Stock: reserve on order creation and release on failed webhook (assumed).
 - Whether originals in `assets/` move to a private Supabase bucket.

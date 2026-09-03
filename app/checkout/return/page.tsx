@@ -4,21 +4,37 @@ import { CONFIG, SIZE_LABELS, PRODUCTS, type Size } from "@/lib/products";
 import { money, imgSrc } from "@/lib/format";
 import { Sprite } from "@/components/hoor/sprite";
 import { PurchaseEvent } from "./purchase-event";
-import { PAY_METHODS } from "@/components/hoor/checkout";
+import { getBill } from "@/lib/billplz";
+import { settleOrder, abandonOrder } from "@/lib/settle";
 
 export const dynamic = "force-dynamic";
 
-export default async function ReturnPage({ searchParams }: { searchParams: Promise<{ ref?: string }> }) {
-  const { ref } = await searchParams;
+export default async function ReturnPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const q = await searchParams;
+  const ref = typeof q.ref === "string" ? q.ref : undefined;
   const db = supabaseAdmin();
-  const { data: o } = ref ? await db.from("orders").select("*").eq("ref", ref).single() : { data: null };
+  let { data: o } = ref ? await db.from("orders").select("*").eq("ref", ref).single() : { data: null };
+
+  // Billplz sends the customer back here whether or not they paid. The callback
+  // usually lands first, but not always, so settle from Billplz's own record of
+  // the bill (looked up by the reference we stored, never by the query string).
+  if (o && o.status === "pending" && o.payment_ref) {
+    try {
+      const bill = await getBill(o.payment_ref);
+      if (bill.paid) await settleOrder(db, o, bill.id, bill.paid_at);
+      else await abandonOrder(db, o);
+      ({ data: o } = await db.from("orders").select("*").eq("ref", o.ref).single());
+    } catch {
+      /* Billplz unreachable: fall through to the "confirming" state, which refreshes. */
+    }
+  }
   const { data: lines } = o ? await db.from("order_items").select("*").eq("order_ref", o.ref) : { data: [] };
 
   if (!o) return <Shell title="We could not find that order." lead={`Email ${CONFIG.support.email} with any details you have and we will track it down.`} />;
-  if (o.status === "failed") return <Shell title="The payment did not go through." lead="Nothing was charged. Your bag is saved — go back and try another method." />;
+  if (o.status === "failed") return <Shell title="The payment did not go through." lead="Nothing was charged. Your bag is saved — go back and try again." />;
   if (o.status !== "paid") return <Shell title="Confirming your payment…" lead={`Order ${o.ref}. This page refreshes on its own.`} refresh />;
 
-  const method = PAY_METHODS.find((m) => m.id === o.payment_method)?.name ?? "Online payment";
+  const method = "Billplz";
   const d = o.delivery as { line1: string; line2?: string; postcode: string; city: string; state: string; region: "west" | "east" };
   const c = o.customer as { name: string; email: string };
   return (

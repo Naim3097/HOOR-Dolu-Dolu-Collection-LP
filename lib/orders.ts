@@ -27,7 +27,6 @@ export const orderInput = z.object({
     state: z.enum(STATES),
   }),
   notes: z.string().max(500).optional().default(""),
-  paymentMethod: z.enum(["fpx", "card", "transfer"]).default("fpx"),
   attribution: z.record(z.string(), z.string()).default({}),
 });
 export type OrderInput = z.infer<typeof orderInput>;

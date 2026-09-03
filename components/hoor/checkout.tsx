@@ -7,14 +7,13 @@ import { useStore, keyOf } from "@/lib/store";
 import { Line, Totals } from "@/components/hoor/overlays";
 import { track, attribution } from "@/lib/tracking";
 
+/** Payment runs on Billplz's hosted page; the customer picks FPX or card there. */
 export const PAY_METHODS = [
-  { id: "fpx", name: "Online banking (FPX)", sub: "Maybank2u, CIMB Clicks and every major Malaysian bank.", marks: ["FPX", "Maybank", "CIMB"], body: "You will be sent to your own bank to approve the payment, then brought straight back here." },
-  { id: "card", name: "Credit or debit card", sub: "Visa, Mastercard, UnionPay.", marks: ["Visa", "Mastercard", "UnionPay"], body: "Card details are entered on our payment provider's own encrypted page. They are never seen or stored by this site." },
-  { id: "transfer", name: "Bank transfer", sub: "Pay manually, we hold your order.", marks: ["Bank transfer"], body: "We email you our account details and keep your size reserved for 24 hours. Send us the receipt and we dispatch." },
+  { id: "billplz", name: "Pay securely with Billplz", sub: "FPX online banking or credit and debit card.", marks: ["FPX", "Visa", "Mastercard"], body: "You will be taken to Billplz, Malaysia's licensed payment gateway, to pay from your own bank or by card, then brought straight back here. Card and bank details are never seen or stored by this site." },
 ];
 
-type Form = { name: string; phone: string; email: string; address1: string; address2: string; postcode: string; city: string; state: string; notes: string; pay: string };
-const EMPTY: Form = { name: "", phone: "", email: "", address1: "", address2: "", postcode: "", city: "", state: "", notes: "", pay: "fpx" };
+type Form = { name: string; phone: string; email: string; address1: string; address2: string; postcode: string; city: string; state: string; notes: string };
+const EMPTY: Form = { name: "", phone: "", email: "", address1: "", address2: "", postcode: "", city: "", state: "", notes: "" };
 const V: Record<string, (v: string) => true | string> = {
   name: (v) => v.trim().length >= 2 || "Please tell us who to address it to.",
   phone: (v) => /^(\+?6?0)[0-9]{8,10}$/.test(v.replace(/[\s-]/g, "")) || "Use a Malaysian number, e.g. 012 345 6789.",
@@ -65,9 +64,9 @@ function CheckoutBody() {
 
   const pay = async () => {
     setBusy(true); setFail(null);
-    track("add_payment_info", { payment_type: f.pay, value: pricing.total });
+    track("add_payment_info", { payment_type: "billplz", value: pricing.total });
     try {
-      const payload = { items, customer: { name: f.name, email: f.email, phone: f.phone }, delivery: { line1: f.address1, line2: f.address2, city: f.city, postcode: f.postcode, state: f.state }, notes: f.notes, paymentMethod: f.pay, attribution: attribution() };
+      const payload = { items, customer: { name: f.name, email: f.email, phone: f.phone }, delivery: { line1: f.address1, line2: f.address2, city: f.city, postcode: f.postcode, state: f.state }, notes: f.notes, attribution: attribution() };
       const parsed = orderInput.safeParse(payload);
       if (!parsed.success) throw new Error("Please check your details.");
       const res = await fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(parsed.data) });
@@ -112,17 +111,16 @@ function CheckoutBody() {
           )}
           {step === 2 && (
             <section className="co__step on">
-              <h2>How would you like to pay?</h2>
+              <h2>Ready to pay.</h2>
               <div className="pay-list">
                 {PAY_METHODS.map((m) => (
-                  <label key={m.id} className={`pay-opt${f.pay === m.id ? " on" : ""}`} onClick={() => { setF({ ...f, pay: m.id }); track("select_payment_method", { payment_type: m.id, value: pricing.total }); }}>
+                  <div key={m.id} className="pay-opt on">
                     <span className="pay-opt__top">
-                      <input type="radio" name="pay" value={m.id} checked={f.pay === m.id} readOnly />
                       <span><span className="nm">{m.name}</span><br /><span className="sub">{m.sub}</span></span>
                       <span className="marks">{m.marks.map((x) => <span key={x} className="pay-mark">{x}</span>)}</span>
                     </span>
                     <span className="pay-opt__body">{m.body}</span>
-                  </label>
+                  </div>
                 ))}
               </div>
               <div style={{ marginTop: "1.75rem", borderTop: "1px solid var(--line)", paddingTop: "1.25rem" }}>
