@@ -195,6 +195,11 @@ export const STORE = {
   phoneHref: "tel:+60172500323",
   maps: "https://maps.google.com/?q=The+Linc+KL,+360+Jalan+Tun+Razak,+50400+Kuala+Lumpur",
   image: "visit_premise",
+  popup: {
+    name: "HOOR Pop-up Store",
+    address: "KL East Mall, Lower Ground",
+    maps: "https://maps.google.com/?q=KL+East+Mall,+Jalan+Taman+Melati,+Kuala+Lumpur",
+  },
 };
 
 export const CLAIMS = ["Premium Cotton Silk", "Petite to Plus Size", "Sizes S/M – 4XL", "Pocket included", "Lightweight & flowy"];
@@ -208,11 +213,11 @@ export const OCCASIONS = [
 
 export const FAQ: { q: string; a: string; cta?: "size" }[] = [
   { q: "How do I know which size to take?", a: "Measure around the fullest part of your bust and use the finder above; it reads straight off HOOR's A-Cutline Dress chart. The A-Cutline Dress is loose, hanging from the shoulder rather than fitting the waist. If you fall between two sizes, take the smaller one unless you want extra length.", cta: "size" },
-  { q: "Is it see-through? Is it hot?", a: "The cotton silk is opaque and unlined, and it sits away from the body instead of against it. Light, breathable and made for Malaysian weather." },
+  { q: "Is it see-through? Is it hot?", a: "The cotton silk is opaque and not see-through, including the light colours. Premium Cotton Silk is light, breathable and made for Malaysian weather." },
   { q: "Does it really have pockets?", a: "Yes. Side seam pockets on every piece, set into the A-Cutline Dress so they disappear when you are not using them. Deep enough for a phone." },
   { q: "When will it arrive?", a: "Your order is dispatched within 24 hours and arrives at your doorstep within 1–3 days. You get a tracking number the moment it ships." },
   { q: "What if it does not fit?", a: `You have ${CONFIG.policy.returnDays} days from delivery to post it back for an exchange or refund, unworn and with tags on. Return postage is on you; refunds are processed within ${CONFIG.policy.refundDays} working days. Email ${CONFIG.support.email} with your order number to start.` },
-  { q: "Can I see the dresses in person?", a: `Yes. Visit us at Lot 2-5, Second Floor, The Linc, 360 Jalan Tun Razak, 50400 Kuala Lumpur, every day from 10am to 9pm. Call or WhatsApp ${CONFIG.support.phone}.` },
+  { q: "Can I see the dresses in person?", a: `Yes. Visit us at:\nHOOR Boutique: Lot 2-5, Second Floor, The Linc KL, 360 Jalan Tun Razak, 50400 Kuala Lumpur\nHOOR Pop-up Store: KL East Mall, Lower Ground\nOpen every day from 10am to 9pm. Call or WhatsApp ${CONFIG.support.phone}.` },
   { q: "Is my payment secure?", a: "Payment is taken by HOOR's payment provider, not by this page. Card details are entered on the provider's own encrypted form and are never stored here. FPX sends you to your own bank's login." },
 ];
 

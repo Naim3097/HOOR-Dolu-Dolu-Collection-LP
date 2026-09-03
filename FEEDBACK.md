@@ -68,9 +68,9 @@ Tick as done. Items marked ⚠ need something from the client before they can be
 
 ## FAQ
 
-- [ ] **15. "Is it see-through?" answer** — `lib/products.ts` (FAQ)
+- [x] **15. "Is it see-through?" answer** — `lib/products.ts` (FAQ)
   Change to: "The cotton silk is opaque and not see through, including light colors. The Premium Cotton Silk is light, breathable and made for Malaysian weather."
-- [ ] **16. "Can I see the dresses in person?" answer: two locations** — `lib/products.ts` (FAQ), and the Visit card / footer
+- [x] **16. "Can I see the dresses in person?" answer: two locations** — `lib/products.ts` (FAQ), and the Visit card / footer
   > Yes. Visit us at:
   > - Hoor Boutique: Lot 2-5, The Linc KL, 360 Jalan Tun Razak, 50400 Kuala Lumpur
   > - Hoor Pop-up Store: KL East Mall, LG

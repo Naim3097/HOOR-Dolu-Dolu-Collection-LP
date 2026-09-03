@@ -14,7 +14,7 @@ export function Faq() {
         {FAQ.map((f, i) => (
           <details key={f.q} id={i === 3 ? "faq-delivery" : undefined} onToggle={(e) => e.currentTarget.open && track("faq_open", { question: f.q })}>
             <summary><span>{f.q}</span><span className="pm" aria-hidden="true" /></summary>
-            <div className="faq__a"><p>{f.a}</p>{f.cta === "size" && <button className="btn" onClick={() => open("size")}>Open the size guide</button>}</div>
+            <div className="faq__a">{f.a.split("\n").map((line, j) => <p key={j}>{line}</p>)}{f.cta === "size" && <button className="btn" onClick={() => open("size")}>Open the size guide</button>}</div>
           </details>
         ))}
       </div>
@@ -35,6 +35,7 @@ function Visit() {
         <h3 className="serif">{STORE.name}</h3>
         <p>{STORE.address[0]}<br />{STORE.address[1]}</p>
         <p className="visit__meta">{STORE.hours}<br /><a href={STORE.phoneHref}>{STORE.phone}</a></p>
+        <p className="visit__popup"><span className="label">Also at</span>{STORE.popup.name}, {STORE.popup.address} · <a href={STORE.popup.maps} target="_blank" rel="noopener">Map</a></p>
         <a className="btn" target="_blank" rel="noopener" href={STORE.maps} onClick={() => track("visit_maps")}>Open in Google Maps</a>
       </div>
     </div>
@@ -88,6 +89,7 @@ export function Footer() {
           <li><a href={STORE.phoneHref}>{STORE.phone}</a></li>
           <li>{CONFIG.support.hours}</li>
           <li>The Linc KL, Jalan Tun Razak</li>
+          <li>Pop-up: KL East Mall, LG</li>
           <li><a href="https://instagram.com/we.are.hoor" target="_blank" rel="noopener">{CONFIG.support.instagram}</a></li></ul>
           <h3 className="foot-h" style={{ marginTop: "1.5rem" }}>We accept</h3>
           <div className="foot__pay">{CONFIG.payments.map((p) => <span key={p} className="pay-mark">{PAY_NAMES[p] ?? p}</span>)}</div>
