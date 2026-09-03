@@ -1,4 +1,6 @@
 import { StoreProvider } from "@/lib/store";
+import { CatalogProvider } from "@/lib/catalog-context";
+import { loadCatalog } from "@/lib/catalog";
 import { Sprite } from "@/components/hoor/sprite";
 import { Chrome } from "@/components/hoor/chrome";
 import { Header } from "@/components/hoor/header";
@@ -9,8 +11,13 @@ import { Fit } from "@/components/hoor/fit";
 import { Faq, Closer, Footer, StickyBar, WaFab } from "@/components/hoor/tail";
 import { Overlays } from "@/components/hoor/overlays";
 
-export default function Page() {
+/** Catalogue comes from the database; the back office revalidates this page on every change. */
+export const revalidate = 300;
+
+export default async function Page() {
+  const { products, images } = await loadCatalog();
   return (
+    <CatalogProvider products={products} images={images}>
     <StoreProvider>
       <Sprite />
       <Chrome />
@@ -24,5 +31,6 @@ export default function Page() {
       <WaFab />
       <Overlays />
     </StoreProvider>
+    </CatalogProvider>
   );
 }

@@ -43,6 +43,15 @@ export function priceOrder(items: OrderInput["items"], state: string) {
   return { subtotal, shipping, total: subtotal + shipping, region };
 }
 
+/** Server-side pricing in sen from the live catalogue and store settings. */
+export function priceOrderSen(items: OrderInput["items"], state: string, unitSen: (i: OrderInput["items"][number]) => number, s: { free_shipping_threshold_sen: number | null; west_rate_sen: number; east_rate_sen: number }) {
+  const subtotal = items.reduce((sum, i) => sum + i.qty * unitSen(i), 0);
+  const region = regionFor(state);
+  const free = s.free_shipping_threshold_sen != null && subtotal >= s.free_shipping_threshold_sen;
+  const shipping = free ? 0 : region === "east" ? s.east_rate_sen : s.west_rate_sen;
+  return { subtotal, shipping, total: subtotal + shipping, region };
+}
+
 export function orderRef() {
   const d = new Date();
   const ymd = d.toISOString().slice(2, 10).replace(/-/g, "");

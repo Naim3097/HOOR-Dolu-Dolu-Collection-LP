@@ -1,4 +1,4 @@
-import { PRODUCTS, SIZE_LABELS, type Size } from "@/lib/products";
+import { SIZE_LABELS, type Size } from "@/lib/products";
 import { rm } from "@/lib/money";
 import type { OrderRow, OrderItemRow } from "@/lib/admin/orders";
 import { fmtDate } from "@/components/admin/ui";
@@ -39,8 +39,8 @@ export function PackingSlip({ order: o, items }: { order: OrderRow; items: Order
       <table className="mt-8 w-full border-collapse">
         <thead><tr className="border-b border-black text-left text-[10px] uppercase tracking-[0.16em]"><th className="py-2">Piece</th><th>Colour</th><th>Size</th><th className="text-right">Qty</th></tr></thead>
         <tbody>
-          {items.map((it) => { const p = PRODUCTS.find((x) => x.id === it.product_id); const cw = p?.colourways.find((x) => x.id === it.colourway_id); return (
-            <tr key={it.id} className="border-b border-neutral-200"><td className="py-2 font-bold">{p?.name ?? it.product_id.toUpperCase()}</td><td>{cw?.name ?? it.colourway_id}</td><td>{SIZE_LABELS[it.size as Size] ?? it.size}</td><td className="text-right">{it.qty}</td></tr>
+          {items.map((it) => { return (
+            <tr key={it.id} className="border-b border-neutral-200"><td className="py-2 font-bold">{it.product_name}</td><td>{it.colour_name}</td><td>{SIZE_LABELS[it.size as Size] ?? it.size}</td><td className="text-right">{it.qty}</td></tr>
           ); })}
         </tbody>
       </table>

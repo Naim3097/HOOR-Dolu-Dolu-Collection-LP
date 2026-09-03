@@ -4,15 +4,19 @@ import { asset } from "@/lib/assets";
 
 export const money = (n: number) => CONFIG.currencySymbol + (Number.isInteger(n) ? n : n.toFixed(2));
 const LQ = data as unknown as { lqip: Record<string, string>; dims: Record<string, [number, number]>; widths?: Record<string, number[]> };
-export const lqip = (name: string) => LQ.lqip[name];
-export const dims = (name: string) => LQ.dims[name];
+export type ImageMeta = { lqip: string; dims: [number, number]; widths: number[] };
+/** Catalogue images come from the database at request time; hero, closer and visit stay in lqip.json. */
+const REG: Record<string, ImageMeta> = {};
+export function registerImageMeta(map: Record<string, ImageMeta>) { Object.assign(REG, map); }
+export const lqip = (name: string) => REG[name]?.lqip ?? LQ.lqip[name];
+export const dims = (name: string) => REG[name]?.dims ?? LQ.dims[name];
 /**
  * The widths that exist for a render, as recorded by `npm run media:build`.
  * Falls back to the standard widths capped to the source's real width, plus
  * the source width itself when it falls below 900.
  */
 export const widthsFor = (name: string) => {
-  const known = LQ.widths?.[name];
+  const known = REG[name]?.widths ?? LQ.widths?.[name];
   if (known?.length) return known;
   const max = dims(name)?.[0] ?? Infinity;
   const ws = [480, 900, 1400].filter((w) => w <= max);

@@ -1,13 +1,14 @@
 "use client";
 import { useState } from "react";
-import { PRODUCTS, CONFIG, COLOUR_COUNT, GRID_PREVIEW, type Product } from "@/lib/products";
+import { CONFIG, GRID_PREVIEW, type Product } from "@/lib/products";
 import { money, numberWord } from "@/lib/format";
-import { useStore, VARIANTS, lowStock } from "@/lib/store";
+import { useStore, lowStock } from "@/lib/store";
 import { Ph } from "@/components/hoor/ph";
 import { track } from "@/lib/tracking";
 
 export function Shop() {
-  const { filter, gridExpanded, dispatch, expandGrid } = useStore();
+  const { products, variants, filter, gridExpanded, dispatch, expandGrid } = useStore();
+  const PRODUCTS = products, VARIANTS = variants, COLOUR_COUNT = variants.length;
   const setFilter = (id: string | null) => {
     dispatch({ type: "filter", id });
     expandGrid();

@@ -1,17 +1,25 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { createBill } from "@/lib/billplz";
-import { orderInput, priceOrder, orderRef } from "@/lib/orders";
+import { orderInput, priceOrderSen, orderRef } from "@/lib/orders";
 import { CONFIG, sku } from "@/lib/products";
-import { toSen } from "@/lib/money";
 
 export async function POST(req: Request) {
   const parsed = orderInput.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   const input = parsed.data;
-  const pricing = priceOrder(input.items, input.delivery.state);
   const ref = orderRef();
   const db = supabaseAdmin();
+
+  // Prices and names come from the catalogue as it is right now; the order keeps a copy.
+  const [{ data: prods }, { data: cws }, { data: settings }] = await Promise.all([
+    db.from("products").select("id,name,price_sen,published").in("id", input.items.map((i) => i.productId)),
+    db.from("colourways").select("product_id,id,name"),
+    db.from("store_settings").select("free_shipping_threshold_sen,west_rate_sen,east_rate_sen").eq("id", 1).single(),
+  ]);
+  const prod = (pid: string) => prods?.find((p) => p.id === pid && p.published);
+  if (input.items.some((i) => !prod(i.productId))) return NextResponse.json({ error: "One of those pieces is no longer available." }, { status: 409 });
+  const pricing = priceOrderSen(input.items, input.delivery.state, (i) => prod(i.productId)!.price_sen, settings ?? { free_shipping_threshold_sen: CONFIG.freeShippingOver == null ? null : CONFIG.freeShippingOver * 100, west_rate_sen: CONFIG.shipping.west.rate * 100, east_rate_sen: CONFIG.shipping.east.rate * 100 });
 
   // Reserve stock atomically (RPC defined in supabase/migrations). Fails if any line is short.
   const { error: reserveErr } = await db.rpc("reserve_stock", {
@@ -27,9 +35,9 @@ export async function POST(req: Request) {
     delivery: { ...input.delivery, region: pricing.region, notes: input.notes },
     payment_method: "billplz",
     attribution: input.attribution,
-    subtotal_sen: toSen(pricing.subtotal),
-    shipping_sen: toSen(pricing.shipping),
-    total_sen: toSen(pricing.total),
+    subtotal_sen: pricing.subtotal,
+    shipping_sen: pricing.shipping,
+    total_sen: pricing.total,
     currency: CONFIG.currency,
   });
   if (insErr) return NextResponse.json({ error: insErr.message }, { status: 500 });
@@ -42,7 +50,9 @@ export async function POST(req: Request) {
       colourway_id: i.colourwayId,
       size: i.size,
       qty: i.qty,
-      unit_price_sen: toSen(CONFIG.basePrice),
+      unit_price_sen: prod(i.productId)!.price_sen,
+      product_name: prod(i.productId)!.name,
+      colour_name: cws?.find((c) => c.product_id === i.productId && c.id === i.colourwayId)?.name ?? i.colourwayId,
     })),
   );
 
@@ -50,7 +60,7 @@ export async function POST(req: Request) {
   try {
     const bill = await createBill({
       orderRef: ref,
-      amount: pricing.total,
+      amount: pricing.total / 100,
       name: input.customer.name,
       email: input.customer.email,
       phone: input.customer.phone,

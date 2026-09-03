@@ -1,5 +1,6 @@
 import "server-only";
 import { supabaseAdmin } from "@/lib/supabase/server";
+import { productNames } from "@/lib/catalog";
 
 export type OrderStatus = "pending" | "paid" | "fulfilled" | "completed" | "cancelled" | "refunded" | "failed";
 export const ORDER_STATUSES: OrderStatus[] = ["pending", "paid", "fulfilled", "completed", "cancelled", "refunded", "failed"];
@@ -23,7 +24,7 @@ export type OrderRow = {
   paid_at: string | null; fulfilled_at: string | null; completed_at: string | null; cancelled_at: string | null; refunded_at: string | null;
   created_at: string; updated_at: string;
 };
-export type OrderItemRow = { id: number; order_ref: string; sku: string; product_id: string; colourway_id: string; size: string; qty: number; unit_price_sen: number };
+export type OrderItemRow = { id: number; order_ref: string; sku: string; product_id: string; colourway_id: string; size: string; qty: number; unit_price_sen: number; product_name: string; colour_name: string };
 export type PaymentRow = { id: number; provider: string; provider_ref: string | null; status: string; amount_sen: number; paid_at: string | null; created_at: string };
 export type ShipmentRow = { id: number; provider: string; courier: string | null; tracking_no: string | null; tracking_url: string | null; status: string; weight_grams: number; cost_sen: number; notes: string | null; shipped_at: string | null; delivered_at: string | null; created_at: string };
 export type AuditRow = { id: number; actor: string; action: string; target: string | null; detail: Record<string, unknown> | null; created_at: string };
@@ -57,7 +58,9 @@ export async function getOrder(ref: string) {
     db.from("audit_log").select("*").eq("target", ref).order("created_at", { ascending: false }).limit(50),
   ]);
   if (!order) return null;
-  return { order: order as OrderRow, items: (items ?? []) as OrderItemRow[], payments: (payments ?? []) as PaymentRow[], shipments: (shipments ?? []) as ShipmentRow[], audit: (audit ?? []) as AuditRow[] };
+  const names = await productNames();
+  const lines = (items ?? []).map((it) => { const n = names(it.product_id, it.colourway_id); return { ...it, product_name: it.product_name ?? n.product, colour_name: it.colour_name ?? n.colour }; });
+  return { order: order as OrderRow, items: lines as OrderItemRow[], payments: (payments ?? []) as PaymentRow[], shipments: (shipments ?? []) as ShipmentRow[], audit: (audit ?? []) as AuditRow[] };
 }
 
 export async function dashboardStats() {

@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase/server";
-import { CONFIG, SIZE_LABELS, PRODUCTS, type Size } from "@/lib/products";
-import { imgSrc } from "@/lib/format";
+import { CONFIG, SIZE_LABELS, type Size } from "@/lib/products";
+import { imgSrc, registerImageMeta } from "@/lib/format";
+import { productNames } from "@/lib/catalog";
 import { rm } from "@/lib/money";
 import { Sprite } from "@/components/hoor/sprite";
 import { PurchaseEvent } from "./purchase-event";
@@ -30,6 +31,11 @@ export default async function ReturnPage({ searchParams }: { searchParams: Promi
     }
   }
   const { data: lines } = o ? await db.from("order_items").select("*").eq("order_ref", o.ref) : { data: [] };
+  // Names as sold, plus the card image of each colour for the summary.
+  const names = await productNames();
+  const { data: imgs } = lines?.length ? await db.from("product_images").select("product_id,colourway_id,name,width,height,widths,lqip").order("position") : { data: [] };
+  registerImageMeta(Object.fromEntries((imgs ?? []).map((i) => [i.name, { lqip: i.lqip, dims: [i.width, i.height] as [number, number], widths: i.widths }])));
+  const firstImage = (pid: string, cid: string) => imgs?.find((i) => i.product_id === pid && i.colourway_id === cid)?.name;
 
   if (!o) return <Shell title="We could not find that order." lead={`Email ${CONFIG.support.email} with any details you have and we will track it down.`} />;
   if (o.status === "failed") return <Shell title="The payment did not go through." lead="Nothing was charged. Your bag is saved — go back and try again." />;
@@ -58,11 +64,11 @@ export default async function ReturnPage({ searchParams }: { searchParams: Promi
           <div style={{ marginTop: "2rem", border: "1px solid var(--line)", background: "var(--white)" }}>
             <div className="summary__head"><h3>What you ordered</h3></div>
             <div>{(lines ?? []).map((l) => {
-              const p = PRODUCTS.find((x) => x.id === l.product_id); const cw = p?.colourways.find((x) => x.id === l.colourway_id);
+              const n = names(l.product_id, l.colourway_id); const pname = l.product_name ?? n.product, cname = l.colour_name ?? n.colour; const img = firstImage(l.product_id, l.colourway_id);
               return (
                 <div key={l.id} className="ci">
-                  <div className="ci__media"><span className="ph">{cw && /* eslint-disable-next-line @next/next/no-img-element */ <img className="loaded" src={imgSrc(cw.images[0], 480)} alt="" />}</span></div>
-                  <div><div className="ci__top"><div><h4>{p?.name}</h4><p className="meta">{cw?.name} · {SIZE_LABELS[l.size as Size]}</p></div><span className="price">{rm(l.unit_price_sen * l.qty)}</span></div><p className="meta" style={{ marginTop: ".35rem" }}>Qty {l.qty}</p></div>
+                  <div className="ci__media"><span className="ph">{img && /* eslint-disable-next-line @next/next/no-img-element */ <img className="loaded" src={imgSrc(img, 480)} alt="" />}</span></div>
+                  <div><div className="ci__top"><div><h4>{pname}</h4><p className="meta">{cname} · {SIZE_LABELS[l.size as Size]}</p></div><span className="price">{rm(l.unit_price_sen * l.qty)}</span></div><p className="meta" style={{ marginTop: ".35rem" }}>Qty {l.qty}</p></div>
                 </div>);
             })}</div>
             <div className="summary__totals"><div className="totals" style={{ marginBottom: 0 }}>

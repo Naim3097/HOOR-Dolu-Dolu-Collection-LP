@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { CONFIG, SIZES, SIZE_CHART, SIZE_LABELS, FABRIC, CARE, SHARED_DETAILS, COLOUR_COUNT, type Size } from "@/lib/products";
+import { CONFIG, SIZES, SIZE_CHART, SIZE_LABELS, FABRIC, CARE, SHARED_DETAILS, type Size } from "@/lib/products";
 import { money, numberWord } from "@/lib/format";
 import { useStore, keyOf, inStock, anyStock, type CartItem } from "@/lib/store";
 import { Ph } from "@/components/hoor/ph";
@@ -181,7 +181,7 @@ export function Totals({ subtotal, shipping, regionLabel, grandLabel = "Total", 
 }
 
 function CartDrawer({ open }: { open: boolean }) {
-  const { items, count, subtotal, close, open: openOverlay } = useStore();
+  const { items, count, subtotal, close, open: openOverlay, variants } = useStore();
   const free = CONFIG.freeShippingOver;
   const ship = free && subtotal >= free ? 0 : CONFIG.shipping.west.rate;
   const total = subtotal + ship;
@@ -196,7 +196,7 @@ function CartDrawer({ open }: { open: boolean }) {
       {!items.length ? (
         <div className="cart__empty">
           <span className="serif">Your bag is empty.</span>
-          <p>{numberWord(COLOUR_COUNT, true)} colours are waiting. Everything is {money(CONFIG.basePrice)}.</p>
+          <p>{numberWord(variants.length, true)} colours are waiting. Everything is {money(CONFIG.basePrice)}.</p>
           <p style={{ marginTop: "1.5rem" }}><button className="btn" onClick={() => { close(); document.getElementById("shop")?.scrollIntoView({ behavior: "smooth" }); }}>See the collection</button></p>
         </div>
       ) : (

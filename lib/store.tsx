@@ -1,6 +1,7 @@
 "use client";
 import { createContext, useContext, useEffect, useMemo, useReducer, useCallback, useRef } from "react";
-import { PRODUCTS, CONFIG, SIZES, type Size, type Product, type Colourway, sku } from "@/lib/products";
+import { CONFIG, SIZES, type Size, type Product, type Colourway, sku } from "@/lib/products";
+import { useCatalog } from "@/lib/catalog-context";
 import { track } from "@/lib/tracking";
 
 export type CartItem = { productId: string; colourwayId: string; size: Size; qty: number };
@@ -26,7 +27,8 @@ export const keyOf = (i: { productId: string; colourwayId: string; size: Size })
 export const inStock = (cw: Colourway, s: Size) => (cw.stock?.[s] ?? 0) > 0;
 export const anyStock = (cw: Colourway) => SIZES.some((s) => inStock(cw, s));
 export const lowStock = (cw: Colourway) => SIZES.reduce((n, s) => n + (cw.stock?.[s] || 0), 0) <= 6;
-export const VARIANTS = PRODUCTS.flatMap((p) => p.colourways.map((c) => ({ product: p, cw: c, key: `${p.id}:${c.id}` })));
+export type Variant = { product: Product; cw: Colourway; key: string };
+const variantsOf = (products: Product[]): Variant[] => products.flatMap((p) => p.colourways.map((c) => ({ product: p, cw: c, key: `${p.id}:${c.id}` })));
 
 function reducer(s: State, a: Action): State {
   switch (a.type) {
@@ -48,6 +50,7 @@ function reducer(s: State, a: Action): State {
 }
 
 type Ctx = State & {
+  products: Product[]; variants: Variant[];
   dispatch: (a: Action) => void;
   open: (o: Exclude<Overlay, null>) => void;
   close: () => void;
@@ -61,14 +64,16 @@ const C = createContext<Ctx | null>(null);
 const LS = "hoor_ddl_cart_v2";
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
+  const { products } = useCatalog();
+  const variants = useMemo(() => variantsOf(products), [products]);
   const [state, dispatch] = useReducer(reducer, { items: [], overlay: null, pd: null, cardColour: {}, filter: null, toast: null, gridExpanded: false });
   const lastFocus = useRef<Element | null>(null);
 
   const resolve = useCallback((i: { productId: string; colourwayId: string }) => {
-    const product = PRODUCTS.find((p) => p.id === i.productId) ?? PRODUCTS[0];
+    const product = products.find((p) => p.id === i.productId) ?? products[0];
     const colourway = product.colourways.find((c) => c.id === i.colourwayId) ?? product.colourways[0];
     return { product, colourway };
-  }, []);
+  }, [products]);
 
   const open = useCallback((o: Exclude<Overlay, null>) => {
     lastFocus.current = document.activeElement;
@@ -84,14 +89,15 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const openProduct = useCallback((key: string, size: Size | null = null) => {
-    const v = VARIANTS.find((x) => x.key === key) ?? VARIANTS[0];
+    const v = variants.find((x) => x.key === key) ?? variants[0];
+    if (!v) return;
     const preferred = size && inStock(v.cw, size) ? size : null;
     dispatch({ type: "pd", pd: { productId: v.product.id, colourwayId: v.cw.id, size: preferred, qty: 1 } });
     lastFocus.current = document.activeElement;
     dispatch({ type: "overlay", overlay: "product" });
     history.replaceState(null, "", `?p=${v.key}${preferred ? `&size=${preferred}` : ""}${location.hash}`);
     track("view_item", { item_id: v.key, item_name: v.product.name, item_variant: v.cw.name, value: v.product.price, currency: CONFIG.currency });
-  }, []);
+  }, [variants]);
 
   /* First six cards show until the visitor asks for more; a filter or deep link opens the whole range. */
   const expandGrid = useCallback(() => { dispatch({ type: "expandGrid" }); track("grid_expand"); }, []);
@@ -106,8 +112,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try { const raw = localStorage.getItem(LS); if (raw) dispatch({ type: "hydrate", items: JSON.parse(raw) }); } catch {}
     const q = new URLSearchParams(location.search), p = q.get("p");
-    if (p) { const [pid, cid] = p.split(":"); const v = VARIANTS.find((x) => x.product.id === pid && (!cid || x.cw.id === cid)); if (v) { dispatch({ type: "expandGrid" }); openProduct(v.key, q.get("size") as Size | null); } }
-  }, [openProduct]);
+    if (p) { const [pid, cid] = p.split(":"); const v = variants.find((x) => x.product.id === pid && (!cid || x.cw.id === cid)); if (v) { dispatch({ type: "expandGrid" }); openProduct(v.key, q.get("size") as Size | null); } }
+  }, [openProduct, variants]);
   useEffect(() => { try { localStorage.setItem(LS, JSON.stringify(state.items)); } catch {} }, [state.items]);
   useEffect(() => { document.body.classList.toggle("is-locked", !!state.overlay); }, [state.overlay]);
   useEffect(() => {
@@ -116,10 +122,10 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, [state.overlay, close]);
 
   const value = useMemo<Ctx>(() => ({
-    ...state, dispatch, open, close, openProduct, expandGrid, addToCart, resolve,
+    ...state, products, variants, dispatch, open, close, openProduct, expandGrid, addToCart, resolve,
     count: state.items.reduce((n, i) => n + i.qty, 0),
     subtotal: state.items.reduce((n, i) => n + i.qty * CONFIG.basePrice, 0),
-  }), [state, open, close, openProduct, expandGrid, addToCart, resolve]);
+  }), [state, products, variants, open, close, openProduct, expandGrid, addToCart, resolve]);
   return <C.Provider value={value}>{children}</C.Provider>;
 }
 

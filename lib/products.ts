@@ -94,28 +94,8 @@ export type Product = {
   colourways: Colourway[];
 };
 
-const P = (p: Omit<Product, "price">): Product => ({ ...p, price: CONFIG.basePrice });
-
-export const PRODUCTS: Product[] = [
-  P({
-    id: "dilla", name: "DILLA", print: "Painted floral batik",
-    story: "Watercolour blooms in coral and rose drifting over soft peach. The lightest piece in the collection to look at, and the one that photographs like spring.",
-    colourways: [{ id: "soft-peach", name: "Soft Peach", swatch: "#D3BDCA", images: ["dilla_soft-peach_full_01", "dilla_soft-peach_back_01", "dilla_soft-peach_full_02", "dilla_soft-peach_detail_01", "dilla_soft-peach_full_03"], video: null, stock: { SM: 15, LXL: 22, "2XL": 5, "3XL": 6, "4XL": 2 } }],
-  }),
-  P({
-    id: "dilla-senja", name: "DILLA · SENJA", print: "Night floral batik",
-    story: "Painted peonies and iris climbing from the hem on near-black, with the same bloom carried across the sleeve. The evening piece.",
-    colourways: [{ id: "black-batik", name: "Black Batik", swatch: "#1B2527", images: ["dilla-senja_black-batik_full_01", "dilla-senja_black-batik_full_02", "dilla-senja_black-batik_detail_01", "dilla-senja_black-batik_detail_02", "dilla-senja_black-batik_full_03", "dilla-senja_black-batik_back_01"], video: "senja_midnight", stock: { SM: 4, LXL: 11, "2XL": 2, "3XL": 0, "4XL": 1 } }],
-  }),
-  P({
-    id: "thalia-pusaka", name: "THALIA · PUSAKA", print: "Heirloom medallion batik",
-    story: "A tile-work medallion running the full length of the front panel, edged with the fine scrolling border you used to see on a good tablecloth.",
-    colourways: [{ id: "teal-green", name: "Teal Green", swatch: "#2A4A58", images: ["thalia-pusaka_teal-green_full_01", "thalia-pusaka_teal-green_full_02", "thalia-pusaka_teal-green_back_01", "thalia-pusaka_teal-green_detail_01", "thalia-pusaka_teal-green_detail_02"], video: "pusaka_deep-teal", stock: { SM: 12, LXL: 20, "2XL": 6, "3XL": 3, "4XL": 2 } }],
-  }),
-];
-
-/** Every purchasable colour across the collection (seventeen at the time of writing). */
-export const COLOUR_COUNT = PRODUCTS.reduce((n, p) => n + p.colourways.length, 0);
+/* The catalogue itself lives in the database (products, colourways, product_images,
+   variants) and reaches the storefront through lib/catalog.ts. Only the shapes stay here. */
 /** Cards shown before the visitor presses "View all". */
 export const GRID_PREVIEW = 6;
 

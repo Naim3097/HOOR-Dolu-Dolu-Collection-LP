@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getOrder, TRANSITIONS } from "@/lib/admin/orders";
 import { rm } from "@/lib/money";
-import { PRODUCTS, SIZE_LABELS, type Size } from "@/lib/products";
+import { SIZE_LABELS, type Size } from "@/lib/products";
 import { Card, CardHead, PageHead, Pill, Table, Td, Tr, fmtDate, btnGhostCls } from "@/components/admin/ui";
 import { StatusActions, RefundForm, ShipmentForm, NotesForm } from "@/components/admin/order-actions";
 
@@ -14,7 +14,6 @@ export default async function OrderPage({ params }: { params: Promise<{ ref: str
   if (!data) notFound();
   const { order: o, items, payments, shipments, audit } = data;
   const c = o.customer, d = o.delivery;
-  const name = (pid: string, cid: string) => { const p = PRODUCTS.find((x) => x.id === pid); const cw = p?.colourways.find((x) => x.id === cid); return { product: p?.name ?? pid.toUpperCase(), colour: cw?.name ?? cid }; };
   return (
     <div className="space-y-6">
       <div>
@@ -52,8 +51,8 @@ export default async function OrderPage({ params }: { params: Promise<{ ref: str
       <Card>
         <CardHead title="Line items" />
         <Table head={["Piece", "Colour", "Size", "SKU", "Qty", "Unit", "Line"]}>
-          {items.map((it) => { const n = name(it.product_id, it.colourway_id); return (
-            <Tr key={it.id}><Td className="font-bold">{n.product}</Td><Td>{n.colour}</Td><Td>{SIZE_LABELS[it.size as Size] ?? it.size}</Td><Td className="text-[11px] text-[var(--ink-55)]">{it.sku}</Td><Td>{it.qty}</Td><Td>{rm(it.unit_price_sen)}</Td><Td>{rm(it.qty * it.unit_price_sen)}</Td></Tr>
+          {items.map((it) => { return (
+            <Tr key={it.id}><Td className="font-bold">{it.product_name}</Td><Td>{it.colour_name}</Td><Td>{SIZE_LABELS[it.size as Size] ?? it.size}</Td><Td className="text-[11px] text-[var(--ink-55)]">{it.sku}</Td><Td>{it.qty}</Td><Td>{rm(it.unit_price_sen)}</Td><Td>{rm(it.qty * it.unit_price_sen)}</Td></Tr>
           ); })}
         </Table>
         <dl className="ml-auto grid w-72 grid-cols-2 gap-y-1 px-5 py-4 text-[13px] [font-variant-numeric:tabular-nums]">
