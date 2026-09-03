@@ -27,13 +27,13 @@ export function Fabric() {
       <div className="wrap">
         <div className="fabric__grid">
           <div>
-            <div className="sect-head rv" style={{ marginBottom: 0 }}><span className="label">The cloth</span><h2>Made for 33°C and a full day.</h2></div>
+            <div className="sect-head rv" style={{ marginBottom: 0 }}><span className="label">The fabric</span><h2>Made for 33°C Malaysian weather.</h2></div>
             <div className="fabric__points rv rv-d1">
               <div><h3>Cotton silk, all day</h3><p>Lightweight, breathable and soft on the skin. It keeps you cool and comfortable from morning to night.</p></div>
-              <div><h3>Flatters every figure</h3><p>The A-Cut falls from the shoulder and skims everything below, beautiful from petite to plus size.</p></div>
-              <div><h3>Kind to pear shapes</h3><p>Neat at the shoulder, generous through the hip. It balances a pear shape without clinging where you would rather it did not.</p></div>
+              <div><h3>Flatters every figure</h3><p>The A-Cutline Dress falls just nicely, looking like it was custom-made for your body.</p></div>
+              <div><h3>Kind to pear-shaped bodies</h3><p>Neat at the shoulder, generous through the hip. It balances a pear body shape without clinging to your body.</p></div>
               <div><h3>Opaque, no inner needed</h3><p>The cotton silk is fully opaque on its own. No lining, no extra layer underneath, no second-guessing in daylight.</p></div>
-              <div><h3>Pockets, properly</h3><p>Side seam pockets set into the A-Cut, deep enough for a phone and invisible when empty.</p></div>
+              <div><h3>Pockets on both sides</h3><p>Side seam pockets deep enough for your phone, keys and a small purse.</p></div>
             </div>
           </div>
           <Video name="senja_midnight" start={6.5} caption="SENJA in Midnight, fabric in motion" className="fabric__video rv rv-d2" />
