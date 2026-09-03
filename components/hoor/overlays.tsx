@@ -170,12 +170,13 @@ export function Line({ l, compact }: { l: CartItem; compact?: boolean }) {
   );
 }
 
-export function Totals({ subtotal, shipping, regionLabel, grandLabel = "Total", style }: { subtotal: number; shipping: number; regionLabel: string; grandLabel?: string; style?: React.CSSProperties }) {
+export function Totals({ subtotal, shipping, regionLabel, grandLabel = "Total", style, discount }: { subtotal: number; shipping: number; regionLabel: string; grandLabel?: string; style?: React.CSSProperties; discount?: { label: string; amount: number } }) {
   return (
     <div className="totals" style={style}>
       <div><span>Subtotal</span><span>{money(subtotal)}</span></div>
+      {discount && discount.amount > 0 && <div><span>Discount <span className="muted">· {discount.label}</span></span><span>−{money(discount.amount)}</span></div>}
       <div><span>Delivery <span className="muted">· {regionLabel}</span></span><span>{shipping === 0 ? "Free" : money(shipping)}</span></div>
-      <div className="grand"><span>{grandLabel}</span><span>{money(subtotal + shipping)}</span></div>
+      <div className="grand"><span>{grandLabel}</span><span>{money(subtotal - (discount?.amount ?? 0) + shipping)}</span></div>
     </div>
   );
 }

@@ -15,9 +15,9 @@ import { Overlays } from "@/components/hoor/overlays";
 export const revalidate = 300;
 
 export default async function Page() {
-  const { products, images } = await loadCatalog();
+  const { products, images, settings } = await loadCatalog();
   return (
-    <CatalogProvider products={products} images={images}>
+    <CatalogProvider products={products} images={images} settings={settings}>
     <StoreProvider>
       <Sprite />
       <Chrome />

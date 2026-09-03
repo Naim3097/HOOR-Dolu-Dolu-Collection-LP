@@ -4,6 +4,7 @@ import { CONFIG } from "@/lib/products";
 import { money } from "@/lib/format";
 import { STATES, orderInput, priceOrder } from "@/lib/orders";
 import { useStore, keyOf } from "@/lib/store";
+import { useCatalog } from "@/lib/catalog-context";
 import { Line, Totals } from "@/components/hoor/overlays";
 import { track, attribution } from "@/lib/tracking";
 
@@ -47,8 +48,24 @@ function CheckoutBody() {
   const [busy, setBusy] = useState(false);
   const [fail, setFail] = useState<string | null>(null);
   const box = useRef<HTMLDivElement>(null);
-  const pricing = priceOrder(items, f.state || "Selangor");
+  const { products, settings } = useCatalog();
+  const unit = (i: { productId: string }) => products.find((p) => p.id === i.productId)?.price ?? CONFIG.basePrice;
+  const base = priceOrder(items, f.state || "Selangor", unit, settings);
+  const [code, setCode] = useState("");
+  const [applied, setApplied] = useState<{ code: string; discount_sen: number; free_shipping: boolean } | null>(null);
+  const [codeErr, setCodeErr] = useState<string | null>(null);
+  const [codeBusy, setCodeBusy] = useState(false);
+  const discountRm = applied ? (applied.free_shipping ? 0 : applied.discount_sen / 100) : 0;
+  const pricing = { ...base, shipping: applied?.free_shipping ? 0 : base.shipping, total: base.subtotal - discountRm + (applied?.free_shipping ? 0 : base.shipping) };
   const regionLabel = CONFIG.shipping[f.state ? pricing.region : "west"].label;
+  const applyCode = async () => {
+    setCodeBusy(true); setCodeErr(null);
+    try {
+      const res = await fetch("/api/discounts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code, subtotalSen: Math.round(base.subtotal * 100), shippingSen: Math.round(base.shipping * 100) }) });
+      const json = await res.json();
+      if (!res.ok) { setApplied(null); setCodeErr(json.error ?? "That code is not valid."); } else { setApplied(json); track("select_promotion", { promotion_name: json.code }); }
+    } catch { setCodeErr("Could not check that code. Try again."); } finally { setCodeBusy(false); }
+  };
   const top = () => box.current?.closest("#checkout")?.scrollTo(0, 0);
 
   const upd = (k: keyof Form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setF({ ...f, [k]: e.target.value });
@@ -66,7 +83,7 @@ function CheckoutBody() {
     setBusy(true); setFail(null);
     track("add_payment_info", { payment_type: "billplz", value: pricing.total });
     try {
-      const payload = { items, customer: { name: f.name, email: f.email, phone: f.phone }, delivery: { line1: f.address1, line2: f.address2, city: f.city, postcode: f.postcode, state: f.state }, notes: f.notes, attribution: attribution() };
+      const payload = { items, customer: { name: f.name, email: f.email, phone: f.phone }, delivery: { line1: f.address1, line2: f.address2, city: f.city, postcode: f.postcode, state: f.state }, notes: f.notes, discountCode: applied?.code ?? "", attribution: attribution() };
       const parsed = orderInput.safeParse(payload);
       if (!parsed.success) throw new Error("Please check your details.");
       const res = await fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(parsed.data) });
@@ -123,6 +140,15 @@ function CheckoutBody() {
                   </div>
                 ))}
               </div>
+              <div style={{ marginTop: "1.5rem" }}>
+                <span className="label" style={{ color: "var(--ink-55)" }}>Discount code</span>
+                <div style={{ display: "flex", gap: ".5rem", marginTop: ".5rem", maxWidth: "24rem" }}>
+                  <input className="input" style={{ flex: 1, textTransform: "uppercase" }} value={code} onChange={(e) => { setCode(e.target.value); if (applied) { setApplied(null); } }} placeholder="Enter a code" aria-label="Discount code" />
+                  <button type="button" className="btn" disabled={codeBusy || !code.trim()} onClick={applyCode}>{codeBusy ? "Checking…" : applied ? "Applied" : "Apply"}</button>
+                </div>
+                {codeErr && <p className="err" style={{ display: "block", marginTop: ".5rem", color: "var(--error)" }}>{codeErr}</p>}
+                {applied && <p style={{ marginTop: ".5rem", fontSize: "var(--t-small)", color: "var(--ink-80)" }}>{applied.free_shipping ? "Free delivery applied." : `${money(discountRm)} off applied.`}</p>}
+              </div>
               <div style={{ marginTop: "1.75rem", borderTop: "1px solid var(--line)", paddingTop: "1.25rem" }}>
                 <span className="label" style={{ color: "var(--ink-55)" }}>Delivering to</span>
                 <p style={{ marginTop: ".5rem", fontSize: "var(--t-small)", lineHeight: 1.5 }}><b>{f.name}</b><br />{f.address1}{f.address2 ? `, ${f.address2}` : ""}<br />{f.postcode} {f.city}, {f.state}<br />{f.phone} · {f.email}</p>
@@ -137,7 +163,7 @@ function CheckoutBody() {
         <aside className="summary">
           <div className="summary__head"><h3>Your order</h3><span className="label">{count} item{count === 1 ? "" : "s"}</span></div>
           <div className="summary__items">{items.map((l) => <Line key={keyOf(l)} l={l} compact />)}</div>
-          <div className="summary__totals"><Totals subtotal={pricing.subtotal} shipping={f.state ? pricing.shipping : CONFIG.shipping.west.rate} regionLabel={regionLabel} style={{ marginBottom: 0 }} /></div>
+          <div className="summary__totals"><Totals subtotal={pricing.subtotal} shipping={f.state ? pricing.shipping : applied?.free_shipping ? 0 : settings.west} regionLabel={regionLabel} discount={applied && !applied.free_shipping ? { label: applied.code, amount: discountRm } : applied ? { label: `${applied.code} · free delivery`, amount: 0 } : undefined} style={{ marginBottom: 0 }} /></div>
           <ul className="summary__trust">
             <li><svg aria-hidden="true"><use href="#i-tick-s" /></svg>Dispatched within 24 hours, with tracking</li>
             <li><svg aria-hidden="true"><use href="#i-tick-s" /></svg>{CONFIG.policy.returnDays}-day exchange or return, unworn with tags</li>

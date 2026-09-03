@@ -2,6 +2,7 @@
 import { CONFIG, FAQ, LENGTH_GUIDE, STORE } from "@/lib/products";
 import { money, PAY_NAMES, lqip, imgSrc, srcset } from "@/lib/format";
 import { useStore } from "@/lib/store";
+import { useCatalog } from "@/lib/catalog-context";
 import { Ph } from "@/components/hoor/ph";
 import { track } from "@/lib/tracking";
 
@@ -25,6 +26,7 @@ export function Faq() {
 
 /** The storefront photograph does the identifying; the card just frames it. */
 function Visit() {
+  const { settings } = useCatalog();
   return (
     <div className="visit rv">
       <div className="visit__photo">
@@ -34,7 +36,7 @@ function Visit() {
         <span className="label">Visit the store</span>
         <h3 className="serif">{STORE.name}</h3>
         <p>{STORE.address[0]}<br />{STORE.address[1]}</p>
-        <p className="visit__meta">{STORE.hours}<br /><a href={STORE.phoneHref}>{STORE.phone}</a></p>
+        <p className="visit__meta">{settings.hours}<br /><a href={`tel:${settings.phone.replace(/[^\d+]/g, "")}`}>{settings.phone}</a></p>
         <p className="visit__popup"><span className="label">Also at</span>{STORE.popup.name}, {STORE.popup.address} · <a href={STORE.popup.maps} target="_blank" rel="noopener">Map</a></p>
         <a className="btn" target="_blank" rel="noopener" href={STORE.maps} onClick={() => track("visit_maps")}>Open in Google Maps</a>
       </div>
@@ -72,6 +74,7 @@ export function Closer() {
 
 export function Footer() {
   const { open } = useStore();
+  const { settings } = useCatalog();
   return (
     <footer className="foot"><div className="wrap">
       <div className="foot__grid">
@@ -85,12 +88,12 @@ export function Footer() {
           <li><a href="https://hoor.my/p/Terms_and_conditions" target="_blank" rel="noopener">Terms</a></li>
           <li><a href="https://hoor.my/p/Privacy_policies" target="_blank" rel="noopener">Privacy</a></li></ul></div>
         <div><h3 className="foot-h">Customer care</h3><ul>
-          <li><a href={`mailto:${CONFIG.support.email}`}>{CONFIG.support.email}</a></li>
-          <li><a href={STORE.phoneHref}>{STORE.phone}</a></li>
-          <li>{CONFIG.support.hours}</li>
+          <li><a href={`mailto:${settings.email}`}>{settings.email}</a></li>
+          <li><a href={`tel:${settings.phone.replace(/[^\d+]/g, "")}`}>{settings.phone}</a></li>
+          <li>{settings.hours}</li>
           <li>The Linc KL, Jalan Tun Razak</li>
           <li>Pop-up: KL East Mall, LG</li>
-          <li><a href="https://instagram.com/we.are.hoor" target="_blank" rel="noopener">{CONFIG.support.instagram}</a></li></ul>
+          <li><a href={`https://instagram.com/${settings.instagram.replace(/^@/, "")}`} target="_blank" rel="noopener">{settings.instagram}</a></li></ul>
           <h3 className="foot-h" style={{ marginTop: "1.5rem" }}>We accept</h3>
           <div className="foot__pay">{CONFIG.payments.map((p) => <span key={p} className="pay-mark">{PAY_NAMES[p] ?? p}</span>)}</div>
         </div>
@@ -110,7 +113,8 @@ export function StickyBar() {
 }
 
 export function WaFab() {
-  const num = (CONFIG.support.whatsapp || "").replace(/[^0-9]/g, "");
+  const { settings } = useCatalog();
+  const num = (settings.whatsapp || "").replace(/[^0-9]/g, "");
   if (!num) return null;
   const msg = `Hi HOOR! I'm looking at the ${CONFIG.collection} collection and have a question.`;
   return (

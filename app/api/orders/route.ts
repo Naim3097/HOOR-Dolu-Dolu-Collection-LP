@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { createBill } from "@/lib/billplz";
 import { orderInput, priceOrderSen, orderRef } from "@/lib/orders";
+import { applyDiscount, recordRedemption } from "@/lib/discounts";
 import { CONFIG, sku } from "@/lib/products";
 
 export async function POST(req: Request) {
@@ -19,7 +20,11 @@ export async function POST(req: Request) {
   ]);
   const prod = (pid: string) => prods?.find((p) => p.id === pid && p.published);
   if (input.items.some((i) => !prod(i.productId))) return NextResponse.json({ error: "One of those pieces is no longer available." }, { status: 409 });
-  const pricing = priceOrderSen(input.items, input.delivery.state, (i) => prod(i.productId)!.price_sen, settings ?? { free_shipping_threshold_sen: CONFIG.freeShippingOver == null ? null : CONFIG.freeShippingOver * 100, west_rate_sen: CONFIG.shipping.west.rate * 100, east_rate_sen: CONFIG.shipping.east.rate * 100 });
+  const base = priceOrderSen(input.items, input.delivery.state, (i) => prod(i.productId)!.price_sen, settings ?? { free_shipping_threshold_sen: CONFIG.freeShippingOver == null ? null : CONFIG.freeShippingOver * 100, west_rate_sen: CONFIG.shipping.west.rate * 100, east_rate_sen: CONFIG.shipping.east.rate * 100 });
+  const disc = await applyDiscount(input.discountCode, base.subtotal, base.shipping);
+  if (!disc.ok) return NextResponse.json({ error: disc.error }, { status: 422 });
+  const discountSen = disc.applied?.discount_sen ?? 0;
+  const pricing = { ...base, shipping: disc.applied?.free_shipping ? 0 : base.shipping, total: base.subtotal - (disc.applied?.free_shipping ? 0 : discountSen) + (disc.applied?.free_shipping ? 0 : base.shipping) };
 
   // Reserve stock atomically (RPC defined in supabase/migrations). Fails if any line is short.
   const { error: reserveErr } = await db.rpc("reserve_stock", {
@@ -36,6 +41,8 @@ export async function POST(req: Request) {
     payment_method: "billplz",
     attribution: input.attribution,
     subtotal_sen: pricing.subtotal,
+    discount_sen: disc.applied && !disc.applied.free_shipping ? discountSen : 0,
+    discount_code: disc.applied?.code ?? null,
     shipping_sen: pricing.shipping,
     total_sen: pricing.total,
     currency: CONFIG.currency,
@@ -70,6 +77,7 @@ export async function POST(req: Request) {
     });
     await db.from("orders").update({ payment_ref: bill.id }).eq("ref", ref);
     await db.from("payments").insert({ order_ref: ref, provider: "billplz", provider_ref: bill.id, status: "pending", amount_sen: bill.amount, raw: bill });
+    if (disc.applied) await recordRedemption(disc.applied.code, ref, disc.applied.free_shipping ? base.shipping : discountSen);
     return NextResponse.json({ orderRef: ref, redirectUrl: bill.url });
   } catch (e) {
     await db.rpc("release_stock", { p_order_ref: ref, p_type: "release", p_actor: "system" });

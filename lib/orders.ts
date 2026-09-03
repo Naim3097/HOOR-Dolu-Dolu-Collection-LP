@@ -27,6 +27,7 @@ export const orderInput = z.object({
     state: z.enum(STATES),
   }),
   notes: z.string().max(500).optional().default(""),
+  discountCode: z.string().max(32).optional().default(""),
   attribution: z.record(z.string(), z.string()).default({}),
 });
 export type OrderInput = z.infer<typeof orderInput>;
@@ -35,11 +36,13 @@ export function regionFor(state: string): "west" | "east" {
   return (EAST as readonly string[]).includes(state) ? "east" : "west";
 }
 
-export function priceOrder(items: OrderInput["items"], state: string) {
-  const subtotal = items.reduce((s, i) => s + i.qty * CONFIG.basePrice, 0);
+export type Rates = { freeShippingOver: number | null; west: number; east: number };
+/** Client-side preview in ringgit; the server prices the real order from the catalogue. */
+export function priceOrder(items: OrderInput["items"], state: string, unit: (i: OrderInput["items"][number]) => number = () => CONFIG.basePrice, rates: Rates = { freeShippingOver: CONFIG.freeShippingOver, west: CONFIG.shipping.west.rate, east: CONFIG.shipping.east.rate }) {
+  const subtotal = items.reduce((s, i) => s + i.qty * unit(i), 0);
   const region = regionFor(state);
-  const free = CONFIG.freeShippingOver != null && subtotal >= CONFIG.freeShippingOver;
-  const shipping = free ? 0 : CONFIG.shipping[region].rate;
+  const free = rates.freeShippingOver != null && subtotal >= rates.freeShippingOver;
+  const shipping = free ? 0 : rates[region];
   return { subtotal, shipping, total: subtotal + shipping, region };
 }
 
