@@ -61,9 +61,9 @@ Tick as done. Items marked ⚠ need something from the client before they can be
 
 ## Size & fit
 
-- [ ] **13. Fit sub copy** — `components/hoor/fit.tsx`
+- [x] **13. Fit sub copy** — `components/hoor/fit.tsx`
   Change to: "Your bust size determines the fitting. The hips area is less concerned as the dress is A-Cutline giving you the freedom to move comfortably"
-- [ ] **14. Rename "A-Cut" to "A-Cutline Dress" everywhere** — site-wide
+- [x] **14. Rename "A-Cut" to "A-Cutline Dress" everywhere** — site-wide
   Every occurrence of "A-Cut" in page copy, drawers, FAQ, size chart caption and product details.
 
 ## FAQ

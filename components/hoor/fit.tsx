@@ -9,7 +9,7 @@ export const recommend = (inches: number) => FIT_RULES.find((r) => inches <= r.m
 export function Chart({ rec }: { rec?: Size | null }) {
   return (
     <table className="chart">
-      <caption className="sr">HOOR A-Cut size chart in inches</caption>
+      <caption className="sr">HOOR A-Cutline Dress size chart in inches</caption>
       <thead><tr><th scope="col">Inches</th>{SIZES.map((s) => <th key={s} scope="col">{SIZE_LABELS[s]}</th>)}</tr></thead>
       <tbody>{SIZE_CHART.rows.map((row, i) => <tr key={row}><th scope="row">{row}</th>{SIZES.map((s) => <td key={s} className={s === rec ? "is-rec" : ""}>{SIZE_CHART.data[s][i]}</td>)}</tr>)}</tbody>
     </table>
@@ -35,7 +35,7 @@ export function Fit() {
       <div className="sect-head rv">
         <span className="label">Size &amp; fit</span>
         <h2>Find your size in ten seconds.</h2>
-        <p className="sub">One measurement is enough. The A-Cut is loose and hangs from the shoulder. Your waist and hip do not decide the size.</p>
+        <p className="sub">Your bust size decides the fit. Hips matter less, as the A-Cutline Dress gives you the freedom to move comfortably.</p>
       </div>
       <div className="fit__grid">
         <div className="finder rv">

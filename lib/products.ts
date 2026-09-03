@@ -34,7 +34,7 @@ export type Size = (typeof SIZES)[number];
 export const SIZE_LABELS: Record<Size, string> = { SM: "S/M", LXL: "L/XL", "2XL": "2XL", "3XL": "3XL", "4XL": "4XL" };
 
 export const SIZE_CHART = {
-  note: "HOOR A-Cut. Measurements in inches. Please allow 1–3cm variance; every piece is measured by hand.",
+  note: "HOOR A-Cutline Dress. Measurements in inches. Please allow 1–3cm variance; every piece is measured by hand.",
   rows: ["Shoulder", "Bust", "Sleeve", "Arm hole", "Hip", "Length"],
   data: {
     SM: [15.5, 40, 21.5, 21, 51, 53],
@@ -67,7 +67,7 @@ export const FABRIC =
 export const CARE =
   "Hand wash cold or machine wash gentle, inside out. Hang dry in shade. Warm iron on reverse."; // ⚑
 export const SHARED_DETAILS = [
-  "A-Cut silhouette that skims, never clings",
+  "A-Cutline Dress silhouette that skims, never clings",
   "Notched V-neckline with a soft stand collar",
   "Wide turned-back cuffs",
   "Side seam pockets, deep enough for a phone",
@@ -207,9 +207,9 @@ export const OCCASIONS = [
 ];
 
 export const FAQ: { q: string; a: string; cta?: "size" }[] = [
-  { q: "How do I know which size to take?", a: "Measure around the fullest part of your bust and use the finder above; it reads straight off HOOR's A-Cut chart. The A-Cut is loose, hanging from the shoulder rather than fitting the waist. If you fall between two sizes, take the smaller one unless you want extra length.", cta: "size" },
+  { q: "How do I know which size to take?", a: "Measure around the fullest part of your bust and use the finder above; it reads straight off HOOR's A-Cutline Dress chart. The A-Cutline Dress is loose, hanging from the shoulder rather than fitting the waist. If you fall between two sizes, take the smaller one unless you want extra length.", cta: "size" },
   { q: "Is it see-through? Is it hot?", a: "The cotton silk is opaque and unlined, and it sits away from the body instead of against it. Light, breathable and made for Malaysian weather." },
-  { q: "Does it really have pockets?", a: "Yes. Side seam pockets on every piece, set into the A-Cut so they disappear when you are not using them. Deep enough for a phone." },
+  { q: "Does it really have pockets?", a: "Yes. Side seam pockets on every piece, set into the A-Cutline Dress so they disappear when you are not using them. Deep enough for a phone." },
   { q: "When will it arrive?", a: "Your order is dispatched within 24 hours and arrives at your doorstep within 1–3 days. You get a tracking number the moment it ships." },
   { q: "What if it does not fit?", a: `You have ${CONFIG.policy.returnDays} days from delivery to post it back for an exchange or refund, unworn and with tags on. Return postage is on you; refunds are processed within ${CONFIG.policy.refundDays} working days. Email ${CONFIG.support.email} with your order number to start.` },
   { q: "Can I see the dresses in person?", a: `Yes. Visit us at Lot 2-5, Second Floor, The Linc, 360 Jalan Tun Razak, 50400 Kuala Lumpur, every day from 10am to 9pm. Call or WhatsApp ${CONFIG.support.phone}.` },

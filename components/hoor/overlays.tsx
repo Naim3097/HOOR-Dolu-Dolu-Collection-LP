@@ -133,7 +133,7 @@ function ProductDrawer({ open }: { open: boolean }) {
             <div className="acc">
               <details open><summary>The details<span className="pm" aria-hidden="true" /></summary><div className="acc__body"><ul>{SHARED_DETAILS.map((d) => <li key={d}>{d}</li>)}</ul></div></details>
               <details><summary>Fabric &amp; care<span className="pm" aria-hidden="true" /></summary><div className="acc__body"><p>{FABRIC}</p><p style={{ marginTop: ".6rem" }}>{CARE}</p></div></details>
-              <details><summary>Size &amp; fit<span className="pm" aria-hidden="true" /></summary><div className="acc__body"><p>A-Cut, full length, hangs from the shoulder. Measurements are of the garment, in inches.</p><p style={{ marginTop: ".6rem" }}><button className="btn" onClick={() => openOverlay("size")}>Open the full chart</button></p></div></details>
+              <details><summary>Size &amp; fit<span className="pm" aria-hidden="true" /></summary><div className="acc__body"><p>A-Cutline Dress, full length, hangs from the shoulder. Measurements are of the garment, in inches.</p><p style={{ marginTop: ".6rem" }}><button className="btn" onClick={() => openOverlay("size")}>Open the full chart</button></p></div></details>
               <details><summary>Delivery &amp; returns<span className="pm" aria-hidden="true" /></summary><div className="acc__body">
                 <p>Dispatched within 24 hours, at your doorstep in 1–3 days. {money(CONFIG.shipping.west.rate)} to Semenanjung, {money(CONFIG.shipping.east.rate)} to Sabah, Sarawak &amp; Labuan{CONFIG.freeShippingOver ? `, free over ${money(CONFIG.freeShippingOver)}` : ""}.</p>
                 <p style={{ marginTop: ".6rem" }}>{CONFIG.policy.returnDays} days to exchange or return, unworn with tags. Return postage is not covered.</p></div></details>
@@ -219,7 +219,7 @@ function SizeDrawer({ open }: { open: boolean }) {
   return (
     <Drawer id="dw-size" title={<>Size &amp; fit</>} open={open}>
       <div style={{ padding: "1.5rem var(--gut) 2rem" }}>
-        <p style={{ color: "var(--ink-80)", maxWidth: "44ch" }}>Every piece is the same A-Cut. It hangs from the shoulder, so the bust measurement is the one that decides your size.</p>
+        <p style={{ color: "var(--ink-80)", maxWidth: "44ch" }}>Every piece is the same A-Cutline Dress. It hangs from the shoulder, so the bust measurement is the one that decides your size.</p>
         <div className="chart-scroll" style={{ marginTop: "1.5rem" }}><Chart /></div>
         <p className="chart__note">{SIZE_CHART.note}</p>
         <div style={{ marginTop: "2rem", borderTop: "1px solid var(--line)", paddingTop: "1.5rem" }}>
