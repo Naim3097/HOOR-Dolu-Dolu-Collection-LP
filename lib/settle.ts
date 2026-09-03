@@ -1,5 +1,6 @@
 import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { orderConfirmation } from "@/lib/email";
 
 type OrderRow = { ref: string; status: string };
 
@@ -23,6 +24,12 @@ export async function settleOrder(db: SupabaseClient, order: OrderRow, billId: s
   if (existing) await db.from("payments").update(row).eq("id", existing.id);
   else { const { data: o } = await db.from("orders").select("total_sen").eq("ref", order.ref).single(); await db.from("payments").insert({ order_ref: order.ref, provider: "billplz", provider_ref: billId, amount_sen: o?.total_sen ?? 0, ...row }); }
   await db.from("audit_log").insert({ actor: "webhook", action: "order.paid", target: order.ref, detail: { bill: billId } });
+  // Confirmation goes out once; the update above only succeeds for the first settle.
+  const [{ data: full }, { data: items }] = await Promise.all([db.from("orders").select("*").eq("ref", order.ref).single(), db.from("order_items").select("*").eq("order_ref", order.ref).order("id")]);
+  if (full && items) {
+    const sent = await orderConfirmation(full, items.map((l) => ({ ...l, product_name: l.product_name ?? l.product_id, colour_name: l.colour_name ?? l.colourway_id })));
+    await db.from("audit_log").insert({ actor: "system", action: sent ? "email.confirmation" : "email.confirmation_failed", target: order.ref });
+  }
 }
 
 /** The customer came back without paying: free the stock and let them try again. */

@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { requireStaff } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { TRANSITIONS, type OrderStatus } from "@/lib/admin/orders";
+import { orderShipped, orderRefunded } from "@/lib/email";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
 
@@ -53,6 +54,8 @@ export async function recordRefund(ref: string, amountRm: number, reason: string
   if (full) await db.rpc("release_stock", { p_order_ref: ref, p_type: "return", p_actor: staff.email });
   await db.from("payments").insert({ order_ref: ref, provider: "manual", status: "refunded", amount_sen: sen, raw: { reason, by: staff.email } });
   await audit(staff.email, full ? "order.refund.full" : "order.refund.partial", ref, { amount_sen: sen, reason });
+  const { data: full_o } = await db.from("orders").select("*").eq("ref", ref).single();
+  if (full_o) { const sent = await orderRefunded(full_o, sen); await audit("system", sent ? "email.refunded" : "email.refunded_failed", ref); }
   revalidatePath(`/admin/orders/${ref}`); revalidatePath("/admin/orders");
   return { ok: true };
 }
@@ -68,9 +71,18 @@ export async function saveShipment(input: { ref: string; id?: number; courier: s
     shipped_at: input.status === "shipped" || input.status === "delivered" ? new Date().toISOString() : null,
     delivered_at: input.status === "delivered" ? new Date().toISOString() : null,
   };
+  const { data: before } = input.id ? await db.from("shipments").select("status").eq("id", input.id).maybeSingle() : { data: null };
   const { error } = input.id ? await db.from("shipments").update(row).eq("id", input.id) : await db.from("shipments").insert(row);
   if (error) return { ok: false, error: error.message };
   await audit(staff.email, input.id ? "shipment.update" : "shipment.create", input.ref, { courier: row.courier, tracking_no: row.tracking_no, status: row.status });
+  // First time a parcel is marked shipped, tell the customer.
+  if (row.status === "shipped" && before?.status !== "shipped") {
+    const [{ data: o }, { data: items }] = await Promise.all([db.from("orders").select("*").eq("ref", input.ref).single(), db.from("order_items").select("*").eq("order_ref", input.ref).order("id")]);
+    if (o && items) {
+      const sent = await orderShipped(o, items, { courier: row.courier, tracking_no: row.tracking_no, tracking_url: row.tracking_url });
+      await audit("system", sent ? "email.shipped" : "email.shipped_failed", input.ref);
+    }
+  }
   revalidatePath(`/admin/orders/${input.ref}`);
   return { ok: true };
 }
