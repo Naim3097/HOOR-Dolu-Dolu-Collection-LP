@@ -1,6 +1,6 @@
 "use client";
-import { CONFIG, FAQ, LENGTH_GUIDE, STORE, COLOUR_COUNT } from "@/lib/products";
-import { money, PAY_NAMES, lqip, numberWord } from "@/lib/format";
+import { CONFIG, FAQ, LENGTH_GUIDE, STORE } from "@/lib/products";
+import { money, PAY_NAMES, lqip } from "@/lib/format";
 import { useStore } from "@/lib/store";
 import { Ph } from "@/components/hoor/ph";
 import { track } from "@/lib/tracking";
@@ -59,7 +59,7 @@ export function Closer() {
         <div className="rv">
           <span className="label">Still deciding?</span>
           <h2 className="serif">Take the one you keep scrolling back to.</h2>
-          <p>{numberWord(COLOUR_COUNT, true)} colours, sizes S/M to 4XL, {money(CONFIG.basePrice)} each.{CONFIG.freeShippingOver ? <> Free delivery over {money(CONFIG.freeShippingOver)}.</> : null}</p>
+          <p>Sizes S/M to 4XL, {money(CONFIG.basePrice)} each.{CONFIG.freeShippingOver ? <> Free delivery over {money(CONFIG.freeShippingOver)}.</> : null}</p>
         </div>
         <div className="closer__cta rv rv-d1">
           <a className="btn btn--solid" href="#shop" onClick={() => track("cta_click", { location: "closer_cta" })}>Back to the collection</a>

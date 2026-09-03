@@ -81,5 +81,5 @@ Tick as done. Items marked ⚠ need something from the client before they can be
 
 - [ ] **17. Closer image: prints do not match the real dresses** ⚠
   "Check corak ada yang lari tak sama dengan corak sebenar baju." Same issue as item 1, on the closing banner. Needs a corrected image from the client.
-- [ ] **18. Closer copy: remove "Seventeen colours"** — `components/hoor/tail.tsx`
+- [x] **18. Closer copy: remove "Seventeen colours"** — `components/hoor/tail.tsx`
   "Seventeen colours, sizes S/M to 4XL, RM199 each. Free delivery over RM250." → drop the colour count.
