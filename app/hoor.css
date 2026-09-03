@@ -1125,30 +1125,16 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .closer__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; }
 
 @media (max-width: 899px) {
-  .closer { min-height: calc(100vw * 1536 / 1024); align-items: end; }
-  .closer::after {
-    content: '';
-    position: absolute; left: 0; right: 0; bottom: 0;
-    height: 62%;
-    background: linear-gradient(to top, rgba(21, 18, 15, .68) 0%, rgba(21, 18, 15, .34) 55%, transparent 100%);
-    pointer-events: none;
-  }
+  /* The mobile master keeps its empty wall at the top and the rail of dresses
+     below, so the deck sits up on the wall in ink, as on desktop. No scrim. */
+  .closer { min-height: calc(100vw * 2276 / 1024); align-items: start; padding-top: clamp(2.5rem, 8vw, 3.5rem); }
   .closer__inner { z-index: 1; }
-  .closer .label { color: var(--cream); }
-  .closer h2 { color: var(--paper); }
-  .closer p { color: rgba(250, 246, 241, .88); }
-  /* over the scrim: solid becomes paper, hairline becomes the hero treatment */
-  .closer .btn--solid { background: var(--paper); color: var(--ink); border-color: var(--paper); }
-  .closer .btn--solid::before { background: var(--cream); }
-  .closer .btn--solid:hover:not(:disabled) { color: var(--ink); }
-  .closer .btn:not(.btn--solid) { color: var(--paper); border-color: rgba(250, 246, 241, .65); background: rgba(23, 20, 17, .16); }
-  .closer .btn:not(.btn--solid)::before { background: var(--paper); }
-  .closer .btn:not(.btn--solid):hover:not(:disabled) { color: var(--ink); }
+  .closer h2 { max-width: 12ch; }
 }
 
 @media (min-width: 900px) {
-  .closer { min-height: calc(100vw * 744 / 2112); }
-  /* frames narrower than 2.84:1 crop from the right, keeping the text wall */
+  .closer { min-height: calc(100vw * 896 / 2112); }
+  /* frames narrower than 2.36:1 crop from the right, keeping the text wall */
   .closer__media img { object-position: 24% 50%; }
   /* everything lives on the artwork's empty left wall */
   .closer__inner { justify-items: start; gap: 2rem; }

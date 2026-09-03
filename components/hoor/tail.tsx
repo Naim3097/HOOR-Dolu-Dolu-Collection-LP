@@ -51,7 +51,7 @@ export function Closer() {
           <picture>
             <source media="(max-width: 899px)" sizes="100vw" srcSet="/assets/img/closer_mobile-480.webp 480w, /assets/img/closer_mobile-1024.webp 1024w" />
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="loaded" src="/assets/img/closer_desktop-1400.webp" sizes="100vw" srcSet="/assets/img/closer_desktop-900.webp 900w, /assets/img/closer_desktop-1400.webp 1400w, /assets/img/closer_desktop-2112.webp 2112w" alt="" width={2112} height={744} loading="lazy" decoding="async" />
+            <img className="loaded" src="/assets/img/closer_desktop-1400.webp" sizes="100vw" srcSet="/assets/img/closer_desktop-900.webp 900w, /assets/img/closer_desktop-1400.webp 1400w, /assets/img/closer_desktop-2112.webp 2112w" alt="" width={2112} height={896} loading="lazy" decoding="async" />
           </picture>
         </div>
       </div>
