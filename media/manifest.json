@@ -1,0 +1,320 @@
+{
+ "_note": "Source-of-truth media map. src = original in /assets. Images become WebP at the listed widths (default `widths`), videos become WebM+MP4 at `w` px wide, bitrate capped at `kbps`, with a WebP poster. `npm run media:build` writes media/dist and lib/lqip.json; `npm run media:upload` pushes media/dist to the Supabase Storage bucket.",
+ "widths": [
+  480,
+  900,
+  1400
+ ],
+ "quality": 80,
+ "images": [
+  {
+   "src": "raya-hero-desktop-textspace.png",
+   "out": "hero_desktop",
+   "type": "hero",
+   "role": "hero",
+   "widths": [
+    900,
+    1400,
+    1672
+   ]
+  },
+  {
+   "src": "raya-hero-mobile.png",
+   "out": "hero_mobile",
+   "type": "hero",
+   "role": "hero",
+   "widths": [
+    480,
+    941
+   ]
+  },
+  {
+   "src": "6068796078267503221.jpg",
+   "out": "pusaka_deep-teal_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6068796078267503220.jpg",
+   "out": "pusaka_deep-teal_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503219.jpg",
+   "out": "pusaka_deep-teal_detail_02",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503223.jpg",
+   "out": "semarak_maroon_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6068796078267503224.jpg",
+   "out": "semarak_maroon_full_02",
+   "type": "full",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503222.jpg",
+   "out": "semarak_maroon_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503225.jpg",
+   "out": "rimbun_cocoa_full_01",
+   "type": "lifestyle",
+   "role": "card"
+  },
+  {
+   "src": "6068796078267503227.jpg",
+   "out": "rimbun_cocoa_back_01",
+   "type": "back",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503226.jpg",
+   "out": "rimbun_cocoa_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503229.jpg",
+   "out": "renda_camel_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6068796078267503230.jpg",
+   "out": "renda_camel_full_02",
+   "type": "full",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503228.jpg",
+   "out": "renda_camel_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503233.jpg",
+   "out": "renda_indigo_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6068796078267503232.jpg",
+   "out": "renda_indigo_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503231.jpg",
+   "out": "renda_indigo_detail_02",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503236.jpg",
+   "out": "senja_midnight_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6068796078267503235.jpg",
+   "out": "senja_midnight_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503234.jpg",
+   "out": "senja_midnight_detail_02",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503240.jpg",
+   "out": "anggerik_lilac_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6068796078267503241.jpg",
+   "out": "anggerik_lilac_full_02",
+   "type": "full",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503239.jpg",
+   "out": "anggerik_lilac_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503289.jpg",
+   "out": "hoor_size_chart_a-cut",
+   "type": "sizechart",
+   "role": "sizeguide"
+  },
+  {
+   "src": "raya-cta-desktop.png",
+   "out": "closer_desktop",
+   "type": "cta-bg",
+   "role": "closer",
+   "widths": [
+    900,
+    1400,
+    2112
+   ]
+  },
+  {
+   "src": "raya-cta-mobile.png",
+   "out": "closer_mobile",
+   "type": "cta-bg",
+   "role": "closer",
+   "widths": [
+    480,
+    1024
+   ]
+  },
+  {
+   "src": "6068796078267503242.jpg",
+   "out": "pucuk_forest-green_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6070954664405962996.jpg",
+   "out": "pucuk_forest-green_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503243.jpg",
+   "out": "bayu_steel-blue_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6070954664405962995.jpg",
+   "out": "bayu_steel-blue_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503244.jpg",
+   "out": "seri_olive_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6070954664405962999.jpg",
+   "out": "seri_olive_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503245.jpg",
+   "out": "karang_royal-blue_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6068796078267503246.jpg",
+   "out": "mahsuri_emerald_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6070954664405963000.jpg",
+   "out": "mahsuri_emerald_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503247.jpg",
+   "out": "malam_black-iris_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6070954664405962998.jpg",
+   "out": "malam_black-iris_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503248.jpg",
+   "out": "diraja_royal-purple_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6070954664405962997.jpg",
+   "out": "diraja_royal-purple_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503260.jpg",
+   "out": "mekar_lilac_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6070954664405962994.jpg",
+   "out": "mekar_lilac_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503237.jpg",
+   "out": "tenun_monochrome_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6068796078267503238.jpg",
+   "out": "puteri_navy-blush_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "HOOR Storefront The Linc.webp",
+   "out": "visit_premise",
+   "type": "premise",
+   "role": "visit",
+   "widths": [
+    480,
+    765
+   ]
+  }
+ ],
+ "videos": [
+  {
+   "src": "IMG_2806.MOV",
+   "out": "senja_midnight",
+   "poster": 2.0,
+   "w": 720,
+   "kbps": 1400
+  },
+  {
+   "src": "IMG_2821.MOV",
+   "out": "renda_camel",
+   "poster": 1.0,
+   "w": 720,
+   "kbps": 1200
+  },
+  {
+   "src": "IMG_2815.MOV",
+   "out": "pusaka_deep-teal",
+   "poster": 1.0,
+   "w": 720,
+   "kbps": 1100
+  }
+ ]
+}

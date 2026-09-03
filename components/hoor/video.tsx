@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { track } from "@/lib/tracking";
+import { asset } from "@/lib/assets";
 
 const Q = ["(min-width: 900px)", "(prefers-reduced-motion: reduce)"];
 const sub = (cb: () => void) => { const m = Q.map((q) => matchMedia(q)); m.forEach((x) => x.addEventListener("change", cb)); return () => m.forEach((x) => x.removeEventListener("change", cb)); };
@@ -12,7 +13,7 @@ export function Video({ name, caption, start = 0, className }: { name: string; c
   const [tapped, setTapped] = useState(false);
   const box = useRef<HTMLDivElement>(null);
   const vid = useRef<HTMLVideoElement>(null);
-  const poster = `/assets/video/${name}_poster.webp`;
+  const poster = asset(`video/${name}_poster.webp`);
   const playing = m === "auto" || tapped;
 
   useEffect(() => {
@@ -25,9 +26,12 @@ export function Video({ name, caption, start = 0, className }: { name: string; c
   return (
     <div ref={box} className={className} data-video={name}>
       {playing ? (
-        <video ref={vid} src={`/assets/video/${name}.webm`} poster={poster} muted loop playsInline preload="none" autoPlay={tapped} aria-label={caption}
+        <video ref={vid} poster={poster} muted loop playsInline preload="none" autoPlay={tapped} aria-label={caption}
           onLoadedMetadata={(e) => { if (start) e.currentTarget.currentTime = start; }}
-          onClick={(e) => { if (tapped) { const v = e.currentTarget; if (v.paused) v.play(); else v.pause(); } }} />
+          onClick={(e) => { if (tapped) { const v = e.currentTarget; if (v.paused) v.play(); else v.pause(); } }}>
+          <source src={asset(`video/${name}.webm`)} type="video/webm" />
+          <source src={asset(`video/${name}.mp4`)} type="video/mp4" />
+        </video>
       ) : (
         <>
           {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -1,6 +1,6 @@
 "use client";
 import { CONFIG, FAQ, LENGTH_GUIDE, STORE } from "@/lib/products";
-import { money, PAY_NAMES, lqip } from "@/lib/format";
+import { money, PAY_NAMES, lqip, imgSrc, srcset } from "@/lib/format";
 import { useStore } from "@/lib/store";
 import { Ph } from "@/components/hoor/ph";
 import { track } from "@/lib/tracking";
@@ -49,9 +49,9 @@ export function Closer() {
       <div className="closer__media" aria-hidden="true">
         <div className="ph" style={{ backgroundImage: `url("${lqip("closer_desktop") ?? ""}")` }}>
           <picture>
-            <source media="(max-width: 899px)" sizes="100vw" srcSet="/assets/img/closer_mobile-480.webp 480w, /assets/img/closer_mobile-1024.webp 1024w" />
+            <source media="(max-width: 899px)" sizes="100vw" srcSet={srcset("closer_mobile")} />
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="loaded" src="/assets/img/closer_desktop-1400.webp" sizes="100vw" srcSet="/assets/img/closer_desktop-900.webp 900w, /assets/img/closer_desktop-1400.webp 1400w, /assets/img/closer_desktop-2112.webp 2112w" alt="" width={2112} height={896} loading="lazy" decoding="async" />
+            <img className="loaded" src={imgSrc("closer_desktop", 1400)} sizes="100vw" srcSet={srcset("closer_desktop")} alt="" width={2112} height={896} loading="lazy" decoding="async" />
           </picture>
         </div>
       </div>

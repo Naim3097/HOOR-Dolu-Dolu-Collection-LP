@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Media is served from Supabase Storage as pre-rendered WebP/WebM (see lib/assets.ts);
+  // nothing goes through Vercel image optimisation.
+  images: { unoptimized: true },
 };
 
 export default nextConfig;

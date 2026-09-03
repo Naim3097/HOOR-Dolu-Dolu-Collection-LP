@@ -42,3 +42,7 @@ next-env.d.ts
 .env.local
 .env*.local
 public/__preview.html
+
+# rendered media: rebuilt by `npm run media:build`, served from Supabase Storage
+media/dist
+supabase/.temp

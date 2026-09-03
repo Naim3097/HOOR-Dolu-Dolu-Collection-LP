@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { CONFIG, SIZE_LABELS, PRODUCTS, type Size } from "@/lib/products";
-import { money } from "@/lib/format";
+import { money, imgSrc } from "@/lib/format";
 import { Sprite } from "@/components/hoor/sprite";
 import { PurchaseEvent } from "./purchase-event";
 import { PAY_METHODS } from "@/components/hoor/checkout";
@@ -44,7 +44,7 @@ export default async function ReturnPage({ searchParams }: { searchParams: Promi
               const p = PRODUCTS.find((x) => x.id === l.product_id); const cw = p?.colourways.find((x) => x.id === l.colourway_id);
               return (
                 <div key={l.id} className="ci">
-                  <div className="ci__media"><span className="ph">{cw && /* eslint-disable-next-line @next/next/no-img-element */ <img className="loaded" src={`/assets/img/${cw.images[0]}-480.webp`} alt="" />}</span></div>
+                  <div className="ci__media"><span className="ph">{cw && /* eslint-disable-next-line @next/next/no-img-element */ <img className="loaded" src={imgSrc(cw.images[0], 480)} alt="" />}</span></div>
                   <div><div className="ci__top"><div><h4>{p?.name}</h4><p className="meta">{cw?.name} · {SIZE_LABELS[l.size as Size]}</p></div><span className="price">{money(Number(l.unit_price) * l.qty)}</span></div><p className="meta" style={{ marginTop: ".35rem" }}>Qty {l.qty}</p></div>
                 </div>);
             })}</div>
