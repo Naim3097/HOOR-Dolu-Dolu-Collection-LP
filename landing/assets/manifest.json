@@ -8,7 +8,7 @@
  "quality": 0.82,
  "images": [
   {
-   "src": "HOOR Hero Section.png",
+   "src": "HOOR Hero Desktop v2.png",
    "out": "hero_desktop",
    "type": "hero",
    "role": "hero",
@@ -19,13 +19,13 @@
    ]
   },
   {
-   "src": "HOOR Mobile Hero Section.png",
+   "src": "HOOR Hero Mobile v3.png",
    "out": "hero_mobile",
    "type": "hero",
    "role": "hero",
    "widths": [
     480,
-    853
+    941
    ]
   },
   {
@@ -179,6 +179,118 @@
    "widths": [
     480,
     1024
+   ]
+  },
+  {
+   "src": "6068796078267503242.jpg",
+   "out": "pucuk_forest-green_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6070954664405962996.jpg",
+   "out": "pucuk_forest-green_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503243.jpg",
+   "out": "bayu_steel-blue_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6070954664405962995.jpg",
+   "out": "bayu_steel-blue_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503244.jpg",
+   "out": "seri_olive_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6070954664405962999.jpg",
+   "out": "seri_olive_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503245.jpg",
+   "out": "karang_royal-blue_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6068796078267503246.jpg",
+   "out": "mahsuri_emerald_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6070954664405963000.jpg",
+   "out": "mahsuri_emerald_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503247.jpg",
+   "out": "malam_black-iris_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6070954664405962998.jpg",
+   "out": "malam_black-iris_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503248.jpg",
+   "out": "diraja_royal-purple_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6070954664405962997.jpg",
+   "out": "diraja_royal-purple_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503260.jpg",
+   "out": "mekar_lilac_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6070954664405962994.jpg",
+   "out": "mekar_lilac_detail_01",
+   "type": "detail",
+   "role": "gallery"
+  },
+  {
+   "src": "6068796078267503237.jpg",
+   "out": "tenun_monochrome_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "6068796078267503238.jpg",
+   "out": "puteri_navy-blush_full_01",
+   "type": "full",
+   "role": "card"
+  },
+  {
+   "src": "HOOR Storefront The Linc.webp",
+   "out": "visit_premise",
+   "type": "premise",
+   "role": "visit",
+   "widths": [
+    480,
+    765
    ]
   }
  ]

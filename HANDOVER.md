@@ -24,12 +24,15 @@ HOOR to confirm before money goes into ads.
 | 1 | **Product names** — PUSAKA, SEMARAK, RIMBUN, RENDA, SENJA, ANGGERIK | `data.js` → `PRODUCTS` | Proposed, not given. They follow HOOR's live convention and each Malay word describes its own print. Swap freely. |
 | 2 | **RM199 per piece** | `data.js` → `CONFIG.basePrice` | Matches HOOR's live abaya/kaftan price on hoor.my. Confirm campaign pricing and any launch offer. |
 | 3 | **Stock numbers** | `data.js` → each colourway's `stock` | Placeholders. Wire to real inventory. Until you do, leave `showStockPressure: false` — see §5. |
-| 4 | **Fabric: "premium crepe"** | `data.js` → `FABRIC` | Inferred from drape and HOOR's own category names. One video caption may read *Premium Cotton*. **Confirm before launch** — a wrong fibre claim is a real customer-harm risk. |
+| 4 | ~~Fabric~~ **Confirmed: premium cotton silk** (client instruction, Sep 2026) | `data.js` → `FABRIC` | Copy updated across hero, claims bar, The Cloth, FAQ. |
 | 5 | **Care instructions** | `data.js` → `CARE` | Sensible default, not supplied. Confirm. |
 | 6 | **Delivery RM8 / RM15, free over RM250** | `data.js` → `CONFIG.shipping`, `freeShippingOver` | Not supplied. Set `freeShippingOver: null` to remove the free-delivery nudge entirely. |
 | 7 | **Colour swatches** | `data.js` → each `swatch` | Sampled from the photography. Check against physical fabric. |
 | 8 | **The RIMBUN shawl** | `data.js` → `rimbun.note` | The page says only "Shown styled with a shawl" and claims nothing. If it is included, say so — it is a selling point. |
 | 9 | **Payment gateway** | `app.js` → `createOrder()` | Simulated. One function to replace — see §4. |
+| 10a | **Seventeen colours, not fifteen** | `data.js` → `PRODUCTS` | Every distinct look in the supplied assets is now purchasable: 16 products / 17 colourways (RENDA carries two). The client's stated count was fifteen; the folder verifiably holds seventeen (TENUN Monochrome and PUTERI Navy Blush are the two beyond fifteen). If any look is not for sale, remove its entry and restore the fifteen wording in the shop heading, closer and cart. |
+| 10b | **Shipping promise** | FAQ, product sheet, checkout, confirmation | Client instruction: dispatched within 24 hours, doorstep in 1–3 days — this **overrides hoor.my's published max-10-working-days policy** and is stated as a blanket promise including East Malaysia. Make sure operations can honour it before ads run. |
+| 10c | ~~Premise photo~~ **Resolved** | FAQ visit block | The real storefront photograph (HOOR signage at The Linc) now leads the visit card, with address, 10am–9pm hours, phone and a Google Maps link beside it. |
 | 10 | **WhatsApp number** | `data.js` → `CONFIG.support.whatsapp` | Set to `60172500323`, taken from hoor.my's own storefront configuration (`whatsapp_phone`). ⚑ Confirm this is the channel HOOR wants campaign enquiries on; emptying the field hides the button. |
 
 Confirmed facts, taken from HOOR's own material and **not** invented: the

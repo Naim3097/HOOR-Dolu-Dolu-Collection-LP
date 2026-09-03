@@ -45,8 +45,17 @@ const anyStock = cw => SIZES.some(s => inStock(cw, s));
 /* ---------- 1. IMAGES ---------------------------------------------------- */
 let LQIP = {}, DIMS = {};
 
+// Renders exist at the standard widths capped to each source's real width,
+// plus the source width itself when it falls below 900 (e.g. the premise
+// photo at 765). Build candidates from what is actually on disk.
+const widthsFor = name => {
+  const max = DIMS[name]?.[0] || Infinity;
+  const ws = [480, 900, 1400].filter(w => w <= max);
+  if (Number.isFinite(max) && max < 900) ws.push(max);
+  return ws.length ? ws : [480];
+};
 const srcset = name =>
-  [480, 900, 1400].map(w => `assets/img/${name}-${w}.webp ${w}w`).join(', ');
+  widthsFor(name).map(w => `assets/img/${name}-${w}.webp ${w}w`).join(', ');
 
 /**
  * Fill a .ph placeholder: LQIP background immediately, real image faded in.
@@ -73,7 +82,7 @@ function paint(box, opts = {}) {
     loading: opts.eager ? 'eager' : 'lazy',
     fetchpriority: opts.eager ? 'high' : null,
     width: d?.[0], height: d?.[1],
-    src: `assets/img/${name}-900.webp`
+    src: `assets/img/${name}-${widthsFor(name).at(-1)}.webp`
   });
   const pos = opts.pos || box.dataset.pos;
   if (pos) img.style.objectPosition = pos;
@@ -194,6 +203,7 @@ const STORE_KEY = 'hoor_ddl_cart_v1';
 
 const state = {
   cart: [],
+  gridExpanded: false,   // first six cards show until the visitor asks for more
   filter: null,          // colourway id or null
   cardColour: {},        // productId -> colourway id currently shown on the card
   pd: null,              // { variant, size, qty, slide }
@@ -261,7 +271,7 @@ function renderChrome() {
   const freeOver = $('[data-free-over]');
   if (CONFIG.freeShippingOver) freeOver.textContent = money(CONFIG.freeShippingOver);
   else freeOver.closest('p').textContent =
-    `Six prints, sizes S/M to 4XL, ${money(CONFIG.basePrice)} each.`;
+    `Seventeen colours, sizes S/M to 4XL, ${money(CONFIG.basePrice)} each.`;
   $('[data-sticky-sub]').textContent = `${money(CONFIG.basePrice)} · S/M – 4XL`;
   $('[data-tagline]').textContent = CONFIG.tagline;
   $('[data-year]').textContent = new Date().getFullYear();
@@ -355,6 +365,7 @@ function renderFilters() {
 
 function setFilter(id) {
   state.filter = id;
+  expandGrid();
   renderFilters();
   $$('[data-grid] .card').forEach(card => {
     const shown = !id || card.dataset.colours.split(',').includes(id);
@@ -455,11 +466,30 @@ function selectCardColour(card, btn) {
   track('select_colour', { item_id: `${p.id}:${cw.id}`, colour: cw.name, item_name: p.name });
 }
 
+/* Six cards first; the rest wait behind one press. Filtering always works
+   across the full range, so any chip press expands the grid too. */
+function applyGridCollapse() {
+  const wrap = $('[data-more-wrap]');
+  const cards = $$('[data-grid] .card');
+  if (state.gridExpanded || state.filter) { wrap.hidden = true; return; }
+  cards.forEach((card, i) => card.classList.toggle('is-hidden', i >= 6));
+  wrap.hidden = false;
+}
+
+function expandGrid() {
+  if (state.gridExpanded) return;
+  state.gridExpanded = true;
+  $$('[data-grid] .card').forEach(card => card.classList.remove('is-hidden'));
+  $('[data-more-wrap]').hidden = true;
+  track('grid_expand');
+}
+
 function renderGrid() {
   const g = $('[data-grid]');
   g.innerHTML = '';
   PRODUCTS.forEach(p => g.appendChild(cardMarkup(p)));
   hydrateImages(g);
+  applyGridCollapse();
 }
 
 /* ---------- 7. PRODUCT DRAWER -------------------------------------------- */
@@ -562,14 +592,14 @@ function renderProduct() {
           <details>
             <summary>Size &amp; fit<span class="pm" aria-hidden="true"></span></summary>
             <div class="acc__body">
-              <p>A-cut, full length, hangs from the shoulder. Measurements are of the garment, in inches.</p>
+              <p>A-Cut, full length, hangs from the shoulder. Measurements are of the garment, in inches.</p>
               <p style="margin-top:.6rem"><button class="btn" data-open="size">Open the full chart</button></p>
             </div>
           </details>
           <details>
             <summary>Delivery &amp; returns<span class="pm" aria-hidden="true"></span></summary>
             <div class="acc__body">
-              <p>Dispatched within ${CONFIG.policy.dispatchDays} working days. ${money(CONFIG.shipping.west.rate)} to Semenanjung, ${money(CONFIG.shipping.east.rate)} to Sabah, Sarawak &amp; Labuan${
+              <p>Dispatched within 24 hours, at your doorstep in 1–3 days. ${money(CONFIG.shipping.west.rate)} to Semenanjung, ${money(CONFIG.shipping.east.rate)} to Sabah, Sarawak &amp; Labuan${
                 CONFIG.freeShippingOver ? `, free over ${money(CONFIG.freeShippingOver)}` : ''}.</p>
               <p style="margin-top:.6rem">${CONFIG.policy.returnDays} days to exchange or return, unworn with tags. Return postage is not covered.</p>
             </div>
@@ -787,7 +817,7 @@ function renderCart() {
     body.innerHTML = `
       <div class="cart__empty">
         <span class="serif">Your bag is empty.</span>
-        <p>Six prints are waiting. Everything is ${money(CONFIG.basePrice)}.</p>
+        <p>Seventeen colours are waiting. Everything is ${money(CONFIG.basePrice)}.</p>
         <p style="margin-top:1.5rem"><button class="btn" data-close-to-shop>See the collection</button></p>
       </div>`;
     body.querySelector('[data-close-to-shop]').addEventListener('click', () => {
@@ -911,7 +941,7 @@ function renderSizeDrawer() {
   body.innerHTML = `
     <div style="padding:1.5rem var(--gut) 2rem">
       <p style="color:var(--ink-80);max-width:44ch">
-        Every piece is the same A-cut. It hangs from the shoulder, so the bust
+        Every piece is the same A-Cut. It hangs from the shoulder, so the bust
         measurement is the one that decides your size.
       </p>
       <div class="chart-scroll" style="margin-top:1.5rem">
@@ -1074,7 +1104,7 @@ function renderCheckout() {
         <div class="summary__items" data-summary-items></div>
         <div class="summary__totals" data-summary-totals></div>
         <ul class="summary__trust">
-          <li><svg aria-hidden="true"><use href="#i-tick-s"></use></svg>Dispatched in ${CONFIG.policy.dispatchDays} working days, with tracking</li>
+          <li><svg aria-hidden="true"><use href="#i-tick-s"></use></svg>Dispatched within 24 hours, with tracking</li>
           <li><svg aria-hidden="true"><use href="#i-tick-s"></use></svg>${CONFIG.policy.returnDays}-day exchange or return, unworn with tags</li>
           <li><svg aria-hidden="true"><use href="#i-tick-s"></use></svg>Payment handled by HOOR's provider, never stored here</li>
         </ul>
@@ -1425,11 +1455,11 @@ function renderConfirmation() {
       <ol class="done__next">
         <li><span class="n">01</span><div>
           <h3>We pack it</h3>
-          <p>Within ${CONFIG.policy.dispatchDays} working days. You get an email with a tracking number the moment it leaves us.</p>
+          <p>Within 24 hours. You get an email with a tracking number the moment it leaves us.</p>
         </div></li>
         <li><span class="n">02</span><div>
           <h3>It arrives</h3>
-          <p>1–3 days across Semenanjung, 3–7 days to Sabah, Sarawak and Labuan.</p>
+          <p>At your doorstep within 1–3 days of dispatch.</p>
         </div></li>
         <li><span class="n">03</span><div>
           <h3>Try it on the same day</h3>
@@ -1538,6 +1568,7 @@ function applyDeepLink() {
 
   const { product, cw } = findVariant(key);
   state.cardColour[product.id] = cw.id;
+  state.gridExpanded = true;
   renderGrid();
 
   requestAnimationFrame(() => {
@@ -1562,6 +1593,7 @@ async function boot() {
   renderGrid();
   renderSizeDrawer();
   wireFinder();
+  $('[data-more]').addEventListener('click', expandGrid);
   loadCart();
   renderCart();
   updateCartCount();
