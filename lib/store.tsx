@@ -8,7 +8,7 @@ export type Overlay = "product" | "cart" | "size" | "checkout" | null;
 export type PD = { productId: string; colourwayId: string; size: Size | null; qty: number };
 type Toast = { text: string; img: string; n: number } | null;
 
-type State = { items: CartItem[]; overlay: Overlay; pd: PD | null; cardColour: Record<string, string>; filter: string | null; toast: Toast };
+type State = { items: CartItem[]; overlay: Overlay; pd: PD | null; cardColour: Record<string, string>; filter: string | null; toast: Toast; gridExpanded: boolean };
 type Action =
   | { type: "hydrate"; items: CartItem[] }
   | { type: "add"; item: CartItem }
@@ -19,6 +19,7 @@ type Action =
   | { type: "pd"; pd: PD | null }
   | { type: "cardColour"; productId: string; colourwayId: string }
   | { type: "filter"; id: string | null }
+  | { type: "expandGrid" }
   | { type: "toast"; toast: Toast };
 
 export const keyOf = (i: { productId: string; colourwayId: string; size: Size }) => sku(i.productId, i.colourwayId, i.size);
@@ -41,6 +42,7 @@ function reducer(s: State, a: Action): State {
     case "pd": return { ...s, pd: a.pd };
     case "cardColour": return { ...s, cardColour: { ...s.cardColour, [a.productId]: a.colourwayId } };
     case "filter": return { ...s, filter: a.id };
+    case "expandGrid": return s.gridExpanded ? s : { ...s, gridExpanded: true };
     case "toast": return { ...s, toast: a.toast };
   }
 }
@@ -50,6 +52,7 @@ type Ctx = State & {
   open: (o: Exclude<Overlay, null>) => void;
   close: () => void;
   openProduct: (key: string, size?: Size | null) => void;
+  expandGrid: () => void;
   addToCart: (item: CartItem) => void;
   count: number; subtotal: number;
   resolve: (i: { productId: string; colourwayId: string }) => { product: Product; colourway: Colourway };
@@ -58,7 +61,7 @@ const C = createContext<Ctx | null>(null);
 const LS = "hoor_ddl_cart_v1";
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
-  const [state, dispatch] = useReducer(reducer, { items: [], overlay: null, pd: null, cardColour: {}, filter: null, toast: null });
+  const [state, dispatch] = useReducer(reducer, { items: [], overlay: null, pd: null, cardColour: {}, filter: null, toast: null, gridExpanded: false });
   const lastFocus = useRef<Element | null>(null);
 
   const resolve = useCallback((i: { productId: string; colourwayId: string }) => {
@@ -90,6 +93,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     track("view_item", { item_id: v.key, item_name: v.product.name, item_variant: v.cw.name, value: v.product.price, currency: CONFIG.currency });
   }, []);
 
+  /* First six cards show until the visitor asks for more; a filter or deep link opens the whole range. */
+  const expandGrid = useCallback(() => { dispatch({ type: "expandGrid" }); track("grid_expand"); }, []);
+
   const addToCart = useCallback((item: CartItem) => {
     dispatch({ type: "add", item });
     const { product, colourway } = resolve(item);
@@ -100,7 +106,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try { const raw = localStorage.getItem(LS); if (raw) dispatch({ type: "hydrate", items: JSON.parse(raw) }); } catch {}
     const q = new URLSearchParams(location.search), p = q.get("p");
-    if (p) { const [pid, cid] = p.split(":"); const v = VARIANTS.find((x) => x.product.id === pid && (!cid || x.cw.id === cid)); if (v) openProduct(v.key, q.get("size") as Size | null); }
+    if (p) { const [pid, cid] = p.split(":"); const v = VARIANTS.find((x) => x.product.id === pid && (!cid || x.cw.id === cid)); if (v) { dispatch({ type: "expandGrid" }); openProduct(v.key, q.get("size") as Size | null); } }
   }, [openProduct]);
   useEffect(() => { try { localStorage.setItem(LS, JSON.stringify(state.items)); } catch {} }, [state.items]);
   useEffect(() => { document.body.classList.toggle("is-locked", !!state.overlay); }, [state.overlay]);
@@ -110,10 +116,10 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, [state.overlay, close]);
 
   const value = useMemo<Ctx>(() => ({
-    ...state, dispatch, open, close, openProduct, addToCart, resolve,
+    ...state, dispatch, open, close, openProduct, expandGrid, addToCart, resolve,
     count: state.items.reduce((n, i) => n + i.qty, 0),
     subtotal: state.items.reduce((n, i) => n + i.qty * CONFIG.basePrice, 0),
-  }), [state, open, close, openProduct, addToCart, resolve]);
+  }), [state, open, close, openProduct, expandGrid, addToCart, resolve]);
   return <C.Provider value={value}>{children}</C.Provider>;
 }
 

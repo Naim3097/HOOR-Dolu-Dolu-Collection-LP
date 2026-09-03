@@ -141,7 +141,7 @@ function CheckoutBody() {
           <div className="summary__items">{items.map((l) => <Line key={keyOf(l)} l={l} compact />)}</div>
           <div className="summary__totals"><Totals subtotal={pricing.subtotal} shipping={f.state ? pricing.shipping : CONFIG.shipping.west.rate} regionLabel={regionLabel} style={{ marginBottom: 0 }} /></div>
           <ul className="summary__trust">
-            <li><svg aria-hidden="true"><use href="#i-tick-s" /></svg>Dispatched in {CONFIG.policy.dispatchDays} working days, with tracking</li>
+            <li><svg aria-hidden="true"><use href="#i-tick-s" /></svg>Dispatched within 24 hours, with tracking</li>
             <li><svg aria-hidden="true"><use href="#i-tick-s" /></svg>{CONFIG.policy.returnDays}-day exchange or return, unworn with tags</li>
             <li><svg aria-hidden="true"><use href="#i-tick-s" /></svg>Payment handled by HOOR&apos;s provider, never stored here</li>
           </ul>

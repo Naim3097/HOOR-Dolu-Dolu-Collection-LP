@@ -612,7 +612,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 @media (min-width: 900px) {
   .fabric__grid { grid-template-columns: 1.3fr minmax(0, 27rem); gap: clamp(3.5rem, 7vw, 7.5rem); align-items: center; }
   .fabric__video { order: 2; }
-  .fabric__points { grid-template-columns: repeat(3, 1fr); }
+  .fabric__points { grid-template-columns: repeat(2, 1fr); column-gap: clamp(1.5rem, 3vw, 2.5rem); }
 }
 
 /* ---------- 11. FIT / SIZE ---------------------------------------------- */
@@ -1237,4 +1237,35 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .wa-fab { transition: opacity .2s; transform: none; }
+}
+
+/* ---------- 30. VISIT THE STORE ----------------------------------------- */
+/* The storefront photograph does the identifying; the card just frames it.
+   Image flush to the card edge, information beside it, one action. */
+.visit {
+  display: grid;
+  max-width: 62rem;   /* matches the FAQ list above, so the column reads as one */
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+  background: var(--white);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.visit__photo .ph { width: 100%; height: 100%; aspect-ratio: 4 / 5; }
+.visit__info { padding: clamp(1.5rem, 4vw, 2.75rem); }
+.visit .label { color: var(--sage-deep); display: block; margin-bottom: .9rem; }
+.visit h3 { font-size: var(--t-title); line-height: 1.1; margin-bottom: .9rem; }
+.visit__info p { color: var(--ink-80); }
+.visit__meta { margin-top: .9rem; }
+.visit__meta a { text-decoration: underline; text-underline-offset: 3px; }
+.visit__info .btn { margin-top: 1.4rem; }
+@media (min-width: 780px) {
+  .visit { grid-template-columns: minmax(0, 24rem) 1fr; align-items: stretch; }
+  .visit__photo .ph { aspect-ratio: auto; min-height: 100%; }
+}
+
+/* ---------- 31. GRID REVEAL --------------------------------------------- */
+.grid__more {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(2rem, 5vw, 3rem);
 }

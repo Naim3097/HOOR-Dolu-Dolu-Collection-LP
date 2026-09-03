@@ -18,12 +18,14 @@ export const CONFIG = {
   },
   support: {
     email: "hooriemodestwear@gmail.com",
-    hours: "Every day, 10am – 8pm",
+    hours: "Every day, 10am – 9pm",
+    phone: "+60 17-250 0323", // hoor.my storefront config
     instagram: "@we.are.hoor",
     whatsapp: "60172500323", // ⚑
   },
   payments: ["visa", "mastercard", "unionpay", "fpx", "maybank", "cimb", "banktransfer"],
-  policy: { returnDays: 7, refundDays: 14, dispatchDays: 10 },
+  // Dispatch/delivery promise per client: out in 24 hours, arrives 1–3 days.
+  policy: { returnDays: 7, refundDays: 14 },
   showStockPressure: false,
 } as const;
 
@@ -61,11 +63,11 @@ export const LENGTH_GUIDE: { size: Size; length: number; suits: string }[] = [
 ];
 
 export const FABRIC =
-  "Premium crepe: matte, opaque and fluid. It falls straight from the shoulder instead of clinging, and it does not crease across a long day."; // ⚑
+  "Premium cotton silk: soft, breathable and fluid. It falls straight from the shoulder instead of clinging, and stays cool across a long Malaysian day.";
 export const CARE =
   "Hand wash cold or machine wash gentle, inside out. Hang dry in shade. Warm iron on reverse."; // ⚑
 export const SHARED_DETAILS = [
-  "A-cut silhouette that skims, never clings",
+  "A-Cut silhouette that skims, never clings",
   "Notched V-neckline with a soft stand collar",
   "Wide turned-back cuffs",
   "Side seam pockets, deep enough for a phone",
@@ -98,7 +100,7 @@ export const PRODUCTS: Product[] = [
   P({
     id: "pusaka", name: "PUSAKA", print: "Heirloom medallion batik",
     story: "A tile-work medallion running the full length of the front panel, edged with the fine scrolling border you used to see on a good tablecloth.",
-    colourways: [{ id: "deep-teal", name: "Deep Teal", swatch: "#2A4A58", images: ["pusaka_deep-teal_full_01", "pusaka_deep-teal_detail_01", "pusaka_deep-teal_detail_02"], video: "pusaka_deep-teal", stock: { SM: 6, LXL: 9, "2XL": 7, "3XL": 4, "4XL": 3 } }],
+    colourways: [{ id: "deep-teal", name: "Teal Green", swatch: "#2A4A58", images: ["pusaka_deep-teal_full_01", "pusaka_deep-teal_detail_01", "pusaka_deep-teal_detail_02"], video: "pusaka_deep-teal", stock: { SM: 6, LXL: 9, "2XL": 7, "3XL": 4, "4XL": 3 } }],
   }),
   P({
     id: "semarak", name: "SEMARAK", print: "Oversized floral batik",
@@ -126,11 +128,76 @@ export const PRODUCTS: Product[] = [
   P({
     id: "anggerik", name: "ANGGERIK", print: "Painted orchid",
     story: "Orchids loose on a pale lilac ground, painted rather than stamped. The lightest thing in the collection to look at.",
-    colourways: [{ id: "lilac", name: "Lilac", swatch: "#D3BDCA", images: ["anggerik_lilac_full_01", "anggerik_lilac_full_02", "anggerik_lilac_detail_01"], video: null, stock: { SM: 5, LXL: 8, "2XL": 6, "3XL": 4, "4XL": 2 } }],
+    colourways: [{ id: "lilac", name: "Soft Peach", swatch: "#D3BDCA", images: ["anggerik_lilac_full_01", "anggerik_lilac_full_02", "anggerik_lilac_detail_01"], video: null, stock: { SM: 5, LXL: 8, "2XL": 6, "3XL": 4, "4XL": 2 } }],
+  }),
+  P({
+    id: "pucuk", name: "PUCUK", print: "Pucuk rebung batik",
+    story: "Pucuk rebung paisley in deep forest green. The oldest motif in the batik book, worn quietly.",
+    colourways: [{ id: "forest-green", name: "Forest Green", swatch: "#263524", images: ["pucuk_forest-green_full_01", "pucuk_forest-green_detail_01"], video: null, stock: { SM: 5, LXL: 7, "2XL": 6, "3XL": 4, "4XL": 3 } }],
+  }),
+  P({
+    id: "bayu", name: "BAYU", print: "Paisley batik",
+    story: "Blue paisley with scattered blooms, as easy as a sea breeze.",
+    colourways: [{ id: "steel-blue", name: "Steel Blue", swatch: "#586995", images: ["bayu_steel-blue_full_01", "bayu_steel-blue_detail_01"], video: null, stock: { SM: 5, LXL: 8, "2XL": 6, "3XL": 4, "4XL": 2 } }],
+  }),
+  P({
+    id: "seri", name: "SERI", print: "Rosette batik",
+    story: "Rosette medallions front and centre on a calm olive ground.",
+    colourways: [{ id: "olive", name: "Olive", swatch: "#363829", images: ["seri_olive_full_01", "seri_olive_detail_01"], video: null, stock: { SM: 4, LXL: 7, "2XL": 6, "3XL": 5, "4XL": 3 } }],
+  }),
+  P({
+    id: "karang", name: "KARANG", print: "Coral floral batik",
+    story: "Coral blooms on royal blue, bright as a reef.",
+    colourways: [{ id: "royal-blue", name: "Royal Blue", swatch: "#283C8F", images: ["karang_royal-blue_full_01"], video: null, stock: { SM: 5, LXL: 6, "2XL": 7, "3XL": 4, "4XL": 3 } }],
+  }),
+  P({
+    id: "mahsuri", name: "MAHSURI", print: "Gilded scroll batik",
+    story: "Emerald with cream and gold scrollwork. The most regal of the collection.",
+    colourways: [{ id: "emerald", name: "Emerald", swatch: "#3B6774", images: ["mahsuri_emerald_full_01", "mahsuri_emerald_detail_01"], video: null, stock: { SM: 5, LXL: 8, "2XL": 6, "3XL": 4, "4XL": 2 } }],
+  }),
+  P({
+    id: "malam", name: "MALAM", print: "Night floral batik",
+    story: "Blue and white blooms floating on near-black.",
+    colourways: [{ id: "black-iris", name: "Black Iris", swatch: "#191A1A", images: ["malam_black-iris_full_01", "malam_black-iris_detail_01"], video: null, stock: { SM: 6, LXL: 8, "2XL": 6, "3XL": 4, "4XL": 3 } }],
+  }),
+  P({
+    id: "diraja", name: "DIRAJA", print: "Baroque batik",
+    story: "Purple and teal baroque scrolls, cut for celebration.",
+    colourways: [{ id: "royal-purple", name: "Royal Purple", swatch: "#4E2B5F", images: ["diraja_royal-purple_full_01", "diraja_royal-purple_detail_01"], video: null, stock: { SM: 4, LXL: 7, "2XL": 6, "3XL": 4, "4XL": 2 } }],
+  }),
+  P({
+    id: "mekar", name: "MEKAR", print: "Blossom batik",
+    story: "Cherry blossoms in watercolour on soft lilac.",
+    colourways: [{ id: "lilac", name: "Lilac", swatch: "#C58AA6", images: ["mekar_lilac_full_01", "mekar_lilac_detail_01"], video: null, stock: { SM: 5, LXL: 7, "2XL": 6, "3XL": 4, "4XL": 3 } }],
+  }),
+  P({
+    id: "tenun", name: "TENUN", print: "Damask batik",
+    story: "White scrollwork and a field of woven diamonds on black. Batik that reads like songket.",
+    colourways: [{ id: "monochrome", name: "Monochrome", swatch: "#232323", images: ["tenun_monochrome_full_01"], video: null, stock: { SM: 5, LXL: 7, "2XL": 6, "3XL": 4, "4XL": 3 } }],
+  }),
+  P({
+    id: "puteri", name: "PUTERI", print: "Painted bouquet batik",
+    story: "Painted bouquets and ribbon flourishes on deep navy.",
+    colourways: [{ id: "navy-blush", name: "Navy Blush", swatch: "#2C3A63", images: ["puteri_navy-blush_full_01"], video: null, stock: { SM: 5, LXL: 8, "2XL": 6, "3XL": 4, "4XL": 2 } }],
   }),
 ];
 
-export const CLAIMS = ["Pocket included", "Lightweight & flowy", "All-day comfy", "Petite friendly", "Sizes S/M – 4XL"];
+/** Every purchasable colour across the collection (seventeen at the time of writing). */
+export const COLOUR_COUNT = PRODUCTS.reduce((n, p) => n + p.colourways.length, 0);
+/** Cards shown before the visitor presses "View all". */
+export const GRID_PREVIEW = 6;
+
+export const STORE = {
+  name: "The Linc, Kuala Lumpur",
+  address: ["Lot 2-5, Second Floor, The Linc", "360, Jalan Tun Razak, 50400 Kuala Lumpur"],
+  hours: CONFIG.support.hours,
+  phone: CONFIG.support.phone,
+  phoneHref: "tel:+60172500323",
+  maps: "https://maps.google.com/?q=The+Linc+KL,+360+Jalan+Tun+Razak,+50400+Kuala+Lumpur",
+  image: "visit_premise",
+};
+
+export const CLAIMS = ["Premium Cotton Silk", "Petite to Plus Size", "Sizes S/M – 4XL", "Pocket included", "Lightweight & flowy"];
 
 export const OCCASIONS = [
   { label: "Office wear", note: "Long sleeve, full length, nothing to adjust at your desk." },
@@ -138,17 +205,17 @@ export const OCCASIONS = [
   { label: "Special occasions", note: "Reads formal without a fitting or a fuss." },
   { label: "Celebration moments", note: "Raya, kenduri, birthdays. It survives a long day of them." },
   { label: "Holiday getaway", note: "Packs flat, shakes out, needs no iron." },
+  { label: "Umrah friendly", note: "Modest, full coverage, and comfortable through long days of ibadah and travel." },
 ];
 
 export const FAQ: { q: string; a: string; cta?: "size" }[] = [
-  { q: "How do I know which size to take?", a: "Measure around the fullest part of your bust and use the finder above; it reads straight off HOOR's A-Cut chart. The cut is loose and A-line, so it hangs from the shoulder rather than fitting the waist. If you fall between two sizes, take the smaller one unless you want extra length.", cta: "size" },
-  { q: "Is it see-through? Is it hot?", a: "The crepe is opaque and unlined, and it sits away from the body instead of against it, which is why the campaign calls it lightweight and flowy. It is made for Malaysian weather, not for a European autumn." },
-  { q: "Does it really have pockets?", a: "Yes. Side seam pockets on every piece, set into the A-line so they disappear when you are not using them. Deep enough for a phone." },
-  { q: "When will it arrive?", a: `Orders are dispatched within ${CONFIG.policy.dispatchDays} working days, then it is 1–3 days to Semenanjung and 3–7 days to Sabah, Sarawak and Labuan. You get a tracking number the moment it ships.` },
+  { q: "How do I know which size to take?", a: "Measure around the fullest part of your bust and use the finder above; it reads straight off HOOR's A-Cut chart. The A-Cut is loose, hanging from the shoulder rather than fitting the waist. If you fall between two sizes, take the smaller one unless you want extra length.", cta: "size" },
+  { q: "Is it see-through? Is it hot?", a: "The cotton silk is opaque and unlined, and it sits away from the body instead of against it. Light, breathable and made for Malaysian weather." },
+  { q: "Does it really have pockets?", a: "Yes. Side seam pockets on every piece, set into the A-Cut so they disappear when you are not using them. Deep enough for a phone." },
+  { q: "When will it arrive?", a: "Your order is dispatched within 24 hours and arrives at your doorstep within 1–3 days. You get a tracking number the moment it ships." },
   { q: "What if it does not fit?", a: `You have ${CONFIG.policy.returnDays} days from delivery to post it back for an exchange or refund, unworn and with tags on. Return postage is on you; refunds are processed within ${CONFIG.policy.refundDays} working days. Email ${CONFIG.support.email} with your order number to start.` },
+  { q: "Can I see the dresses in person?", a: `Yes. Visit us at Lot 2-5, Second Floor, The Linc, 360 Jalan Tun Razak, 50400 Kuala Lumpur, every day from 10am to 9pm. Call or WhatsApp ${CONFIG.support.phone}.` },
   { q: "Is my payment secure?", a: "Payment is taken by HOOR's payment provider, not by this page. Card details are entered on the provider's own encrypted form and are never stored here. FPX sends you to your own bank's login." },
 ];
 
-/** Image helper: `/assets/img/<name>-<w>.webp`, widths 480 / 900 / 1400. */
-export const imgSrc = (name: string, w: 480 | 900 | 1400 = 900) => `/assets/img/${name}-${w}.webp`;
 export const sku = (productId: string, colourwayId: string, size: Size) => `${productId}:${colourwayId}:${size}`.toUpperCase();

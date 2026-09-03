@@ -1,22 +1,23 @@
 "use client";
 import { useState } from "react";
-import { PRODUCTS, CONFIG, type Product } from "@/lib/products";
-import { money } from "@/lib/format";
+import { PRODUCTS, CONFIG, COLOUR_COUNT, GRID_PREVIEW, type Product } from "@/lib/products";
+import { money, numberWord } from "@/lib/format";
 import { useStore, VARIANTS, lowStock } from "@/lib/store";
 import { Ph } from "@/components/hoor/ph";
 import { track } from "@/lib/tracking";
 
 export function Shop() {
-  const { filter, dispatch } = useStore();
+  const { filter, gridExpanded, dispatch, expandGrid } = useStore();
   const setFilter = (id: string | null) => {
     dispatch({ type: "filter", id });
+    expandGrid();
     if (id) { VARIANTS.filter((v) => v.cw.id === id).forEach((v) => dispatch({ type: "cardColour", productId: v.product.id, colourwayId: id })); track("filter_colour", { colour: id }); }
   };
   return (
     <section className="shop wrap" id="shop">
       <div className="sect-head rv">
         <span className="label">The collection</span>
-        <h2>Six prints. Seven ways to wear them.</h2>
+        <h2>{numberWord(COLOUR_COUNT, true)} colours. One A-Cut.</h2>
         <p className="sub">Pick a colour on the card to see it change. Everything is <span>{money(CONFIG.basePrice)}</span>, in every size we make.</p>
       </div>
       <div className="shop__bar rv" role="group" aria-label="Filter by colour">
@@ -28,15 +29,20 @@ export function Shop() {
           ))}
         </div>
       </div>
-      <div className="grid">{PRODUCTS.map((p, i) => <Card key={p.id} p={p} idx={i + 1} />)}</div>
+      <div className="grid">{PRODUCTS.map((p, i) => <Card key={p.id} p={p} idx={i + 1} collapsed={!gridExpanded && !filter && i >= GRID_PREVIEW} />)}</div>
+      {!gridExpanded && !filter && (
+        <div className="grid__more">
+          <button className="btn" type="button" onClick={expandGrid}>View all {numberWord(COLOUR_COUNT)} colours</button>
+        </div>
+      )}
     </section>
   );
 }
 
-function Card({ p, idx }: { p: Product; idx: number }) {
+function Card({ p, idx, collapsed }: { p: Product; idx: number; collapsed: boolean }) {
   const { cardColour, filter, dispatch, openProduct } = useStore();
   const cw = p.colourways.find((c) => c.id === cardColour[p.id]) ?? p.colourways[0];
-  const hidden = !!filter && !p.colourways.some((c) => c.id === filter);
+  const hidden = collapsed || (!!filter && !p.colourways.some((c) => c.id === filter));
   const [hover, setHover] = useState(false);
   const wake = () => setHover(true);
   const pick = (id: string) => {

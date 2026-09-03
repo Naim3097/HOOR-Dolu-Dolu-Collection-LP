@@ -35,7 +35,7 @@ export function Fit() {
       <div className="sect-head rv">
         <span className="label">Size &amp; fit</span>
         <h2>Find your size in ten seconds.</h2>
-        <p className="sub">One measurement is enough. The cut is loose and A-line, so it hangs from the shoulder. Your waist and hip do not decide the size.</p>
+        <p className="sub">One measurement is enough. The A-Cut is loose and hangs from the shoulder. Your waist and hip do not decide the size.</p>
       </div>
       <div className="fit__grid">
         <div className="finder rv">

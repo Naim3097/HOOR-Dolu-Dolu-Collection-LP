@@ -29,9 +29,11 @@ export function Fabric() {
           <div>
             <div className="sect-head rv" style={{ marginBottom: 0 }}><span className="label">The cloth</span><h2>Made for 33°C and a full day.</h2></div>
             <div className="fabric__points rv rv-d1">
-              <div><h3>Lightweight &amp; flowy</h3><p>It hangs from the shoulder and moves away from the body. No cling, no static, no clammy afternoon.</p></div>
-              <div><h3>All-day comfy</h3><p>Nothing fastens, nothing digs. Sit through a long lunch and stand up without needing a mirror.</p></div>
-              <div><h3>Pockets, properly</h3><p>Side seam pockets set into the A-line, deep enough for a phone and invisible when empty.</p></div>
+              <div><h3>Cotton silk, all day</h3><p>Lightweight, breathable and soft on the skin. It keeps you cool and comfortable from morning to night.</p></div>
+              <div><h3>Flatters every figure</h3><p>The A-Cut falls from the shoulder and skims everything below, beautiful from petite to plus size.</p></div>
+              <div><h3>Kind to pear shapes</h3><p>Neat at the shoulder, generous through the hip. It balances a pear shape without clinging where you would rather it did not.</p></div>
+              <div><h3>Opaque, no inner needed</h3><p>The cotton silk is fully opaque on its own. No lining, no extra layer underneath, no second-guessing in daylight.</p></div>
+              <div><h3>Pockets, properly</h3><p>Side seam pockets set into the A-Cut, deep enough for a phone and invisible when empty.</p></div>
             </div>
           </div>
           <Video name="senja_midnight" start={6.5} caption="SENJA in Midnight, fabric in motion" className="fabric__video rv rv-d2" />

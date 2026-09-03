@@ -1,8 +1,8 @@
 "use client";
-import { CONFIG, FAQ, LENGTH_GUIDE } from "@/lib/products";
-import { money, PAY_NAMES } from "@/lib/format";
-import { lqip } from "@/lib/format";
+import { CONFIG, FAQ, LENGTH_GUIDE, STORE, COLOUR_COUNT } from "@/lib/products";
+import { money, PAY_NAMES, lqip, numberWord } from "@/lib/format";
 import { useStore } from "@/lib/store";
+import { Ph } from "@/components/hoor/ph";
 import { track } from "@/lib/tracking";
 
 export function Faq() {
@@ -18,7 +18,26 @@ export function Faq() {
           </details>
         ))}
       </div>
+      <Visit />
     </div></section>
+  );
+}
+
+/** The storefront photograph does the identifying; the card just frames it. */
+function Visit() {
+  return (
+    <div className="visit rv">
+      <div className="visit__photo">
+        <Ph name={STORE.image} sizes="(min-width: 780px) 40vw, 100vw" pos="50% 32%" alt="The HOOR store at The Linc, Kuala Lumpur" />
+      </div>
+      <div className="visit__info">
+        <span className="label">Visit the store</span>
+        <h3 className="serif">{STORE.name}</h3>
+        <p>{STORE.address[0]}<br />{STORE.address[1]}</p>
+        <p className="visit__meta">{STORE.hours}<br /><a href={STORE.phoneHref}>{STORE.phone}</a></p>
+        <a className="btn" target="_blank" rel="noopener" href={STORE.maps} onClick={() => track("visit_maps")}>Open in Google Maps</a>
+      </div>
+    </div>
   );
 }
 
@@ -39,7 +58,7 @@ export function Closer() {
         <div className="rv">
           <span className="label">Still deciding?</span>
           <h2 className="serif">Take the one you keep scrolling back to.</h2>
-          <p>{CONFIG.freeShippingOver ? <>Six prints, sizes S/M to 4XL, {money(CONFIG.basePrice)} each. Free delivery over {money(CONFIG.freeShippingOver)}.</> : <>Six prints, sizes S/M to 4XL, {money(CONFIG.basePrice)} each.</>}</p>
+          <p>{numberWord(COLOUR_COUNT, true)} colours, sizes S/M to 4XL, {money(CONFIG.basePrice)} each.{CONFIG.freeShippingOver ? <> Free delivery over {money(CONFIG.freeShippingOver)}.</> : null}</p>
         </div>
         <div className="closer__cta rv rv-d1">
           <a className="btn btn--solid" href="#shop" onClick={() => track("cta_click", { location: "closer_cta" })}>Back to the collection</a>
@@ -66,7 +85,9 @@ export function Footer() {
           <li><a href="https://hoor.my/p/Privacy_policies" target="_blank" rel="noopener">Privacy</a></li></ul></div>
         <div><h3 className="foot-h">Customer care</h3><ul>
           <li><a href={`mailto:${CONFIG.support.email}`}>{CONFIG.support.email}</a></li>
+          <li><a href={STORE.phoneHref}>{STORE.phone}</a></li>
           <li>{CONFIG.support.hours}</li>
+          <li>The Linc KL, Jalan Tun Razak</li>
           <li><a href="https://instagram.com/we.are.hoor" target="_blank" rel="noopener">{CONFIG.support.instagram}</a></li></ul>
           <h3 className="foot-h" style={{ marginTop: "1.5rem" }}>We accept</h3>
           <div className="foot__pay">{CONFIG.payments.map((p) => <span key={p} className="pay-mark">{PAY_NAMES[p] ?? p}</span>)}</div>

@@ -1,6 +1,6 @@
 "use client";
 import { useState, type CSSProperties } from "react";
-import { lqip, dims, srcset } from "@/lib/format";
+import { lqip, dims, srcset, imgSrc } from "@/lib/format";
 
 type Props = { name: string; alt?: string; sizes?: string; eager?: boolean; pos?: string; className?: string; style?: CSSProperties; as?: "div" | "span" };
 
@@ -13,7 +13,7 @@ export function Ph({ name, alt = "", sizes = "(min-width:1240px) 25vw, (min-widt
   return (
     <Tag className={`ph ${className}`} style={{ ...(bg ? { backgroundImage: `url("${bg}")` } : {}), ...style }}>
       {/* eslint-disable-next-line @next/next/no-img-element -- pre-rendered WebP set with explicit srcset/sizes */}
-      <img key={name} className={loaded ? "loaded" : undefined} srcSet={srcset(name)} sizes={sizes} src={`/assets/img/${name}-900.webp`} alt={alt}
+      <img key={name} className={loaded ? "loaded" : undefined} srcSet={srcset(name)} sizes={sizes} src={imgSrc(name)} alt={alt}
         decoding="async" loading={eager ? "eager" : "lazy"} fetchPriority={eager ? "high" : undefined}
         width={d?.[0]} height={d?.[1]} style={pos ? { objectPosition: pos } : undefined}
         onLoad={() => setLoaded(true)} ref={(el) => { if (el?.complete && el.naturalWidth && !loaded) setLoaded(true); }} />

@@ -16,7 +16,7 @@ export type TrackEvent =
   | "page_view" | "scroll_depth" | "cta_click" | "filter_colour" | "select_colour" | "view_item"
   | "select_size" | "view_size_guide" | "size_finder" | "faq_open" | "add_to_cart" | "view_cart"
   | "begin_checkout" | "add_shipping_info" | "select_payment_method" | "add_payment_info"
-  | "play_video" | "contact_whatsapp" | "purchase";
+  | "play_video" | "contact_whatsapp" | "grid_expand" | "visit_maps" | "purchase";
 
 declare global {
   interface Window {

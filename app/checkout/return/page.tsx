@@ -56,8 +56,8 @@ export default async function ReturnPage({ searchParams }: { searchParams: Promi
             <div className="summary__trust"><p style={{ lineHeight: 1.5 }}><b style={{ color: "var(--ink)" }}>Delivering to</b><br />{c.name}, {d.line1}{d.line2 ? `, ${d.line2}` : ""}, {d.postcode} {d.city}, {d.state}</p></div>
           </div>
           <ol className="done__next">
-            <li><span className="n">01</span><div><h3>We pack it</h3><p>Within {CONFIG.policy.dispatchDays} working days. You get an email with a tracking number the moment it leaves us.</p></div></li>
-            <li><span className="n">02</span><div><h3>It arrives</h3><p>1–3 days across Semenanjung, 3–7 days to Sabah, Sarawak and Labuan.</p></div></li>
+            <li><span className="n">01</span><div><h3>We pack it</h3><p>Within 24 hours. You get an email with a tracking number the moment it leaves us.</p></div></li>
+            <li><span className="n">02</span><div><h3>It arrives</h3><p>At your doorstep within 1–3 days of dispatch.</p></div></li>
             <li><span className="n">03</span><div><h3>Try it on the same day</h3><p>If the size is wrong you have {CONFIG.policy.returnDays} days to post it back, unworn with tags. Email {CONFIG.support.email} with your order number and we will sort it.</p></div></li>
           </ol>
           <div className="co__actions">
