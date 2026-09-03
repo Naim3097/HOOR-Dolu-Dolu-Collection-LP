@@ -31,7 +31,7 @@ Run `supabase/migrations/*.sql` in order against your project (SQL editor or `su
 
 ## Media
 
-Images and video are not bundled with the app and never go through Vercel image optimisation. Originals live in `assets/`; `media/manifest.json` maps each to its output name and widths.
+Images and video are not bundled with the app and never go through Vercel image optimisation. The Supabase `assets` bucket is the working copy. The original masters were removed from the repo on 3 Sep 2026 to keep it light; they are still in git history (`git checkout 94235fc -- assets` restores them) and `media/manifest.json` maps each to its output name and widths.
 
 ```bash
 npm run media:build            # sharp + ffmpeg → media/dist (WebP renders, WebM + MP4 films, posters) and lib/lqip.json
@@ -46,4 +46,4 @@ The app builds every media URL from `NEXT_PUBLIC_SUPABASE_URL` (see `lib/assets.
 NEXT_PUBLIC_SUPABASE_URL=https://mnxvffifdvcuuuqbtmqy.supabase.co SUPABASE_SERVICE_ROLE_KEY=... npm run media:upload
 ```
 
-Adding a photo: drop the original in `assets/`, add a line to `media/manifest.json`, run build and upload, then reference it by output name in `lib/products.ts`.
+Adding a photo: restore or create `assets/`, drop the original in, add a line to `media/manifest.json`, run build and upload, then reference it by output name in `lib/products.ts`. Do not commit `assets/`.

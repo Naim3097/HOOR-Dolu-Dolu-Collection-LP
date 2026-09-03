@@ -46,3 +46,6 @@ public/__preview.html
 # rendered media: rebuilt by `npm run media:build`, served from Supabase Storage
 media/dist
 supabase/.temp
+
+# original masters live outside the repo now (see README, Media)
+assets/
