@@ -61,10 +61,10 @@ export function Story() {
         </div>
         <figure className="story__fig rv rv-d1">
           <div className="story__stack">
-            <Ph name="rimbun_cocoa_full_01" alt="RIMBUN in Cocoa, seated in the green wingback" />
-            <Ph name="semarak_maroon_detail_01" alt="SEMARAK print, close" sizes="240px" className="ph--layer" />
+            <Ph name="dilla-senja_black-batik_full_01" alt="DILLA · SENJA in Black Batik, by the upright piano" />
+            <Ph name="thalia-pusaka_teal-green_detail_01" alt="THALIA · PUSAKA print, close" sizes="240px" className="ph--layer" />
           </div>
-          <figcaption>RIMBUN in Cocoa, SEMARAK in close-up. Shot on location, Kuala Lumpur.</figcaption>
+          <figcaption>DILLA · SENJA in Black Batik, THALIA · PUSAKA in close-up. Shot on location, Kuala Lumpur.</figcaption>
         </figure>
       </div>
     </section>

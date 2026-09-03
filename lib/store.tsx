@@ -58,7 +58,7 @@ type Ctx = State & {
   resolve: (i: { productId: string; colourwayId: string }) => { product: Product; colourway: Colourway };
 };
 const C = createContext<Ctx | null>(null);
-const LS = "hoor_ddl_cart_v1";
+const LS = "hoor_ddl_cart_v2";
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(reducer, { items: [], overlay: null, pd: null, cardColour: {}, filter: null, toast: null, gridExpanded: false });

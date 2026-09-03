@@ -11,7 +11,7 @@ export function Occasions() {
           <p className="sub">Because your favourite dress should be styled every day. Look pretty, feel pretty, in 360° view.</p>
         </div>
         <div className="occ__grid">
-          <Video name="renda_camel" caption="RENDA in Camel Gold — campaign film" className="occ__video rv" />
+          <Video name="renda_camel" caption="Batik Dolu-Dolu, the campaign film" className="occ__video rv" />
           <ol className="occ__list rv rv-d1">
             {OCCASIONS.map((o, i) => <li key={o.label}><span className="n">{String(i + 1).padStart(2, "0")}</span><div><h3>{o.label}</h3><p>{o.note}</p></div></li>)}
           </ol>
@@ -36,7 +36,7 @@ export function Fabric() {
               <div><h3>Pockets on both sides</h3><p>Side seam pockets deep enough for your phone, keys and a small purse.</p></div>
             </div>
           </div>
-          <Video name="senja_midnight" start={6.5} caption="SENJA in Midnight, fabric in motion" className="fabric__video rv rv-d2" />
+          <Video name="senja_midnight" start={6.5} caption="DILLA · SENJA in Black Batik, fabric in motion" className="fabric__video rv rv-d2" />
         </div>
       </div>
     </section>

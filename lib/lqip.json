@@ -2,47 +2,25 @@
  "lqip": {
   "hero_desktop": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAADwAwCdASoUAAoAPrVKnkmnJCKhMAgA4BaJYgCw7CFBTa8H4Fbnj79QAP5Zpq41LnZ10II1DiwJ9VgEYWX1cPwvSumRPCRn9EDkfXDcOunu6UW1dSa62CIZrdCX6bufMuN750098il8pGl3RnBNXljuM4AAAA==",
   "hero_mobile": "data:image/webp;base64,UklGRigBAABXRUJQVlA4IBwBAADQBwCdASoUACwAPrVOnUwnJCKiKrgMAOAWiWIAsR80SBUgI4Da1PedmF5Az05qSeqNz7lyn1O5cEmTnIHZJdMAz5retLZwAAD+XIC3iDK+tsA/mt7VQRHuy9fG2L7sfnzYQpcnCFx3x2EFQ3KLPYAZIOj7+KsPKWyQtvt5pJsLZzUMvrEC0sPB/UP6Vg8NmMbAe97TnZutTPyBBLOjNhQHZUpIGN0eew+7Dt+ngVHKiWK47HiyHdZ8eDBODKSMcm9KRAymdnxZ9KHdx/hita1eT/HJ43kDmrvnJvGHBf++GdPUqy5tpb0aLC2CnAN7fPrt30HfxzvlzKsQtmyv2xN5WB/5xWARC8VFGKSBVj8NX9RQ7aBAwBl0poAAAA==",
-  "pusaka_deep-teal_full_01": "data:image/webp;base64,UklGRiABAABXRUJQVlA4IBQBAAAwBgCdASoUAB4APrVQoUwnJKMiKAqo4BaJQBdmXqYwfQNaSx3wnYwBN0RtJGEIjNTGOqx+Gxc4Co0AAPpOH8E0PZ1zXRVutH/60FrNj4toGA4su8ktrrPpFNzBqulwKhqIC2jYJcdiyoPBIWIbnV/KrqCPFKvNoEsBIdd2Gkw2uEmiiiYYEOC0Pc/WY0CL9mB52+k2fpQ1HqkzHkPa9j6x1AmXMnL2Xvr6/q0p9CT57GIMecspG7jH7eUAEty1JPwxnrVmCkXfrObGJddLfAaPUuOPLbVdSw9OlXJVOYInC7NdRzq/QJNeAAjeFDPt8klOONiUgBGlg6jURPSjDu0toYeUi7yi5iPheF7UJ2/0DdWYAAA=",
-  "pusaka_deep-teal_detail_01": "data:image/webp;base64,UklGRgYBAABXRUJQVlA4IPoAAADQBQCdASoUAB4APrVOoEsnJCMhsBgIAOAWiUATpmHIzuwK/ogJx9E3vEnOs1p5xtkkuwQ5958AAP73gnxjiY4xsIYhkke+E4V0/zKTVb+7GYC6tAK10UwoE46JWJCybq0cXxgXs0mvc00lcgB7jDr/4hlR3+Pxm75V5HJKF/tP0ad0NYVME6vhUPiyLVqvbo3bTUX7q097pP9Y7r1exU1riQF/s/dRRxVczE++4KhOU+5xsv3YxhqzJ4aKoJ4p1v1Uh4htX/N/nQEPX1tfgg2mOX0Dz4Go77gaDLl67z5cRZFcAyZ8fUO4ngcZG8yTVtaPLOwE3LQzTUAA",
-  "pusaka_deep-teal_detail_02": "data:image/webp;base64,UklGRiQBAABXRUJQVlA4IBgBAADwBQCdASoUAB4APrVKoUunI6MhsBgIAOAWiUATpmHHZ76pmgZYJ00JNwPgSFWJhL8YtTmXOE9L8AD974Gx6zHhdwiy96t/blRj8X9PPAJv4XHhu69UEAUfYhMYaCaYlHipellDqrbLWgozBziiqZmXImD4dyZF6eD/IqVvfqc7K1v+stXPVPcoulbucYViQz8FO3Yn0vbDl8bmxhwUraABiJsEIwlLkxQCLnSiHqrVY1pT5DaEnUsykRzHXwfevU2numuuSQhjvyOuyF6XHIMeXNDvSEhpz4UtZHnX4r+mMCwxgWVk6LZKrDMZK47U+CNEr+eKDw+kKazDHbeXwUy8nGWjy2eHixR7+q+wypzAd8KISTrsgAAA",
-  "semarak_maroon_full_01": "data:image/webp;base64,UklGRi4BAABXRUJQVlA4ICIBAACQBgCdASoUAB4APrVKoUunJCMhsBgIAOAWiWYAnTlBVtU4I0CVo97azGhF0bh5A/izi1n/tK6MQnaKPoyAAP7nohRnVtbVfGDpDQbTEkVqB06jKEUaubFi9ztS7ThCJNhfSjz/YBSIRtJdR58+RyNh01X0Wv0sYsRMrcPN41LgQ3/p62FPKHdBkAn/czzGZ2m9t+66XKLGs92PUk21PqDxVf+XFBdGbIoYEAU2d3lpwgxkSYiqnOGVODI7V4yNGlYS8+ftRKTb/bZILgIP96fmdr3NLHNAkfvk0kOX9mxUHxNxHGTUIuxp/6NJfFx5mBWr8RZq1CdBPv7rvk2Cqc4RsTxT5vHVQ7GegqENFtdHirnmUbFsXUF8nuzQf5Y26ogAAA==",
-  "semarak_maroon_full_02": "data:image/webp;base64,UklGRiYBAABXRUJQVlA4IBoBAABwBQCdASoUAB4APrVKoEunJCMhsBgIAOAWiWIApxXc64DojwB5C3t6xPP00A3XAtN5sewwAM3kozzE76oAwj363uA9rzJMwjSxrZ4aiZPZdE8IJt6pAJTy1dOc5C/160Y4jV79ixcYmrqtd8W1uNdQ4fOMzT5g3pz3pcyLc/Rcs5t2A7HrWeWwKid6s7aCC6MHkLBgNue4ObiVpgOkKc4onlOXefXzZz9sM0/gCHtd6KxVY2ZT9sxdCqix4C6OaQq0jCiG4ql5gh7K1HQlVYSPK/Yzvh2bMAM6WBDrqPzOGJaodDrHhpRIt9pgImgcGiQ6W3F8A0TcLPS/sva03nZFPZC6Ni1yB47Gi4NrDv+B391llT+qfX4YAAA=",
-  "semarak_maroon_detail_01": "data:image/webp;base64,UklGRjABAABXRUJQVlA4ICQBAADQBQCdASoUAB4APrVInkmnJCKhMAgA4BaJagCdMyGlqRQOHh2b4gbblCFptMWtb0WCvZWjo/JAAP7geKvRt1Hq8Mx0MI/tbbySwS5XZRzNouYmTY7VoX1Xr9O/b0p1pfUVBayL6bpEzYDizmX0FPWAYetIoT2ilJmULlgIIoGOolD7jFxSn2Pw+h1o4gQHV4dyYBVOdK1KwBuUmUhZ0mGfBz2wITvxF5UTVCNykFdZlAVU3bL9XwqQV8RL9YTAaO6NeCmDVXkV+nI0hK3PFiuZIqjl0U/3XyFJLMqQBjvVyIIGdMzTyOvEZY7DjXFmQDWrZs0ktdO2t5n/24bgp4ei/DObs3uG+Cneh+3P0uDO2HZAbrH8qskMTaMjGBgsqTK+v4AA",
-  "rimbun_cocoa_full_01": "data:image/webp;base64,UklGRtQAAABXRUJQVlA4IMgAAAAwBQCdASoUAB4APrVSo00nJKMiKAgA4BaJQBdgCt02+GbtocRU6Wn4VbPT4C/zjw4UeAD+tdON8TvMilCcY7pYxKKQ2v+cF8eigWNHLH2rP4Dy6RrwnyD9NC5eY0xynLl+t1gDVKsox5HONvW9QqeUbe8BI23CItcZBhNemvHqcKjLXRMsKTtsu30htC+60/GTbbkSQTKhyRsaekzJ4R9WdGJMReFmmhWjrZcncDQhtv74XO3rMrXXPtPeQRq2f3o4JgSG4jwAAA==",
-  "rimbun_cocoa_back_01": "data:image/webp;base64,UklGRsAAAABXRUJQVlA4ILQAAABQBQCdASoUAB4APrFEnUmnI6KhN/VYAOAWCUAW9wixPdbBYBIZXpBHqFBDPUVwMMBLDhwA/q/EbXojiAOon03IRZpCt+DLZ91H+sts53Hzspt6teJaONwnqDu4Td7ePu6f2+PMTbSADUFL5kprhcuJxqiusm1JOckfcAd6rBz5In3piNz3x7VJ5jFXnfcfhuWXswzLiyqpHJt5ozMeBb+AggmSu9Hef5R82dNnWD4Ca/2AAAA=",
-  "rimbun_cocoa_detail_01": "data:image/webp;base64,UklGRvAAAABXRUJQVlA4IOQAAAAQBQCdASoUAB4APrVQoUwnJKMiKAqo4BaJQBadAhprwFbuZoYicnkJxubpabVWatnAAP7D3BOzB1YmUjO+ut4Pf00UzM6iKZgY+/AkLz2tcvBrjHBR6FN4X+0E+0N+2JOpjmchnuz3JDW9/FBzRTnm9FZh5H6YC14v2yQc1IT+gOs6+iVj7lh8lBjbjcexUsxdloTYMhUuuWRM83Z0L33MuppyDlg5ygfGMAOngmpNldHT/2oKRsPOM8amnJcgDvc7uviAk254WFLGFfZyAj+K4GAUzvaoz8xE+ygVAr/Q6W8AAAA=",
-  "renda_camel_full_01": "data:image/webp;base64,UklGRsAAAABXRUJQVlA4ILQAAACwBQCdASoUAB4APqlEnUmmI6MhMAwAwBUJQBdmcj+VB6aYB7SRMNdVFJJPxcBeEhNxKTVZwwgA/rnyrD+whro4ZbhTNZPuWXOsy0RseZ6lkPmpXyiFZfZGXIuPtmqngFlOf2Qpdd6cEqwbJzs8LE/AMDZX3jSvvDrMOMysXImqJcx8ddMvn91+IzlC5QcGTS06mE9musQjqXWOWR6YDRgzPvIS02WGTAxV9L4zykf4ls4JAAA=",
-  "renda_camel_full_02": "data:image/webp;base64,UklGRuIAAABXRUJQVlA4INYAAACwBQCdASoUAB4APrVMoEsnJCMhsBgIAOAWiUAWo2ZxFHRA/4FUONtCXWLXycKDAexVMGXR7YAA/tzxTMbD9VlriNm7CssBW4KiTqpW9Ap50mL3lbleIOQ7czsAjFpjgXVurvo1cso4hWGQ7Pqz1zT6wVDR30IZekLnek9HQHG003s5h9eT+BuS6ipBn0gthDvwV1ZMXHbHrzW4dTrAKSrXOe8sWx0wsB9qmi6OFTsP4nV+r1Z+LSk2wKSjmrPz7lmklQwwnmjQb0jBb0mvMzIWiZ+BAAAA",
-  "renda_camel_detail_01": "data:image/webp;base64,UklGRuIAAABXRUJQVlA4INYAAADQBQCdASoUAB4APrVMn0snJCKhqA1Q4BaJYgCxH4UGdoABX2PqPuWinIhjFVKhtLd1uFmYD3QAAP7s4DWF0ghqhU26A/2uECMbQLNNPM1IWU66YE9So4nhuiV4usmcmAlDJi/m6zEriiMB/CSPuf7+UQOQFrvi4Wfd5pd7FmApZHU1/lKL3oIGKHT6dkxz+AtkE8lPnFmKjQ6AHUbt8HuZVGgio7/jDv4ylNaxy2rse2gU/HdEkpqgbUxKx4T433Ow+3CVsYl6X7Jp4DE97G6Q7t2YAAAA",
-  "renda_indigo_full_01": "data:image/webp;base64,UklGRvoAAABXRUJQVlA4IO4AAADQBQCdASoUAB4APrVGn0mnI6KhMBgMAOAWiWQAqPgIAfFdT1TPv7KBNSipvDszEwha5KB0H8QAAPyre58/pGFuYsTfVBu3hwtEU5PQjiBW6H6W0hDN2yc6HOqEft5s+eC+enz5uakuVk9NsYpU52WbOb3+ZdA85MaeAYugwlkCyfj22DWYxKxqvc85jV91hxBUSkMz7s8qbPYX5yyK8r0tJHfGLB5MKeM6+UtENi6M9bugq6EmMMBlwzujheS0yiS0af0q3lg0Vqsb8qkw/O/shHu7xCnBv3UqJfJSrGeE01aQi8Tk/8BP6OR4AAAA",
-  "renda_indigo_detail_01": "data:image/webp;base64,UklGRmwBAABXRUJQVlA4IGABAAAQBwCdASoUAB4APrVGnEmnI6KhMAgA4BaJbACdMoR9D48ImkeB7qDbWfBbxaX3e9J4McyMULxRS5w5JDRBlTRnAADZ6oPIcDxXnDNMKGtiCeJ6wtAqGNcs9JW8vewYF0lPmoxvevYpRiul5K/ZNjfaLzXdbrs4ld5XBbNanicpC0kre08J3KVdYCDTVIpMMQASoTMbkCXD7bJQPUxpYy1tVWzhbHA5btQN3LBD53xpOYtGlMq2vDT4OE0fNjjixOHtlWDWRNcvawL7qJVbgzlcUMvLmBhW0tlDyRgBkc4FkWt+gfinG8U53LWtGf6Zg73OsSqyDr5/emPzNyB7QN5z8abrb+B+R3uBpIm3/knZJ56Xbe0Ma56Kr0tN8WvRcy/JXgMVp05xiKoxQrfk9/7BJE+i26ROazJPwZ4aRfEEvGSv2f+PvzdNekr/JP8HF9VDsoT1Yz063WNy/deAi4AA",
-  "renda_indigo_detail_02": "data:image/webp;base64,UklGRiQBAABXRUJQVlA4IBgBAADwBgCdASoUAB4APrVOn0snJCKhsBgIAOAWiWwAnTLs+n+quNebrZoCV2tyA9GK4sILhFksF2BhMZCeYF+4ML6AAP5YiPpb3DGRVGR/65LlW7ueaB+tADNAQgX3vvUfDYd/aQb0tgpPvstR/B6rjVn+TymalQKWRKZV66rrwlEt/Ck7ZA2camdagRzjIKUQq4wCJIwA6El470zTWcicmCLtC6WBRfNYjyNAdgqe7lx3RVEJffmjBLAx16OOWpaSNjTAcMBzQPx0tZ9Yn5EXjUNV/RlDoAfvdJLfNX6N3MQR0n/iOXgezHQwVjUzgWIciznNccfAWsrfPMKpWOw/Yh7UiouS1NB4bplt4rJyt9PmsjlCtXtbgAAA",
-  "senja_midnight_full_01": "data:image/webp;base64,UklGRgQBAABXRUJQVlA4IPgAAABQBgCdASoUAB4APrVKn0unI6KhsBgIAOAWiWMAnTOR9vZ/xvQt5+Um6zbsaFpFkv+Ry69vfCMsLLJHgADONr2AjazYtA7ZKZp9b/+Delx6H97ZoUKuIJ0DsoBA5EaZ8n0LsfOqrrbz1G+Q/a9HPh0rLL6vFpalIWlNOq080GpG+L5tRsK6+A3AWnTmOPhFIfsXSuvAcOB5p7kAdcD8sGZLBVPQWhLWZXr8D3k4Lv14zzuTj+ixgZhkpHMw9S8DcSluETB8+GNxMagd6R8iOclxyOd/zbSHnyPFvrmiQJJwa8qqUC9XXkvlSh1OALhwXzW89E6LfgAAAA==",
-  "senja_midnight_detail_01": "data:image/webp;base64,UklGRkgBAABXRUJQVlA4IDwBAAAwBwCdASoUAB4APrVOo0unJCMhqAqo4BaJYwCdM5Hmq8A7wI8EMw8iYs6Oqpqyc1jZLrGmvw+TOr8/KC1r0dsWdsAA/mQjLoUcASmYJOUq3V/ca7dNmOSPQQk/zOM8eKQVnFbRel7Pv8gkzrA5hEpkj47JGEp8QRxrWyIYqpxcQz/y2aCvZiSplgilsSq4goYuZO7C99Mo+muuaENshyjzHh5nwSApGrD4fdBE08pf57u3yro/ZZkXEitD81nZ2n6AlYeaecpqguxzMXw7ZGEKBMF/3Z0jZMV3ldCCl0P+rHqcF5hlg/JRo8+dMno0odjDAImJkgp5U2EkM2Xm+gZnUgChJE4Esb4eR2c09C9zxtRlWiKyRdXbzfpB73ugn8eJREhoB7dfaKd3QxdKKhES512fMk5zyYG7QAAA",
-  "senja_midnight_detail_02": "data:image/webp;base64,UklGRhgBAABXRUJQVlA4IAwBAAAwBgCdASoUAB4APrVInUmnJCKhMAgA4BaJQBOmY5BWtAKRCoPRAlb5680TwwYldjpKuK21oZcM1RsAAP4Bc3ZWddfn400coa95wjhQGAqnhL3hC5Ab1O/exrDCw2bfr3HBOzHHabAL6PwMrLb2tPlFB5oPmkdgYgiXLjJKoUpo5RBUl+jWep0/tk75/IMRqsZg9T3dTUoMyn7JsnuFrOytgO/e0+fhAxjgOa8dEhCdPoY0oH32adXaWKBvDhsJSw8wpe4VmNkxJnBnGRi3P95Uv0vm/h32+/EjnDM5ElYt9HqU7XJbPURZpT8jzybu2cGMA30c+kL/GVMXvgAxjYT/OT6IOiQAQywPgAAA",
-  "anggerik_lilac_full_01": "data:image/webp;base64,UklGRgwBAABXRUJQVlA4IAABAADwBQCdASoUAB4APrVQo0unJKMhqAqo4BaJQBOmbOT2JgHXGZFd6O2l2jqheWlrGEwaXMGe6S58AAD5c4xfZY2WpSFB2O55+myy/Japml7MhbqoucUGeX/TU01Z0TTcT7gGrHGwnpSL0M/Ebus6z2+aMus+xIvwTdjjETxrJv/tu+jGLSIJEE4alK67C5IaDC+j67Ndc02zHMW1dGqK5BC6vMV/dbfDblZJC74V+6lcJOIanvoIGzwFBZG0RcZIsla7yQ7shq3d/hE19HXO0C7DWZfuJWdfq7eQuLPHjubk2k0Ma3p3ZPasX3XtYP8dVVFxVrvznYA64rz2I/G8EAAA",
-  "anggerik_lilac_full_02": "data:image/webp;base64,UklGRioBAABXRUJQVlA4IB4BAAAwBgCdASoUAB4APrVKnkmnJCKhMAgA4BaJQBYj4wS4AwDYU1Ty1rZukF3W0wS/Sf34wdiD+VkFDRwAAP5ZfgB+doSokJkGRe9QycPJMbBB3OXGi/oR7zVpzI7AaszfRQVc0LT6ewu3QYHwt8QMJsA2S0fUGKGef6bYuzMpbHnVxJ2Wd94OfjlaessGbQkHExz1oPT4kCSlBjlPfTUrOqF3SAeJXYvClt6X9HdbIJbuM77WZkYT266ldqF//Lg7FTufSeYLZm/ViFvUQDjnTKK7dW5ixZGAkbjkwCS9RYKMTdOElZw/Vr0NbKI5A9jufbABOPFVf7XZwTTX9rFz+uChGKq5XqZGcAzVSBi8yfVvpoVBfLc3pqk5XKoOsAAA",
-  "anggerik_lilac_detail_01": "data:image/webp;base64,UklGRiYBAABXRUJQVlA4IBoBAAAwBgCdASoUAB4APrVSok0nJKMiKAgA4BaJQBOmZl2TTdDeBcSBeOEwcD8us+YtmWS9tFkJNn7cQC7AAM4xaLdtqB8RuFpaAKyW773heFKjiHP+I/sZwx40oUtIdhrlJxbBecOfrDDKnaLZYyEzzYxGm09/q9Y0UhYnsH/NHg37U3vJO4s2dz7EnNPtqj4fvTTCtuvTf8lhGPlgd6GIAnFFrCBoUTQdMU/vQTRyvSuRtIKwEhyU+ynNYAtqSoB2r4j+n5IqF2yWpXXZfDrJ4/OvgVJwVnJM7jeEfwOfBFqM5Pj03iLf1fa0SJw1NEixm3aQNLAtsIgJ3/zbu5pVwyYsGQFmN6ZvqS0YF9oqu8fLCnDlbVa67Oi4AAA=",
-  "hoor_size_chart_a-cut": "data:image/webp;base64,UklGRrIAAABXRUJQVlA4IKYAAABQBQCdASoUABUAPrVQoEwnJKMiKAqo4BaJYwDImYwccDhfPUqW/4Ip6ehuO6Ph/jsFgAAA/uu6zwX1Nq/ifcINZW0xB6kfFzPnbfeAyhMVuN/YlIQSbHwDQ2o0DawIjo93nLrGTxeVDoX5jUVhNIKzXSJPhQJH6ZZMNrSEQMoFUBvTsQ+at8dSWRILLXyLuzMmFbyg62evw+G1id0qtgk0xmFiAAAA",
+  "dilla_soft-peach_full_01": "data:image/webp;base64,UklGRgwBAABXRUJQVlA4IAABAADwBQCdASoUAB4APrVQo0unJKMhqAqo4BaJQBOmbOT2JgHXGZFd6O2l2jqheWlrGEwaXMGe6S58AAD5c4xfZY2WpSFB2O55+myy/Japml7MhbqoucUGeX/TU01Z0TTcT7gGrHGwnpSL0M/Ebus6z2+aMus+xIvwTdjjETxrJv/tu+jGLSIJEE4alK67C5IaDC+j67Ndc02zHMW1dGqK5BC6vMV/dbfDblZJC74V+6lcJOIanvoIGzwFBZG0RcZIsla7yQ7shq3d/hE19HXO0C7DWZfuJWdfq7eQuLPHjubk2k0Ma3p3ZPasX3XtYP8dVVFxVrvznYA64rz2I/G8EAAA",
+  "dilla_soft-peach_back_01": "data:image/webp;base64,UklGRi4BAABXRUJQVlA4ICIBAACQBwCdASoUAB4APrVKoEsnJCMhsBgIAOAWiUATplBmvZAGMs3imAGk7aHCyv7exsGB5pOyC3dcjgyoE72Wg3MAuFXWHHAA/sQ6y3n+EHmLo78T/PsDdH3gVh6Tqp2CGlOq8JSzD1SEWvYVYin2t3WW8i6u/XJVdeyHZKDRO3aFXz01Xe8Rf2IgOWE5UaVYz4MGbjaqHjoTXNPJsIsd2XbBOjPCv7ZFls2kUnYW3+kbkto3J0TCQbShNCKYhmeFcFrj34aAN1Wu3epSEz/YqzfBnY7ASpuEbui+iyW0owityxgVIrNiBafssu+kTJqvJReWZVfeC9ev/YHzFLtt2mpcGmx8E9M7uPHZioNjVT2Uef/nc7xaWoyHv93CivoBtQAAAA==",
+  "dilla_soft-peach_full_02": "data:image/webp;base64,UklGRioBAABXRUJQVlA4IB4BAAAwBgCdASoUAB4APrVKnkmnJCKhMAgA4BaJQBYj4wS4AwDYU1Ty1rZukF3W0wS/Sf34wdiD+VkFDRwAAP5ZfgB+doSokJkGRe9QycPJMbBB3OXGi/oR7zVpzI7AaszfRQVc0LT6ewu3QYHwt8QMJsA2S0fUGKGef6bYuzMpbHnVxJ2Wd94OfjlaessGbQkHExz1oPT4kCSlBjlPfTUrOqF3SAeJXYvClt6X9HdbIJbuM77WZkYT266ldqF//Lg7FTufSeYLZm/ViFvUQDjnTKK7dW5ixZGAkbjkwCS9RYKMTdOElZw/Vr0NbKI5A9jufbABOPFVf7XZwTTX9rFz+uChGKq5XqZGcAzVSBi8yfVvpoVBfLc3pqk5XKoOsAAA",
+  "dilla_soft-peach_detail_01": "data:image/webp;base64,UklGRiYBAABXRUJQVlA4IBoBAAAwBgCdASoUAB4APrVSok0nJKMiKAgA4BaJQBOmZl2TTdDeBcSBeOEwcD8us+YtmWS9tFkJNn7cQC7AAM4xaLdtqB8RuFpaAKyW773heFKjiHP+I/sZwx40oUtIdhrlJxbBecOfrDDKnaLZYyEzzYxGm09/q9Y0UhYnsH/NHg37U3vJO4s2dz7EnNPtqj4fvTTCtuvTf8lhGPlgd6GIAnFFrCBoUTQdMU/vQTRyvSuRtIKwEhyU+ynNYAtqSoB2r4j+n5IqF2yWpXXZfDrJ4/OvgVJwVnJM7jeEfwOfBFqM5Pj03iLf1fa0SJw1NEixm3aQNLAtsIgJ3/zbu5pVwyYsGQFmN6ZvqS0YF9oqu8fLCnDlbVa67Oi4AAA=",
+  "dilla_soft-peach_full_03": "data:image/webp;base64,UklGRgABAABXRUJQVlA4IPQAAADQBQCdASoUAB4APrVMn0mnJCKhMAgA4BaJQBOmUDX/y7nWCh02B9nmm/4XHF9NJAq5N6GkqMX4AP7TlyJ/98jcy2PHZ00xkqQGlIuYqUql3ZpulYdjr35sczPIB+dyy0nB54PAn9liwejBkWIYXfbklAm6fVlDevBpWdm0Ld33q/HIdPJnwV8138UDynPhQ6U/XhXzrrO62GQetolFvw97mZfR5bKeVgfUb3LBuMzf5uwRjtZ+NrVJuCD73H7KtK6YYVtYkL1hgMiG6zcZIq6tbfZLWGY6RiV8XKmb4AqRCqor0dHZBwOuHJBl9OWjNXestAAA",
+  "dilla-senja_black-batik_full_01": "data:image/webp;base64,UklGRgQBAABXRUJQVlA4IPgAAABQBgCdASoUAB4APrVKn0unI6KhsBgIAOAWiWMAnTOR9vZ/xvQt5+Um6zbsaFpFkv+Ry69vfCMsLLJHgADONr2AjazYtA7ZKZp9b/+Delx6H97ZoUKuIJ0DsoBA5EaZ8n0LsfOqrrbz1G+Q/a9HPh0rLL6vFpalIWlNOq080GpG+L5tRsK6+A3AWnTmOPhFIfsXSuvAcOB5p7kAdcD8sGZLBVPQWhLWZXr8D3k4Lv14zzuTj+ixgZhkpHMw9S8DcSluETB8+GNxMagd6R8iOclxyOd/zbSHnyPFvrmiQJJwa8qqUC9XXkvlSh1OALhwXzW89E6LfgAAAA==",
+  "dilla-senja_black-batik_full_02": "data:image/webp;base64,UklGRhgBAABXRUJQVlA4IAwBAABQBgCdASoUAB4APrVQn0qnJSKhsBgIAOAWiUAVhAmNSp74Vkl1z99avT+eHmuqmw/TUunRE0HJRmCUAAD+4aeoHfttn6jTu0fTbDLh8m5Hzxdsh4bjpAYwRtFK/cXFu+lZVL3wJa1sI9P2KBWR7gWGkGaP5+wyDaaNMyB7lkqqhlaol0qduxL3wLdth9iWy/PHZsBe55siOgPAy9oLoTGVaAI3InWmmYrwU6YWITmz4rWpBYhez23Nvuwzb9vsNZ1kQ4AZxsMSW5OrTn5ZzxlUSkpLF/SR5Tx68RZr5nR0oPaxJBtoL6TYlV1TMVozI1p1aSW54PhtNw1bHDFew1zhXk3SllFTfvrPRwAA",
+  "dilla-senja_black-batik_detail_01": "data:image/webp;base64,UklGRkgBAABXRUJQVlA4IDwBAAAwBwCdASoUAB4APrVOo0unJCMhqAqo4BaJYwCdM5Hmq8A7wI8EMw8iYs6Oqpqyc1jZLrGmvw+TOr8/KC1r0dsWdsAA/mQjLoUcASmYJOUq3V/ca7dNmOSPQQk/zOM8eKQVnFbRel7Pv8gkzrA5hEpkj47JGEp8QRxrWyIYqpxcQz/y2aCvZiSplgilsSq4goYuZO7C99Mo+muuaENshyjzHh5nwSApGrD4fdBE08pf57u3yro/ZZkXEitD81nZ2n6AlYeaecpqguxzMXw7ZGEKBMF/3Z0jZMV3ldCCl0P+rHqcF5hlg/JRo8+dMno0odjDAImJkgp5U2EkM2Xm+gZnUgChJE4Esb4eR2c09C9zxtRlWiKyRdXbzfpB73ugn8eJREhoB7dfaKd3QxdKKhES512fMk5zyYG7QAAA",
+  "dilla-senja_black-batik_detail_02": "data:image/webp;base64,UklGRhgBAABXRUJQVlA4IAwBAAAwBgCdASoUAB4APrVInUmnJCKhMAgA4BaJQBOmY5BWtAKRCoPRAlb5680TwwYldjpKuK21oZcM1RsAAP4Bc3ZWddfn400coa95wjhQGAqnhL3hC5Ab1O/exrDCw2bfr3HBOzHHabAL6PwMrLb2tPlFB5oPmkdgYgiXLjJKoUpo5RBUl+jWep0/tk75/IMRqsZg9T3dTUoMyn7JsnuFrOytgO/e0+fhAxjgOa8dEhCdPoY0oH32adXaWKBvDhsJSw8wpe4VmNkxJnBnGRi3P95Uv0vm/h32+/EjnDM5ElYt9HqU7XJbPURZpT8jzybu2cGMA30c+kL/GVMXvgAxjYT/OT6IOiQAQywPgAAA",
+  "dilla-senja_black-batik_full_03": "data:image/webp;base64,UklGRhgBAABXRUJQVlA4IAwBAADwBQCdASoUAB4APrVKnkmnJCKhMAgA4BaJQBOmY5BWtACB7C6sIpXnz7GU84e7Np+VcB6iace2gAD+aKtQumY6cDE+mwiW/eCf7NccoUBzft6tDSgNbv6WZUBilVSBnyw+u47WQbRL810dm46r3eu5DRk67MlLqiAmpaPRB6jhmkO3T9zfXXtotI6KpRN9ivQwP10wNb8gm/PmGjNKSwpvtTOPzIEu6McBzXjokITp9DGk/+eTugKM6Ah2PnWPGLhYKsSZjsNSlmSJHRc0BG7rtKPjofwEE7OmhaPIBfRbqZ5X4dDL3TyjckGoSwKVFWhm22FNJmxsCnaMgR87bg7mXYsfmT0GD2l6wAAA",
+  "dilla-senja_black-batik_back_01": "data:image/webp;base64,UklGRhQBAABXRUJQVlA4IAgBAABwBgCdASoUAB4APrVQnkqnJSKhsBgIAOAWiUATpmOA2U+nKuNFENCTu1ZJdLozCRuMatwQF3cE/JXD6AAA/sj8vU8evnw8U2fYyYzT4biv6bMq4uXixekn4YtKjRULAywcvMdNgkiaH/eisMuhaUa0PU4MpbXXerUWn2OXByPpfFNi53M4/j2icJQkgVevZ1qIVh4OKH8tcnrWaXWYOL8SpUDeFGiuhHqwZdGA1KSb9oELR9+XTRvM1nPSqd0mdxCXb/lE/ukDdPloUwTNhQjcs+Jv48roxbppaveq0t0Hlz/vdbMjcc2OfxUq8I2BhOVxceU+xmd/jWOCzokFZOi16iun068AAAA=",
+  "thalia-pusaka_teal-green_full_01": "data:image/webp;base64,UklGRiABAABXRUJQVlA4IBQBAAAwBgCdASoUAB4APrVQoUwnJKMiKAqo4BaJQBdmXqYwfQNaSx3wnYwBN0RtJGEIjNTGOqx+Gxc4Co0AAPpOH8E0PZ1zXRVutH/60FrNj4toGA4su8ktrrPpFNzBqulwKhqIC2jYJcdiyoPBIWIbnV/KrqCPFKvNoEsBIdd2Gkw2uEmiiiYYEOC0Pc/WY0CL9mB52+k2fpQ1HqkzHkPa9j6x1AmXMnL2Xvr6/q0p9CT57GIMecspG7jH7eUAEty1JPwxnrVmCkXfrObGJddLfAaPUuOPLbVdSw9OlXJVOYInC7NdRzq/QJNeAAjeFDPt8klOONiUgBGlg6jURPSjDu0toYeUi7yi5iPheF7UJ2/0DdWYAAA=",
+  "thalia-pusaka_teal-green_full_02": "data:image/webp;base64,UklGRt4AAABXRUJQVlA4INIAAACQBQCdASoUAB4APrVMnkonJKKhsAgA4BaJQBdiP/xbKijDHNws93BHg7hjBrdnRm7QBnxyQAD+9Xv6svUPe5o2aJafcQ1ApIweeQ2lK2e5k1q3qVv2R3LmTymMwSVnvNEwZbY2Hrp0EPsw24nQiDfXGXXCxWtPxHCLlM78lXCrvgKAHRc4d7b4zsMy20v2GDjMHboLNfBG3w5dQiJFdsS8seo17/1VRmt130s8xLoJADc2SdCjq5UmqbfYqdrqCHZlwyEEudkB8QQfvg1/2xxmgAA=",
+  "thalia-pusaka_teal-green_back_01": "data:image/webp;base64,UklGRvIAAABXRUJQVlA4IOYAAACwBQCdASoUAB4APrVOpEunJCOhqAqo4BaJYwCxHvU34HAszc32hfQmx8ZRHQJb4ZIh/xolWAAA/vkYfoNkO/O94eOCPaKy87MqFGYdQZMrInqar50a8WIoIeg9/BjzZ2vrPkyyIoCXcJqefjfStuayVrhoQ0YlCluK6/j4kwPyKenNitv48iisQSvbCKvEngpY/XkwViglKFXYaSoKBkS0Leq13NeL0gKR7vysG17k++nwIvoyCkoIgeGDOJu94mkKQRh7MnxWxovuAijP3aXoXCjfhkkGn9tB3O0V3GQTtZwjSzgAAA==",
+  "thalia-pusaka_teal-green_detail_01": "data:image/webp;base64,UklGRgYBAABXRUJQVlA4IPoAAADQBQCdASoUAB4APrVOoEsnJCMhsBgIAOAWiUATpmHIzuwK/ogJx9E3vEnOs1p5xtkkuwQ5958AAP73gnxjiY4xsIYhkke+E4V0/zKTVb+7GYC6tAK10UwoE46JWJCybq0cXxgXs0mvc00lcgB7jDr/4hlR3+Pxm75V5HJKF/tP0ad0NYVME6vhUPiyLVqvbo3bTUX7q097pP9Y7r1exU1riQF/s/dRRxVczE++4KhOU+5xsv3YxhqzJ4aKoJ4p1v1Uh4htX/N/nQEPX1tfgg2mOX0Dz4Go77gaDLl67z5cRZFcAyZ8fUO4ngcZG8yTVtaPLOwE3LQzTUAA",
+  "thalia-pusaka_teal-green_detail_02": "data:image/webp;base64,UklGRiQBAABXRUJQVlA4IBgBAADwBQCdASoUAB4APrVKoUunI6MhsBgIAOAWiUATpmHHZ76pmgZYJ00JNwPgSFWJhL8YtTmXOE9L8AD974Gx6zHhdwiy96t/blRj8X9PPAJv4XHhu69UEAUfYhMYaCaYlHipellDqrbLWgozBziiqZmXImD4dyZF6eD/IqVvfqc7K1v+stXPVPcoulbucYViQz8FO3Yn0vbDl8bmxhwUraABiJsEIwlLkxQCLnSiHqrVY1pT5DaEnUsykRzHXwfevU2numuuSQhjvyOuyF6XHIMeXNDvSEhpz4UtZHnX4r+mMCwxgWVk6LZKrDMZK47U+CNEr+eKDw+kKazDHbeXwUy8nGWjy2eHixR7+q+wypzAd8KISTrsgAAA",
+  "hoor_size_chart_a-cut": "data:image/webp;base64,UklGRsIAAABXRUJQVlA4ILYAAABwBQCdASoUABkAPrVMn0snJCKhqA1Q4BaJYwBWdg0ADyKRT37K0b+oWyDT17HNO5fiQrIAAP7yFvCR86e7ygJToYlzbP/NwC2beSJwUAdPgil7DgFEmnQ8+51hKDHbdPpjIhClhm75dOqrpCvZDHzCj8mLQvtB7FWqed5Fmb8olxGCYlc+5xoJ5HuXrMkgnv7f+q8LUhBmukrPUf3m4c9aaAbocyvYxkQZ5gexnLp0MjaOoRwAAA==",
   "closer_desktop": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAAAwBACdASoUAAgAPrVKnkonJCKhsAgA4BaJQBOmUI7gBScL2FakPANYswAA/vIngYi+vKTXbLj+2QV5n8UqHfyMzDc9mUd27CTDyX0QTIOgnxPyKsYA1JNEn/CnGwQzOz5QNjn6pKj66IAA",
   "closer_mobile": "data:image/webp;base64,UklGRvYAAABXRUJQVlA4IOoAAADQBgCdASoUACwAPrVInkunI6KhqrgN+OAWiWMAnTPax+MBndTeHwOw1TjahFi6FwChq2NBBFe+1OMaqN39ppAA/vpM/JOcenLFnt5otrRsHMeO3K/2E0lApV/Hz4af7TbO378zr0nDQBDVvmz0Lza8r2rmXSgdkaUtcH+JYSwWOdpIuljJzdtWh8oxuSKHNIk2lTOIyMtOgU6hrGdrsaoy03OsjzydCbl9ld+Hj7Omlw/6R/lgPBUSUe2qgVlu5I9Xa3VhEX2bdczhMmrVtGaUtSiPQ3KzZCn2QzfX1hNRdBZWQfUZ2J7sAAA=",
-  "pucuk_forest-green_full_01": "data:image/webp;base64,UklGRrQAAABXRUJQVlA4IKgAAACQBQCdASoUAB4APrVEoEmnI6MhMBgMAOAWiWMApeW/gWK7afartrxDL3+Vq9pIVLh+zARWmAD4jVeTCI8/3SskkmLVqnBP/KdYqFtZE6N4ENWaWlw5u3cJ2BCFh2UPKmjWgoERD60Ws9elogBJ4tPcg83gogRemNTiFGE2deaeooxyAJ+o+JRDmrf0JeWSTHl+asA/J3PYHsmGrHg1UJQrodcMB6VagAA=",
-  "pucuk_forest-green_detail_01": "data:image/webp;base64,UklGRvIAAABXRUJQVlA4IOYAAADQBQCdASoUABsAPrVQo0unJKMhqAqo4BaJZQDCgywTmYPGNXz3Ewggbxy4L5F1R1dYCNZxlELIANmtUfTJaEPFqa0DuM/h5RHww0rlx/+pkL3ICFtEzktCOdatWbtnS6Vr/HqCRaP2oLO+dEfFZk94l0xl6ASEpw3c2ACzPYcZLsD2DBCwG+CRN/pP8StndP+PS7m8cJXODzXSEbPBBWhdVEBaWVQFcfNuMxew29+8+tJqKvfUtIkhSI9lI3WAvyJbbjWE5Jo5xJ4omLcdpf5YWzCsIy68+YY1B1LsKzAnWjW3PxuAAA==",
-  "bayu_steel-blue_full_01": "data:image/webp;base64,UklGRqoAAABXRUJQVlA4IJ4AAABQBQCdASoUAB4APrVCoUmnI6MhMBgMAOAWiUAXZmq5E0Ob4qTZKf+V5f0inwTsTLBInwAA+M7S9dJXBNpcvVLhwB+pEcm8kjoVXEInPyKsQvxBf1q+aGOewiM/nYBL+A4QW1OqT9vWzsLcCmbNLljOyKWnZgNjvcbGaAxqeRvuoSCKKw4qvGEOysMebEYXqU47YPKtIjGUxN6zIeAAAA==",
-  "bayu_steel-blue_detail_01": "data:image/webp;base64,UklGRuAAAABXRUJQVlA4INQAAABwBQCdASoUABsAPrVQoEwnJKMiKAqo4BaJQBYj2+Al8RUhCxJKZuueB2zRUTwZI6nmsuJQAM24jyBQGSEb+uFYxYTlwcB9TKxsogk6R6cn4PkDZd2DKDYbpnuVfKInGmIrDVaRlCCsXdyCrwqtuJQJqVr2p3WlDWlL8gNPnNVGNllRdkgnywvSLps7EC21NvPxT9ttnB6PCjVZ4pwXVBtru5LnWy+yHx2ewEuWIDo69vSPYCw6vtz++exYiygC0ctRCRokmatRbM09K/9qsREOj7jgAA==",
-  "seri_olive_full_01": "data:image/webp;base64,UklGRsgAAABXRUJQVlA4ILwAAABwBQCdASoUAB4APrVInUonJCKhsBgMAOAWiUATpmvopD+VPj+bgdlA4lxNAEt9PWeuUmOgAP7ez3PMtec6bU46pOq8SuPwcrpwNvZ/abzfNbDpeyy+5AmUeXDGDd4KVdVKeJqZhSPh9MqdUWh19vtn5h5KVQaxh/QbMZvwzlEivRxkJsT6LlJWreVLRb58/DoCU4xjCWz+c7JFrqzHhIa1xHq10blMzAWXFPNNw8nWOz/PGGa86pYUEqwAAA==",
-  "seri_olive_detail_01": "data:image/webp;base64,UklGRuoAAABXRUJQVlA4IN4AAAAQBgCdASoUABsAPrVOn0qnJCKhsBgIAOAWiUATpnJngdoCkICMWuRa+pEO3vxhWQYluJCFhuBccAAA/tJcf6zaxexZ0WklRpsZOPG/TsWv7P/5tjXsqep2DCbw3iObxJZhDXll47CbAsKHcAlerN3O90JQ6OnZ0k7RSPjmrKMFEb73kfQp4SlRFPJZi0gZateol6Ht1IB6J5t4lhfTtYfViu895sp2E2wli7WIjzZwRx4wlb8Dn20jFAx8Z9p1oEUYH3aRsB3wnItLrIK04LtrjLyjVQ6qPnok2NLgAAA=",
-  "karang_royal-blue_full_01": "data:image/webp;base64,UklGRrAAAABXRUJQVlA4IKQAAACwBQCdASoUAB4APrVCoUmnI6MhMBgMAOAWiUAYH5EY/SyQYMKN6L30uLqPlAdG0KfjTIRwlAAA+MyfqJPTdoaFnjVXt1h1G0QrmD7ZuGqqtCOnXmeg6Bwy2TvJ0pM/sXzcG4z40JkYOpExFN7vKWEpYdwufPZrp+rVESkTYBLyMAl8E/KXHn0E3lPLxSvonRWYfql1JyqNwBXEfrTC0iCOYBFwAA==",
-  "mahsuri_emerald_full_01": "data:image/webp;base64,UklGRtoAAABXRUJQVlA4IM4AAADwBQCdASoUAB4APrVInkmnJCKhMBgMAOAWiWIAtRtYQgARVOvT7EkmPUrceWBGihxgxQ5MPQ4AAAD+3pWdhFu+ggaQea2tN2wXBlkXYh5RtNkw3FgfpK7gvKfyDZevXroT9kelpET+c17VWho8Webmx0DW3PByT2OFDdOzJxO5sp5VqQ7KWqKL4nYDL0Z+EXy1d43n7BeLPvhs4m2TItABRU8/BUTh2u9uIC4KvbTWtEP/QMeUVLB8ntgV9GnzWDFcBlIQlHkDZiLOuQAAAA==",
-  "mahsuri_emerald_detail_01": "data:image/webp;base64,UklGRhABAABXRUJQVlA4IAQBAAAQBgCdASoUABsAPrVMn0unJCKhsBgIAOAWiWYAnTKDyqqVwaWQbi/oV0Bf/XOK75pGqWdm6h3dpwAA9vb4jitiFrgdK7w8/rvsEDGjSYco0mdKSAFZlnibyTsGClEOjhlYWxSsfh/9bRiv6Q4tXvTWh6FR9wE7eBnigybYjJOMiqYk0h6MVP2hgcQSL/oNxtl4L4EM9WwWy14++kdCRxLT1DAlqOoIR4rkxH9ihMM1kshNXG8x9aB7bT5STPW3l4i0OD8E2gvCHePQBlGFsa2nw0DQ7vlaEXVPZKJ81lxd1/dfogVWo3SyJtYONgltvI9pMFtmvan6+dJkVzoaGx5OyAAAAA==",
-  "malam_black-iris_full_01": "data:image/webp;base64,UklGRrgAAABXRUJQVlA4IKwAAABwBQCdASoUAB4APrVMn0onJCKhsAgA4BaJZwCC5njwXAqpNfXABamd/nc2RiQ6Fs1886QAAM0K0zUlziB5sWxBYVEBtQIH1M1r9KC9kV3oyrFPZkTIwVXNW0/2Bvxf+uJzNVEqCkfWbEWFYA/Iael8tP8HI6/CuRYx85sWsUf+goHBxwqdztKpWDXbP1vyHooMJSAktZt2mDAUYSNDCQ01zEKmKxkO20KDgAAA",
-  "malam_black-iris_detail_01": "data:image/webp;base64,UklGRgYBAABXRUJQVlA4IPoAAAAwBgCdASoUABsAPrVQoEynJKMiKAqo4BaJYwCdMoMzG0jEruh3X6T5mXdmlWUUCzEJXmqHreSMJw8AAPb8z3XBSiVMUKwrPiMgCV6GEaqvAL4wY9oJq7o3uKiJyh+/gBm1IEF50TdZfrRia1RyKWMc6MHLyZqwDCOMJBUCDu8rCfVEsd8GdzDJu7/vGhqyYMdVrvDtnVP0Of6Y1+EWUzvvr3T8r+ZfOCWs/CzQDP28mrBO0SirrPUaH4pqM7Mh4aKtsMDX+b87tm+q7+oQQm54ZRhFic9uo3bj/akXNTrpOljLqblRKt5nY2kXh7SwOT01Z+T8dni+QAAA",
-  "diraja_royal-purple_full_01": "data:image/webp;base64,UklGRt4AAABXRUJQVlA4INIAAADQBQCdASoUAB4APrVKoEunJCMhsBgIAOAWiUAXZmQ11JGlFdwoKIg6N09lZasQ4JQxeqdZ0RgkAO6BHI+h2xHrPCBG/eVSRmFr4DjtphtfBvuezd2lStzMwsOG6hwx2TWfi6R6AnOGxrLDUQCKwufkFQe4axKQ84MCaY/LJTTxTaxy+SRlntaryKSCIhkUbZJogDv4mfepVfYtTTK4tllyqaDM5A6JP3Ltw976iNfMnUZomKzIxPHRw4+JTCXIi4zZOeMGmI2lsGonf9VZDojIAAA=",
-  "diraja_royal-purple_detail_01": "data:image/webp;base64,UklGRgoBAABXRUJQVlA4IP4AAADwBQCdASoUABsAPrVMoEsnJCMhsBgIAOAWiWgAnS+wvmcAET+CYs5RTvYxL/Qvn0ViUuNtBL8uIAD+cPFsQ/Ecs1uphXJtg4Z9uj8e0lFd3JtEsnmJEutrY+7YZxPpVbSROBFT9RdKIe2Lpb57S/ceqvBZwFLuLjD0uJep0TP/vrWF91TsQY3XxcEvEetc6H4ixqaCeIjjH74DROuwgXMawcKMcSqHaORTVqAfvnUxwaR6L0MkSZQHICz2Xc+qnXEnQcbb7yqcIQ+oOa1RNdDMc6P/vOzLn8f3gVRUs5NVXSjtYUsIMHpf9z0X05IR09vvfeWxnEb2En7nHAAAAA==",
-  "mekar_lilac_full_01": "data:image/webp;base64,UklGRrAAAABXRUJQVlA4IKQAAADQBACdASoUABQAPrVSn0ynJKKiKAqo4BaJQBOmW+A3gNY7bvMjad441sfDWlpi4AD+9byrFNuuF8gGb+OSsD15wDdkGbgSYDIP/GwsKHqT+sfGks31VmaZigEJ96bxXT1Pg2KRNiU+Opm55slnC+AGVKLsMqvVvkw0ekuEtPChG02KgmPBXieWGnAYUfG5Hx9rI3+lLjZqUNEjLKV4/ER+vyXAAA==",
-  "mekar_lilac_detail_01": "data:image/webp;base64,UklGRq4AAABXRUJQVlA4IKIAAADwBACdASoUABQAPrVSok0nJKMiKAgA4BaJQBYj42bzg+KZ4FcrfmGg8UHi+JfQFZAA/b5Do5DRC6m6sMNNeeqk/cS6CKyYZxFe/BMfOHpRAFSvE6hNW9inX7mNJtKuTZoQwyWDhdMS+G2imPiQk3zlVEJqT7/OaBEm3OK9mxYA+vMajEcaPQeE5o0GZSgpZdwEIUzI6ihXs8O5U4iAAKuIgAA=",
-  "tenun_monochrome_full_01": "data:image/webp;base64,UklGRroAAABXRUJQVlA4IK4AAACQBQCdASoUAB4APrVQnUqnJKKhsBgIAOAWiWcAuzMYAUNa7sKrXMxqB/+iFGfuii5PewAg0ACpcLKJh+S4b3qnf/xh7lR3xAQPE8ZmHT7WOnCEVlXQzDxfxWZXlKbRvzIUWHs+vvvQ/y53CAAWB78f8CvUQWMCYrvSYaRUxIGv4ia3CF4RkbFYPfoLAhbkBWVWg+ZIngrMwR8wtDkorRk3a593S08UFF9lFOAAAAA=",
-  "puteri_navy-blush_full_01": "data:image/webp;base64,UklGRsIAAABXRUJQVlA4ILYAAABQBQCdASoUABsAPrVOoEqnJCMhsBgIAOAWiWUAsOwN0QMnU1zDQkgc2lHhU9fgQgIGkyAA9REboQBk6TzbCUotyd5mHaRruLatpjAQKtMALR+qM8EFNM/EbzJuCnUjVkUUJ+jOILFU31dsG0+ss81tQxkOeLT8wChrajkqHqY4qYkLOxb8OF9ZFZgDZnLcREjs0bpVY8UWZVvj7Yhi+JznU7NF8KhjtOLnWP7ZfaWZ0V8+Y2AAAA==",
   "visit_premise": "data:image/webp;base64,UklGRgoBAABXRUJQVlA4IP4AAAAwBgCdASoUABsAPrVQoUwnJKMiKAqo4BaJaACdMoRwAvQHXVI31nR0o0pOSW6Z7/KgTMPHQTEFAdEAAP7xcMGGmbuPFGUelW5Li5PI5drLpJr9oePym9iRU8TSG0ljA8FQ3FMJy5R+Wf0JRePnTL6pBfzz/uK16sR6Zcww5Y81vE5l/qe8JAnYorpBZh97UlDeQJ6Kgukk3+kx4qbTmMS6Y/Kla0H38RQrQQTfupoECxxIsBtq6a5nUB1CUGfBG2jVDFQmB/MGkpE81jzhJRLXQTBPOJn/QGkVLKsi5GHbsrDHt7f6toRZWRZg0SLyrziHflD58enEojPX54KgAA=="
  },
  "dims": {
@@ -54,93 +32,73 @@
    1536,
    3413
   ],
-  "pusaka_deep-teal_full_01": [
+  "dilla_soft-peach_full_01": [
    1706,
    2560
   ],
-  "pusaka_deep-teal_detail_01": [
+  "dilla_soft-peach_back_01": [
+   600,
+   900
+  ],
+  "dilla_soft-peach_full_02": [
    1706,
    2560
   ],
-  "pusaka_deep-teal_detail_02": [
+  "dilla_soft-peach_detail_01": [
    1706,
    2560
   ],
-  "semarak_maroon_full_01": [
+  "dilla_soft-peach_full_03": [
+   600,
+   900
+  ],
+  "dilla-senja_black-batik_full_01": [
    1706,
    2560
   ],
-  "semarak_maroon_full_02": [
+  "dilla-senja_black-batik_full_02": [
+   533,
+   800
+  ],
+  "dilla-senja_black-batik_detail_01": [
    1706,
    2560
   ],
-  "semarak_maroon_detail_01": [
+  "dilla-senja_black-batik_detail_02": [
    1706,
    2560
   ],
-  "rimbun_cocoa_full_01": [
+  "dilla-senja_black-batik_full_03": [
+   533,
+   800
+  ],
+  "dilla-senja_black-batik_back_01": [
+   533,
+   800
+  ],
+  "thalia-pusaka_teal-green_full_01": [
    1706,
    2560
   ],
-  "rimbun_cocoa_back_01": [
+  "thalia-pusaka_teal-green_full_02": [
+   900,
+   1350
+  ],
+  "thalia-pusaka_teal-green_back_01": [
+   792,
+   1188
+  ],
+  "thalia-pusaka_teal-green_detail_01": [
    1706,
    2560
   ],
-  "rimbun_cocoa_detail_01": [
-   1706,
-   2560
-  ],
-  "renda_camel_full_01": [
-   1706,
-   2560
-  ],
-  "renda_camel_full_02": [
-   1706,
-   2560
-  ],
-  "renda_camel_detail_01": [
-   1706,
-   2560
-  ],
-  "renda_indigo_full_01": [
-   1706,
-   2560
-  ],
-  "renda_indigo_detail_01": [
-   1706,
-   2560
-  ],
-  "renda_indigo_detail_02": [
-   1706,
-   2560
-  ],
-  "senja_midnight_full_01": [
-   1706,
-   2560
-  ],
-  "senja_midnight_detail_01": [
-   1706,
-   2560
-  ],
-  "senja_midnight_detail_02": [
-   1706,
-   2560
-  ],
-  "anggerik_lilac_full_01": [
-   1706,
-   2560
-  ],
-  "anggerik_lilac_full_02": [
-   1706,
-   2560
-  ],
-  "anggerik_lilac_detail_01": [
+  "thalia-pusaka_teal-green_detail_02": [
    1706,
    2560
   ],
   "hoor_size_chart_a-cut": [
-   1080,
-   1132
+   1024,
+   1280
   ],
   "closer_desktop": [
    3168,
@@ -149,74 +107,6 @@
   "closer_mobile": [
    1536,
    3413
-  ],
-  "pucuk_forest-green_full_01": [
-   965,
-   1448
-  ],
-  "pucuk_forest-green_detail_01": [
-   1086,
-   1448
-  ],
-  "bayu_steel-blue_full_01": [
-   965,
-   1448
-  ],
-  "bayu_steel-blue_detail_01": [
-   1086,
-   1448
-  ],
-  "seri_olive_full_01": [
-   965,
-   1448
-  ],
-  "seri_olive_detail_01": [
-   1086,
-   1448
-  ],
-  "karang_royal-blue_full_01": [
-   965,
-   1448
-  ],
-  "mahsuri_emerald_full_01": [
-   965,
-   1448
-  ],
-  "mahsuri_emerald_detail_01": [
-   1086,
-   1448
-  ],
-  "malam_black-iris_full_01": [
-   965,
-   1448
-  ],
-  "malam_black-iris_detail_01": [
-   1086,
-   1448
-  ],
-  "diraja_royal-purple_full_01": [
-   965,
-   1448
-  ],
-  "diraja_royal-purple_detail_01": [
-   1086,
-   1448
-  ],
-  "mekar_lilac_full_01": [
-   1254,
-   1254
-  ],
-  "mekar_lilac_detail_01": [
-   1254,
-   1254
-  ],
-  "tenun_monochrome_full_01": [
-   965,
-   1448
-  ],
-  "puteri_navy-blush_full_01": [
-   1086,
-   1448
   ],
   "visit_premise": [
    765,
@@ -233,107 +123,69 @@
    480,
    941
   ],
-  "pusaka_deep-teal_full_01": [
+  "dilla_soft-peach_full_01": [
    480,
    900,
    1400
   ],
-  "pusaka_deep-teal_detail_01": [
+  "dilla_soft-peach_back_01": [
+   480
+  ],
+  "dilla_soft-peach_full_02": [
    480,
    900,
    1400
   ],
-  "pusaka_deep-teal_detail_02": [
+  "dilla_soft-peach_detail_01": [
    480,
    900,
    1400
   ],
-  "semarak_maroon_full_01": [
+  "dilla_soft-peach_full_03": [
+   480
+  ],
+  "dilla-senja_black-batik_full_01": [
    480,
    900,
    1400
   ],
-  "semarak_maroon_full_02": [
+  "dilla-senja_black-batik_full_02": [
+   480
+  ],
+  "dilla-senja_black-batik_detail_01": [
    480,
    900,
    1400
   ],
-  "semarak_maroon_detail_01": [
+  "dilla-senja_black-batik_detail_02": [
    480,
    900,
    1400
   ],
-  "rimbun_cocoa_full_01": [
+  "dilla-senja_black-batik_full_03": [
+   480
+  ],
+  "dilla-senja_black-batik_back_01": [
+   480
+  ],
+  "thalia-pusaka_teal-green_full_01": [
    480,
    900,
    1400
   ],
-  "rimbun_cocoa_back_01": [
+  "thalia-pusaka_teal-green_full_02": [
+   480,
+   900
+  ],
+  "thalia-pusaka_teal-green_back_01": [
+   480
+  ],
+  "thalia-pusaka_teal-green_detail_01": [
    480,
    900,
    1400
   ],
-  "rimbun_cocoa_detail_01": [
-   480,
-   900,
-   1400
-  ],
-  "renda_camel_full_01": [
-   480,
-   900,
-   1400
-  ],
-  "renda_camel_full_02": [
-   480,
-   900,
-   1400
-  ],
-  "renda_camel_detail_01": [
-   480,
-   900,
-   1400
-  ],
-  "renda_indigo_full_01": [
-   480,
-   900,
-   1400
-  ],
-  "renda_indigo_detail_01": [
-   480,
-   900,
-   1400
-  ],
-  "renda_indigo_detail_02": [
-   480,
-   900,
-   1400
-  ],
-  "senja_midnight_full_01": [
-   480,
-   900,
-   1400
-  ],
-  "senja_midnight_detail_01": [
-   480,
-   900,
-   1400
-  ],
-  "senja_midnight_detail_02": [
-   480,
-   900,
-   1400
-  ],
-  "anggerik_lilac_full_01": [
-   480,
-   900,
-   1400
-  ],
-  "anggerik_lilac_full_02": [
-   480,
-   900,
-   1400
-  ],
-  "anggerik_lilac_detail_01": [
+  "thalia-pusaka_teal-green_detail_02": [
    480,
    900,
    1400
@@ -349,74 +201,6 @@
   "closer_mobile": [
    480,
    1024
-  ],
-  "pucuk_forest-green_full_01": [
-   480,
-   900
-  ],
-  "pucuk_forest-green_detail_01": [
-   480,
-   900
-  ],
-  "bayu_steel-blue_full_01": [
-   480,
-   900
-  ],
-  "bayu_steel-blue_detail_01": [
-   480,
-   900
-  ],
-  "seri_olive_full_01": [
-   480,
-   900
-  ],
-  "seri_olive_detail_01": [
-   480,
-   900
-  ],
-  "karang_royal-blue_full_01": [
-   480,
-   900
-  ],
-  "mahsuri_emerald_full_01": [
-   480,
-   900
-  ],
-  "mahsuri_emerald_detail_01": [
-   480,
-   900
-  ],
-  "malam_black-iris_full_01": [
-   480,
-   900
-  ],
-  "malam_black-iris_detail_01": [
-   480,
-   900
-  ],
-  "diraja_royal-purple_full_01": [
-   480,
-   900
-  ],
-  "diraja_royal-purple_detail_01": [
-   480,
-   900
-  ],
-  "mekar_lilac_full_01": [
-   480,
-   900
-  ],
-  "mekar_lilac_detail_01": [
-   480,
-   900
-  ],
-  "tenun_monochrome_full_01": [
-   480,
-   900
-  ],
-  "puteri_navy-blush_full_01": [
-   480,
-   900
   ],
   "visit_premise": [
    480,

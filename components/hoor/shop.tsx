@@ -18,7 +18,7 @@ export function Shop() {
       <div className="sect-head rv">
         <span className="label">The collection</span>
         <h2>Different prints, all in one A-Cutline Dress.</h2>
-        <p className="sub">Pick a colour on the card to see it change. Everything is <span>{money(CONFIG.basePrice)}</span>, in every size we make.</p>
+        <p className="sub">Three prints, one cut. Everything is <span>{money(CONFIG.basePrice)}</span>, in every size we make.</p>
       </div>
       <div className="shop__bar rv" role="group" aria-label="Filter by colour">
         <span className="label">Colour</span>
@@ -30,7 +30,7 @@ export function Shop() {
         </div>
       </div>
       <div className="grid">{PRODUCTS.map((p, i) => <Card key={p.id} p={p} idx={i + 1} collapsed={!gridExpanded && !filter && i >= GRID_PREVIEW} />)}</div>
-      {!gridExpanded && !filter && (
+      {!gridExpanded && !filter && PRODUCTS.length > GRID_PREVIEW && (
         <div className="grid__more">
           <button className="btn" type="button" onClick={expandGrid}>View all {numberWord(COLOUR_COUNT)} colours</button>
         </div>

@@ -65,13 +65,13 @@ export const LENGTH_GUIDE: { size: Size; length: number; suits: string }[] = [
 export const FABRIC =
   "Premium cotton silk: soft, breathable and fluid. It falls straight from the shoulder instead of clinging, and stays cool across a long Malaysian day.";
 export const CARE =
-  "Hand wash cold or machine wash gentle, inside out. Hang dry in shade. Warm iron on reverse."; // ⚑
+  "Machine wash cold, hand wash recommended. Do not bleach. Do not tumble dry. Warm iron if needed."; // hoor.my product details
 export const SHARED_DETAILS = [
-  "A-Cutline Dress silhouette that skims, never clings",
-  "Notched V-neckline with a soft stand collar",
-  "Wide turned-back cuffs",
-  "Side seam pockets, deep enough for a phone",
-  "Full length, unlined",
+  "HOOR Premium Cotton Silk",
+  "Loose A-Cutline Dress that skims, never clings",
+  "V neck with a soft stand collar",
+  "Pockets on both sides, deep enough for a phone",
+  "Full length, unlined, in five sizes from S/M to 4XL",
 ];
 
 export type Colourway = {
@@ -98,87 +98,19 @@ const P = (p: Omit<Product, "price">): Product => ({ ...p, price: CONFIG.basePri
 
 export const PRODUCTS: Product[] = [
   P({
-    id: "pusaka", name: "PUSAKA", print: "Heirloom medallion batik",
+    id: "dilla", name: "DILLA", print: "Painted floral batik",
+    story: "Watercolour blooms in coral and rose drifting over soft peach. The lightest piece in the collection to look at, and the one that photographs like spring.",
+    colourways: [{ id: "soft-peach", name: "Soft Peach", swatch: "#D3BDCA", images: ["dilla_soft-peach_full_01", "dilla_soft-peach_back_01", "dilla_soft-peach_full_02", "dilla_soft-peach_detail_01", "dilla_soft-peach_full_03"], video: null, stock: { SM: 15, LXL: 22, "2XL": 5, "3XL": 6, "4XL": 2 } }],
+  }),
+  P({
+    id: "dilla-senja", name: "DILLA · SENJA", print: "Night floral batik",
+    story: "Painted peonies and iris climbing from the hem on near-black, with the same bloom carried across the sleeve. The evening piece.",
+    colourways: [{ id: "black-batik", name: "Black Batik", swatch: "#1B2527", images: ["dilla-senja_black-batik_full_01", "dilla-senja_black-batik_full_02", "dilla-senja_black-batik_detail_01", "dilla-senja_black-batik_detail_02", "dilla-senja_black-batik_full_03", "dilla-senja_black-batik_back_01"], video: "senja_midnight", stock: { SM: 4, LXL: 11, "2XL": 2, "3XL": 0, "4XL": 1 } }],
+  }),
+  P({
+    id: "thalia-pusaka", name: "THALIA · PUSAKA", print: "Heirloom medallion batik",
     story: "A tile-work medallion running the full length of the front panel, edged with the fine scrolling border you used to see on a good tablecloth.",
-    colourways: [{ id: "deep-teal", name: "Teal Green", swatch: "#2A4A58", images: ["pusaka_deep-teal_full_01", "pusaka_deep-teal_detail_01", "pusaka_deep-teal_detail_02"], video: "pusaka_deep-teal", stock: { SM: 6, LXL: 9, "2XL": 7, "3XL": 4, "4XL": 3 } }],
-  }),
-  P({
-    id: "semarak", name: "SEMARAK", print: "Oversized floral batik",
-    story: "Blooms blown up large and laid over a fine geometric ground. The boldest print in the collection, and the one that photographs best.",
-    colourways: [{ id: "maroon", name: "Maroon Rose", swatch: "#7E3340", images: ["semarak_maroon_full_01", "semarak_maroon_full_02", "semarak_maroon_detail_01"], video: null, stock: { SM: 5, LXL: 8, "2XL": 6, "3XL": 5, "4XL": 2 } }],
-  }),
-  P({
-    id: "rimbun", name: "RIMBUN", print: "Bordered botanical", note: "Shown styled with a shawl.", // ⚑
-    story: "A quiet body scattered with small motifs, then a garden that climbs the hem and the cuffs. The one to wear when you want the print to arrive last.",
-    colourways: [{ id: "cocoa", name: "Cocoa", swatch: "#58402E", images: ["rimbun_cocoa_full_01", "rimbun_cocoa_back_01", "rimbun_cocoa_detail_01"], video: null, stock: { SM: 4, LXL: 7, "2XL": 6, "3XL": 4, "4XL": 3 } }],
-  }),
-  P({
-    id: "renda", name: "RENDA", print: "Lace-scroll placement print",
-    story: "Lace redrawn as print: a scalloped border at the neck and cuff, acanthus scrolling down the panels. Reads as embroidery from across a room.",
-    colourways: [
-      { id: "camel", name: "Camel Gold", swatch: "#8A6B37", images: ["renda_camel_full_01", "renda_camel_full_02", "renda_camel_detail_01"], video: "renda_camel", stock: { SM: 5, LXL: 6, "2XL": 8, "3XL": 5, "4XL": 4 } },
-      { id: "indigo", name: "Indigo", swatch: "#26406B", images: ["renda_indigo_full_01", "renda_indigo_detail_01", "renda_indigo_detail_02"], video: null, stock: { SM: 3, LXL: 7, "2XL": 6, "3XL": 4, "4XL": 2 } },
-    ],
-  }),
-  P({
-    id: "senja", name: "SENJA", print: "Watercolour bloom",
-    story: "Painted peonies and iris drifting up from the hem on near-black, with the same bloom carried across the sleeve. The evening piece.",
-    colourways: [{ id: "midnight", name: "Midnight", swatch: "#1B2527", images: ["senja_midnight_full_01", "senja_midnight_detail_01", "senja_midnight_detail_02"], video: "senja_midnight", stock: { SM: 6, LXL: 9, "2XL": 7, "3XL": 5, "4XL": 3 } }],
-  }),
-  P({
-    id: "anggerik", name: "ANGGERIK", print: "Painted orchid",
-    story: "Orchids loose on a pale lilac ground, painted rather than stamped. The lightest thing in the collection to look at.",
-    colourways: [{ id: "lilac", name: "Soft Peach", swatch: "#D3BDCA", images: ["anggerik_lilac_full_01", "anggerik_lilac_full_02", "anggerik_lilac_detail_01"], video: null, stock: { SM: 5, LXL: 8, "2XL": 6, "3XL": 4, "4XL": 2 } }],
-  }),
-  P({
-    id: "pucuk", name: "PUCUK", print: "Pucuk rebung batik",
-    story: "Pucuk rebung paisley in deep forest green. The oldest motif in the batik book, worn quietly.",
-    colourways: [{ id: "forest-green", name: "Forest Green", swatch: "#263524", images: ["pucuk_forest-green_full_01", "pucuk_forest-green_detail_01"], video: null, stock: { SM: 5, LXL: 7, "2XL": 6, "3XL": 4, "4XL": 3 } }],
-  }),
-  P({
-    id: "bayu", name: "BAYU", print: "Paisley batik",
-    story: "Blue paisley with scattered blooms, as easy as a sea breeze.",
-    colourways: [{ id: "steel-blue", name: "Steel Blue", swatch: "#586995", images: ["bayu_steel-blue_full_01", "bayu_steel-blue_detail_01"], video: null, stock: { SM: 5, LXL: 8, "2XL": 6, "3XL": 4, "4XL": 2 } }],
-  }),
-  P({
-    id: "seri", name: "SERI", print: "Rosette batik",
-    story: "Rosette medallions front and centre on a calm olive ground.",
-    colourways: [{ id: "olive", name: "Olive", swatch: "#363829", images: ["seri_olive_full_01", "seri_olive_detail_01"], video: null, stock: { SM: 4, LXL: 7, "2XL": 6, "3XL": 5, "4XL": 3 } }],
-  }),
-  P({
-    id: "karang", name: "KARANG", print: "Coral floral batik",
-    story: "Coral blooms on royal blue, bright as a reef.",
-    colourways: [{ id: "royal-blue", name: "Royal Blue", swatch: "#283C8F", images: ["karang_royal-blue_full_01"], video: null, stock: { SM: 5, LXL: 6, "2XL": 7, "3XL": 4, "4XL": 3 } }],
-  }),
-  P({
-    id: "mahsuri", name: "MAHSURI", print: "Gilded scroll batik",
-    story: "Emerald with cream and gold scrollwork. The most regal of the collection.",
-    colourways: [{ id: "emerald", name: "Emerald", swatch: "#3B6774", images: ["mahsuri_emerald_full_01", "mahsuri_emerald_detail_01"], video: null, stock: { SM: 5, LXL: 8, "2XL": 6, "3XL": 4, "4XL": 2 } }],
-  }),
-  P({
-    id: "malam", name: "MALAM", print: "Night floral batik",
-    story: "Blue and white blooms floating on near-black.",
-    colourways: [{ id: "black-iris", name: "Black Iris", swatch: "#191A1A", images: ["malam_black-iris_full_01", "malam_black-iris_detail_01"], video: null, stock: { SM: 6, LXL: 8, "2XL": 6, "3XL": 4, "4XL": 3 } }],
-  }),
-  P({
-    id: "diraja", name: "DIRAJA", print: "Baroque batik",
-    story: "Purple and teal baroque scrolls, cut for celebration.",
-    colourways: [{ id: "royal-purple", name: "Royal Purple", swatch: "#4E2B5F", images: ["diraja_royal-purple_full_01", "diraja_royal-purple_detail_01"], video: null, stock: { SM: 4, LXL: 7, "2XL": 6, "3XL": 4, "4XL": 2 } }],
-  }),
-  P({
-    id: "mekar", name: "MEKAR", print: "Blossom batik",
-    story: "Cherry blossoms in watercolour on soft lilac.",
-    colourways: [{ id: "lilac", name: "Lilac", swatch: "#C58AA6", images: ["mekar_lilac_full_01", "mekar_lilac_detail_01"], video: null, stock: { SM: 5, LXL: 7, "2XL": 6, "3XL": 4, "4XL": 3 } }],
-  }),
-  P({
-    id: "tenun", name: "TENUN", print: "Damask batik",
-    story: "White scrollwork and a field of woven diamonds on black. Batik that reads like songket.",
-    colourways: [{ id: "monochrome", name: "Monochrome", swatch: "#232323", images: ["tenun_monochrome_full_01"], video: null, stock: { SM: 5, LXL: 7, "2XL": 6, "3XL": 4, "4XL": 3 } }],
-  }),
-  P({
-    id: "puteri", name: "PUTERI", print: "Painted bouquet batik",
-    story: "Painted bouquets and ribbon flourishes on deep navy.",
-    colourways: [{ id: "navy-blush", name: "Navy Blush", swatch: "#2C3A63", images: ["puteri_navy-blush_full_01"], video: null, stock: { SM: 5, LXL: 8, "2XL": 6, "3XL": 4, "4XL": 2 } }],
+    colourways: [{ id: "teal-green", name: "Teal Green", swatch: "#2A4A58", images: ["thalia-pusaka_teal-green_full_01", "thalia-pusaka_teal-green_full_02", "thalia-pusaka_teal-green_back_01", "thalia-pusaka_teal-green_detail_01", "thalia-pusaka_teal-green_detail_02"], video: "pusaka_deep-teal", stock: { SM: 12, LXL: 20, "2XL": 6, "3XL": 3, "4XL": 2 } }],
   }),
 ];
 
