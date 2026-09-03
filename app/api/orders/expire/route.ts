@@ -2,8 +2,9 @@ import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
 
 /**
- * Vercel cron (see vercel.json): pending orders older than 24 hours never got
- * paid, so their reserved stock goes back on the shelf. Billplz bills stay
+ * Vercel cron (see vercel.json, once a day: the Hobby plan allows no more):
+ * pending orders older than 24 hours never got paid, so their reserved stock
+ * goes back on the shelf. Billplz bills stay
  * payable, and a late payment still settles through the webhook, which
  * re-reserves stock when it can.
  */
