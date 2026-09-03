@@ -5,8 +5,8 @@ Tick as done. Items marked ⚠ need something from the client before they can be
 
 ## Hero
 
-- [ ] **1. Hero image: prints do not match the real dresses** ⚠
-  "Corak lari dari design sebenar, betulkan corak supaya sama." The hero photo shows prints that differ from the actual garments. Needs a corrected image from the client, or a swap to a real product photo.
+- [x] **1. Hero image: prints do not match the real dresses**
+  "Corak lari dari design sebenar, betulkan corak supaya sama." Replaced with the corrected masters: `raya-hero-desktop-textspace.png` (desktop) and `raya-hero-mobile.png` (mobile).
 - [x] **2. Hero lead copy** — `components/hoor/hero.tsx`
   Change to: "Made from Premium Cotton Silk, in a comfortable A-Cutline for easy movement. Suitable for petite and plus size woman."
 - [x] **3. Claims bar cut off on mobile** — `components/hoor/hero.tsx` (Claims), `app/hoor.css`

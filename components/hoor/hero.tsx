@@ -13,7 +13,7 @@ export function Hero() {
             <source media="(max-width: 899px)" sizes="100vw" srcSet="/assets/img/hero_mobile-480.webp 480w, /assets/img/hero_mobile-941.webp 941w" />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img className="loaded" src="/assets/img/hero_desktop-1400.webp" sizes="100vw" srcSet="/assets/img/hero_desktop-900.webp 900w, /assets/img/hero_desktop-1400.webp 1400w, /assets/img/hero_desktop-1672.webp 1672w"
-              alt="The Batik Dolu-Dolu collection: five prints worn together in a Kuala Lumpur apartment" width={1672} height={941} fetchPriority="high" decoding="async" />
+              alt="The Batik Dolu-Dolu collection: five prints worn together in a Kuala Lumpur apartment" width={1672} height={799} fetchPriority="high" decoding="async" />
           </picture>
         </div>
       </div>
