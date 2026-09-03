@@ -5,12 +5,14 @@ import { rm } from "@/lib/money";
 import { SIZE_LABELS, type Size } from "@/lib/products";
 import { Card, CardHead, PageHead, Pill, Table, Td, Tr, fmtDate, btnGhostCls } from "@/components/admin/ui";
 import { StatusActions, RefundForm, ShipmentForm, NotesForm } from "@/components/admin/order-actions";
+import { EasyparcelBooking, EasyparcelParcelButtons } from "@/components/admin/shipping-panels";
+import { getConnection } from "@/lib/shipping/config";
 
 export const dynamic = "force-dynamic";
 
 export default async function OrderPage({ params }: { params: Promise<{ ref: string }> }) {
   const { ref } = await params;
-  const data = await getOrder(ref);
+  const [data, conn] = await Promise.all([getOrder(ref), getConnection()]);
   if (!data) notFound();
   const { order: o, items, payments, shipments, audit } = data;
   const c = o.customer, d = o.delivery;
@@ -71,11 +73,13 @@ export default async function OrderPage({ params }: { params: Promise<{ ref: str
             {shipments.map((s) => (
               <div key={s.id} className="px-5 py-3 text-[13px]">
                 <div className="flex flex-wrap items-center gap-2"><Pill value={s.status} /><span className="font-bold">{s.courier ?? "Courier not set"}</span>{s.tracking_no && (s.tracking_url ? <a className="underline" href={s.tracking_url} target="_blank" rel="noopener">{s.tracking_no}</a> : <span>{s.tracking_no}</span>)}</div>
-                <p className="mt-1 text-[12px] text-[var(--ink-55)]">{s.weight_grams ? `${s.weight_grams} g · ` : ""}{s.cost_sen ? `${rm(s.cost_sen)} · ` : ""}{s.provider}{s.shipped_at ? ` · shipped ${fmtDate(s.shipped_at)}` : ""}{s.notes ? ` · ${s.notes}` : ""}</p>
+                <p className="mt-1 text-[12px] text-[var(--ink-55)]">{s.weight_grams ? `${s.weight_grams} g · ` : ""}{s.cost_sen ? `${rm(s.cost_sen)} · ` : ""}{s.provider}{s.shipped_at ? ` · shipped ${fmtDate(s.shipped_at)}` : ""}{s.notes ? ` · ${s.notes}` : ""}{s.label_url && <> · <a className="underline" href={s.label_url} target="_blank" rel="noopener">Print label</a></>}</p>
+                {s.provider === "easyparcel" && <div className="mt-2"><EasyparcelParcelButtons orderRef={o.ref} shipmentId={s.id} status={s.status} hasAwb={!!s.tracking_no} /></div>}
                 <details className="mt-2"><summary className="cursor-pointer text-[11px] uppercase tracking-[0.14em] text-[var(--ink-55)]">Edit</summary><div className="pt-3"><ShipmentForm orderRef={o.ref} existing={s} /></div></details>
               </div>
             ))}
-            <details className="px-5 py-3" open={shipments.length === 0}><summary className="cursor-pointer text-[11px] font-bold uppercase tracking-[0.14em]">Add parcel</summary><div className="pt-3"><ShipmentForm orderRef={o.ref} /></div></details>
+            {["paid", "fulfilled"].includes(o.status) && <div className="px-5 py-3"><p className="mb-2 text-[11px] font-bold uppercase tracking-[0.14em]">Book with EasyParcel</p><EasyparcelBooking orderRef={o.ref} connected={conn.connected} /></div>}
+            <details className="px-5 py-3" open={shipments.length === 0 && !conn.connected}><summary className="cursor-pointer text-[11px] font-bold uppercase tracking-[0.14em]">Add parcel by hand</summary><div className="pt-3"><ShipmentForm orderRef={o.ref} /></div></details>
           </div>
         </Card>
         <div className="space-y-4">

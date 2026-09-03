@@ -39,7 +39,7 @@ export async function loadCatalog(): Promise<Catalog> {
     db.from("colourways").select("*").order("position"),
     db.from("product_images").select("*").order("position"),
     db.from("variants").select("sku,product_id,colourway_id,size,stock"),
-    db.from("store_settings").select("*").eq("id", 1).maybeSingle(),
+    db.from("store_settings").select("store_email,store_phone,whatsapp,hours,instagram,free_shipping_threshold_sen,west_rate_sen,east_rate_sen,return_days").eq("id", 1).maybeSingle(),
   ]);
   return { ...assemble((p ?? []) as ProductRow[], (c ?? []) as CwRow[], (i ?? []) as ImgRow[], (v ?? []) as VarRow[]), settings: toSettings(s) };
 }

@@ -26,7 +26,7 @@ export type OrderRow = {
 };
 export type OrderItemRow = { id: number; order_ref: string; sku: string; product_id: string; colourway_id: string; size: string; qty: number; unit_price_sen: number; product_name: string; colour_name: string };
 export type PaymentRow = { id: number; provider: string; provider_ref: string | null; status: string; amount_sen: number; paid_at: string | null; created_at: string };
-export type ShipmentRow = { id: number; provider: string; courier: string | null; tracking_no: string | null; tracking_url: string | null; status: string; weight_grams: number; cost_sen: number; notes: string | null; shipped_at: string | null; delivered_at: string | null; created_at: string };
+export type ShipmentRow = { id: number; provider: string; provider_ref: string | null; courier: string | null; tracking_no: string | null; tracking_url: string | null; label_url: string | null; status: string; weight_grams: number; cost_sen: number; notes: string | null; shipped_at: string | null; delivered_at: string | null; created_at: string };
 export type AuditRow = { id: number; actor: string; action: string; target: string | null; detail: Record<string, unknown> | null; created_at: string };
 
 export async function listOrders(opts: { status?: string; q?: string; limit?: number } = {}) {

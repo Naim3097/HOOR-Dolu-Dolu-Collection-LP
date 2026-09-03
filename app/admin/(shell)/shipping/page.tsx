@@ -1,15 +1,20 @@
 import Link from "next/link";
+import { getStaff } from "@/lib/auth";
 import { getSettings } from "@/lib/admin/config";
+import { getConnection } from "@/lib/shipping/config";
 import { rm } from "@/lib/money";
 import { Card, CardHead, PageHead, btnGhostCls } from "@/components/admin/ui";
+import { EasyparcelConnection, SenderForm } from "@/components/admin/shipping-panels";
 
 export const dynamic = "force-dynamic";
 
-export default async function ShippingPage() {
-  const s = await getSettings();
+export default async function ShippingPage({ searchParams }: { searchParams: Promise<{ connected?: string; error?: string }> }) {
+  const [{ connected, error }, me, s, conn] = await Promise.all([searchParams, getStaff(), getSettings(), getConnection()]);
   return (
     <div className="space-y-6">
       <PageHead title="Shipping" sub="What customers pay, and how parcels get booked." />
+      {connected && <p className="border border-emerald-300 bg-emerald-50 px-4 py-2 text-[13px] text-emerald-900">{connected}</p>}
+      {error && <p className="border border-rose-300 bg-rose-50 px-4 py-2 text-[13px] text-rose-900">{error}</p>}
       <Card>
         <CardHead title="What customers pay" action={<Link href="/admin/settings" className={btnGhostCls}>Edit charges</Link>} />
         <dl className="grid gap-y-2 px-5 py-4 text-[13px] sm:grid-cols-[14rem_1fr]">
@@ -17,13 +22,13 @@ export default async function ShippingPage() {
           <dt className="text-[var(--ink-55)]">Sabah, Sarawak, Labuan</dt><dd>{rm(s.east_rate_sen)}</dd>
           <dt className="text-[var(--ink-55)]">Free delivery</dt><dd>{s.free_shipping_threshold_sen == null ? "Never" : `Orders of ${rm(s.free_shipping_threshold_sen)} and above`}</dd>
         </dl>
+        <p className="border-t border-[var(--line-soft)] px-5 py-3 text-[12px] text-[var(--ink-55)]">Customers always pay the zone rate. Booking a courier is HOOR&apos;s own cost, paid from the EasyParcel wallet; the difference is margin or subsidy.</p>
       </Card>
+      <EasyparcelConnection configured={conn.configured} connected={conn.connected} refreshExpires={conn.refreshExpires} isOwner={me?.role === "owner"} />
+      <SenderForm sender={conn.sender} />
       <Card>
-        <CardHead title="Booking parcels" />
-        <div className="space-y-2 px-5 py-4 text-[13px] leading-relaxed">
-          <p>Parcels are booked by hand for now: open the order, add a parcel with the courier and tracking number, and the customer-facing tracking link is filled in for J&amp;T, Pos Laju, Ninja Van, DHL and City-Link.</p>
-          <p className="text-[var(--ink-55)]">Booking straight from an order through EasyParcel, with the label and AWB pulled back automatically, is the next step once HOOR has an EasyParcel account to connect.</p>
-        </div>
+        <CardHead title="Booking by hand" />
+        <p className="px-5 py-4 text-[13px] leading-relaxed">Without EasyParcel, open the order and add a parcel with the courier and tracking number. The tracking link is filled in for J&amp;T, Pos Laju, Ninja Van, DHL and City-Link, and the customer gets the shipped email either way.</p>
       </Card>
     </div>
   );
