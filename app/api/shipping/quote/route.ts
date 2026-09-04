@@ -4,6 +4,7 @@ import { supabaseAdmin } from "@/lib/supabase/server";
 import { getShippingConfig } from "@/lib/shipping/config";
 import { quoteForCart } from "@/lib/shipping/rates";
 import { isKnownCountry } from "@/lib/shipping/countries";
+import { regionFor } from "@/lib/orders";
 
 /**
  * Live courier options for the checkout. Public, so it is rate-limited (each
@@ -38,7 +39,8 @@ export async function POST(req: Request) {
   if (!isKnownCountry(country)) return NextResponse.json({ error: "We do not deliver to that country yet." }, { status: 422 });
 
   const cfg = await getShippingConfig();
-  if (country === "MY" && cfg.mode !== "courier") return NextResponse.json({ error: "Malaysian delivery is priced by zone." }, { status: 409 });
+  // Within Malaysia only Sabah, Sarawak and Labuan are courier-priced; Semenanjung is a flat rate.
+  if (country === "MY" && (cfg.mode !== "courier" || regionFor(state) !== "east")) return NextResponse.json({ error: "This address is priced at the flat Semenanjung rate." }, { status: 409 });
 
   // The declared value is the goods subtotal, priced by the catalogue — not the browser.
   const { data: prods } = await supabaseAdmin().from("products").select("id,price_sen").in("id", items.map((i) => i.productId));

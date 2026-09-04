@@ -24,7 +24,7 @@ export async function POST(req: Request) {
   const rates = settings ?? { free_shipping_threshold_sen: CONFIG.freeShippingOver == null ? null : CONFIG.freeShippingOver * 100, west_rate_sen: CONFIG.shipping.west.rate * 100, east_rate_sen: CONFIG.shipping.east.rate * 100, domestic_shipping_mode: "zone" };
   const country = input.delivery.country;
   const isMY = country === "MY";
-  const courierPriced = !isMY || rates.domestic_shipping_mode === "courier";
+  const courierPriced = !isMY || (rates.domestic_shipping_mode === "courier" && regionFor(input.delivery.state) === "east");
 
   // Zone pricing for Malaysia in zone mode; otherwise the frozen courier quote is the price.
   let base = priceOrderSen(input.items, isMY ? input.delivery.state : "Selangor", (i) => prod(i.productId)!.price_sen, rates);

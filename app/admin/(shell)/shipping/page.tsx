@@ -18,8 +18,8 @@ export default async function ShippingPage({ searchParams }: { searchParams: Pro
       <Card>
         <CardHead title="What customers pay" action={<Link href="/admin/settings" className={btnGhostCls}>Edit charges</Link>} />
         <dl className="grid gap-y-2 px-5 py-4 text-[13px] sm:grid-cols-[14rem_1fr]">
-          <dt className="text-[var(--ink-55)]">Semenanjung</dt><dd>{rm(s.west_rate_sen)}</dd>
-          <dt className="text-[var(--ink-55)]">Sabah, Sarawak, Labuan</dt><dd>{rm(s.east_rate_sen)}</dd>
+          <dt className="text-[var(--ink-55)]">Semenanjung</dt><dd>{rm(s.west_rate_sen)} flat · dispatched by hand</dd>
+          <dt className="text-[var(--ink-55)]">Sabah, Sarawak, Labuan</dt><dd>Live courier rate at checkout · {rm(s.east_rate_sen)} flat in fallback mode</dd>
           <dt className="text-[var(--ink-55)]">Free delivery</dt><dd>{s.free_shipping_threshold_sen == null ? "Never" : `Malaysian orders of ${rm(s.free_shipping_threshold_sen)} and above`}</dd>
         </dl>
         <p className="border-t border-[var(--line-soft)] px-5 py-3 text-[12px] text-[var(--ink-55)]">Customers always pay the zone rate. Booking a courier is HOOR&apos;s own cost, paid from the EasyParcel wallet; the difference is margin or subsidy.</p>

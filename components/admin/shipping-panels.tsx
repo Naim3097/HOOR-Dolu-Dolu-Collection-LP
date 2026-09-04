@@ -109,12 +109,12 @@ export function PricingModeForm({ mode, domestic, international, connected }: { 
       <CardHead title="How delivery is priced" />
       <form className="space-y-4 px-5 py-5" onSubmit={(e) => { e.preventDefault(); run(() => savePricingMode(f)); }}>
         <div className="space-y-2 text-[13px]">
-          <label className="flex items-start gap-2"><input type="radio" name="mode" checked={f.mode === "zone"} onChange={() => setF({ ...f, mode: "zone" })} /><span><b>Flat zone rates</b> — Semenanjung and East Malaysia pay the rates under Settings. The fallback when EasyParcel is down.</span></label>
-          <label className="flex items-start gap-2"><input type="radio" name="mode" checked={f.mode === "courier"} onChange={() => setF({ ...f, mode: "courier" })} disabled={!connected} /><span><b>Customer picks a courier</b> — live EasyParcel rates at checkout, the customer pays the exact price.{!connected && " Needs EasyParcel connected."}</span></label>
+          <label className="flex items-start gap-2"><input type="radio" name="mode" checked={f.mode === "courier"} onChange={() => setF({ ...f, mode: "courier" })} disabled={!connected} /><span><b>Normal running</b> — Semenanjung pays the flat rate and is shipped by hand; Sabah, Sarawak, Labuan and overseas pick a live-priced EasyParcel courier at checkout.{!connected && " Needs EasyParcel connected."}</span></label>
+          <label className="flex items-start gap-2"><input type="radio" name="mode" checked={f.mode === "zone"} onChange={() => setF({ ...f, mode: "zone" })} /><span><b>Flat zone rates everywhere in Malaysia</b> — East Malaysia pays the flat rate under Settings instead of live rates. The fallback when EasyParcel is down.</span></label>
         </div>
-        <p className="text-[12px] text-[var(--ink-55)]">Overseas orders always use live courier rates, whichever mode Malaysia runs in.</p>
+        <p className="text-[12px] text-[var(--ink-55)]">Semenanjung is always the flat rate, dispatched manually. Overseas always uses live courier rates.</p>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Couriers offered in Malaysia" hint="Comma-separated name matches, e.g. Ninja. Empty = every pickup courier."><input className={inputCls} value={f.domestic} onChange={(e) => setF({ ...f, domestic: e.target.value })} /></Field>
+          <Field label="Couriers offered to Sabah, Sarawak &amp; Labuan" hint="Comma-separated name matches, e.g. MELPlus, J&amp;T. Empty = every pickup courier."><input className={inputCls} value={f.domestic} onChange={(e) => setF({ ...f, domestic: e.target.value })} /></Field>
           <Field label="Couriers offered overseas" hint="Empty = every pickup courier."><input className={inputCls} value={f.international} onChange={(e) => setF({ ...f, international: e.target.value })} /></Field>
         </div>
         <div className="flex items-center gap-4"><button className={btnCls} disabled={pending}>Save</button><Msg error={error} done={done} /></div>

@@ -60,15 +60,17 @@ function CheckoutBody() {
   const unit = (i: { productId: string }) => products.find((p) => p.id === i.productId)?.price ?? CONFIG.basePrice;
 
   const isMY = f.country === "MY";
-  /** Courier-priced: everywhere overseas, and Malaysia when the store runs in courier mode. */
-  const needsCourier = !isMY || settings.shippingMode === "courier";
+  const myRegion = isMY && f.state ? regionFor(f.state) : null;
+  /** Courier-priced: overseas always; within Malaysia only Sabah, Sarawak and Labuan,
+      and only while courier mode is on. Semenanjung is a flat rate, shipped by hand. */
+  const needsCourier = !isMY || (settings.shippingMode === "courier" && myRegion === "east");
 
   /* ---- live courier quote ------------------------------------------------
      The quote is tagged with the address+cart it was fetched for; a change of
      either makes it stale (rendered as "no quote yet") until the debounced
      re-fetch lands, so no state needs clearing inside the effect. */
   const itemsKey = items.map((i) => `${i.productId}:${i.qty}`).join(",");
-  const quotable = needsCourier && (isMY ? /^\d{5}$/.test(f.postcode.trim()) && (STATES as readonly string[]).includes(f.state) : f.postcode.trim().length >= 3 && f.city.trim().length >= 2);
+  const quotable = needsCourier && (isMY ? /^\d{5}$/.test(f.postcode.trim()) : f.postcode.trim().length >= 3 && f.city.trim().length >= 2);
   const quoteKey = quotable ? [f.country, f.postcode.trim(), f.state, itemsKey].join("|") : "";
   const [qs, setQs] = useState<{ key: string; quote: Quote | null; err: string | null; serviceId: string }>({ key: "", quote: null, err: null, serviceId: "" });
 
@@ -187,6 +189,9 @@ function CheckoutBody() {
                     <p className="err">Please choose your state so we can price delivery.</p>
                   </div>
                 ) : field("state", "State / province", "text", { autoComplete: "address-level1", optional: true })}
+                {isMY && myRegion === "west" && (
+                  <div className="f"><label>Delivery</label><p className="hint">Local courier within Semenanjung, {money(settings.west)} flat{settings.freeShippingOver ? ` (free over ${money(settings.freeShippingOver)})` : ""}. Courier services operate during workdays.</p></div>
+                )}
                 {needsCourier && (
                   <div className={`f${errs.courier ? " invalid" : ""}`} data-f="courier">
                     <label>Delivery</label>

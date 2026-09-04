@@ -137,7 +137,7 @@ function ProductDrawer({ open }: { open: boolean }) {
               <details><summary>Fabric &amp; care<span className="pm" aria-hidden="true" /></summary><div className="acc__body"><p>{FABRIC}</p><p style={{ marginTop: ".6rem" }}>{CARE}</p></div></details>
               <details><summary>Size &amp; fit<span className="pm" aria-hidden="true" /></summary><div className="acc__body"><p>A-Cutline Dress, full length, hangs from the shoulder. Measurements are of the garment, in inches.</p><p style={{ marginTop: ".6rem" }}><button className="btn" onClick={() => openOverlay("size")}>Open the full chart</button></p></div></details>
               <details><summary>Delivery &amp; returns<span className="pm" aria-hidden="true" /></summary><div className="acc__body">
-                <p>Dispatched within 24 hours, at your doorstep in 1–3 days.{" "}{settings.shippingMode === "courier" ? <>Delivery is priced by courier at checkout{settings.freeShippingOver ? `, free over ${money(settings.freeShippingOver)}` : ""}.</> : <>{money(settings.west)} to Semenanjung, {money(settings.east)} to Sabah, Sarawak &amp; Labuan{settings.freeShippingOver ? `, free over ${money(settings.freeShippingOver)}` : ""}.</>}</p>
+                <p>Dispatched within 24 hours, at your doorstep in 1–3 days. {money(settings.west)} within Semenanjung; Sabah, Sarawak, Labuan and international priced by courier at checkout{settings.freeShippingOver ? `. Free delivery in Malaysia over ${money(settings.freeShippingOver)}` : ""}.</p>
                 <p style={{ marginTop: ".6rem" }}>{CONFIG.policy.returnDays} days to exchange or return, unworn with tags. Return postage is not covered.</p></div></details>
             </div>
           </div>

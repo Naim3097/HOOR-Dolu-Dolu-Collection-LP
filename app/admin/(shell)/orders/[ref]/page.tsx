@@ -80,8 +80,9 @@ export default async function OrderPage({ params }: { params: Promise<{ ref: str
                 <details className="mt-2"><summary className="cursor-pointer text-[11px] uppercase tracking-[0.14em] text-[var(--ink-55)]">Edit</summary><div className="pt-3"><ShipmentForm orderRef={o.ref} existing={s} /></div></details>
               </div>
             ))}
-            {["paid", "fulfilled"].includes(o.status) && <div className="px-5 py-3"><p className="mb-2 text-[11px] font-bold uppercase tracking-[0.14em]">Book with EasyParcel</p><EasyparcelBooking orderRef={o.ref} connected={conn.connected} /></div>}
-            <details className="px-5 py-3" open={shipments.length === 0 && !conn.connected}><summary className="cursor-pointer text-[11px] font-bold uppercase tracking-[0.14em]">Add parcel by hand</summary><div className="pt-3"><ShipmentForm orderRef={o.ref} /></div></details>
+            {["paid", "fulfilled"].includes(o.status) && d.region !== "west" && <div className="px-5 py-3"><p className="mb-2 text-[11px] font-bold uppercase tracking-[0.14em]">Book with EasyParcel</p><EasyparcelBooking orderRef={o.ref} connected={conn.connected} /></div>}
+            {d.region === "west" && <p className="px-5 py-3 text-[12px] text-[var(--ink-55)]">Semenanjung orders ship by hand: add the parcel below with the courier and tracking number.</p>}
+            <details className="px-5 py-3" open={shipments.length === 0 && (d.region === "west" || !conn.connected)}><summary className="cursor-pointer text-[11px] font-bold uppercase tracking-[0.14em]">Add parcel by hand</summary><div className="pt-3"><ShipmentForm orderRef={o.ref} /></div></details>
           </div>
         </Card>
         <div className="space-y-4">
