@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { fetchCourierRates, bookWithEasyparcel, refreshAwb, cancelEasyparcel, saveSender, disconnectEasyparcel, walletBalance, type CourierRate } from "@/app/admin/actions-shipping";
+import { fetchCourierRates, bookWithEasyparcel, refreshAwb, cancelEasyparcel, saveSender, savePricingMode, disconnectEasyparcel, walletBalance, type CourierRate } from "@/app/admin/actions-shipping";
 import type { ActionResult } from "@/app/admin/actions";
 import type { Sender } from "@/lib/shipping/config";
 import { rm } from "@/lib/money";
@@ -26,7 +26,7 @@ export function EasyparcelBooking({ orderRef, connected }: { orderRef: string; c
   const [quoteErr, setQuoteErr] = useState<string | null>(null);
   const [chosen, setChosen] = useState<string>("");
   if (!connected) return <p className="text-[12px] text-[var(--ink-55)]">Connect EasyParcel under Shipping to book from here.</p>;
-  const quote = async () => { setLoading(true); setQuoteErr(null); const r = await fetchCourierRates(orderRef); setLoading(false); if ("error" in r) { setQuoteErr(r.error); setRates(null); } else { setRates(r.rates); setWeight(r.weightGrams); setChosen(r.rates[0]?.serviceId ?? ""); } };
+  const quote = async () => { setLoading(true); setQuoteErr(null); const r = await fetchCourierRates(orderRef); setLoading(false); if ("error" in r) { setQuoteErr(r.error); setRates(null); } else { setRates(r.rates); setWeight(r.weightGrams); setChosen(r.preferredServiceId && r.rates.some((x) => x.serviceId === r.preferredServiceId) ? r.preferredServiceId : r.rates[0]?.serviceId ?? ""); } };
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-3"><button type="button" className={btnGhostCls} disabled={loading} onClick={quote}>{loading ? "Getting rates…" : rates ? "Refresh rates" : "Get courier rates"}</button>{weight > 0 && <span className="text-[12px] text-[var(--ink-55)]">{weight} g</span>}</div>
@@ -99,3 +99,27 @@ export function SenderForm({ sender }: { sender: Sender }) {
     </Card>
   );
 }
+
+/** How Malaysian delivery is priced, and which couriers are offered. */
+export function PricingModeForm({ mode, domestic, international, connected }: { mode: "zone" | "courier"; domestic: string[]; international: string[]; connected: boolean }) {
+  const { pending, error, done, run } = useAction();
+  const [f, setF] = useState({ mode, domestic: domestic.join(", "), international: international.join(", ") });
+  return (
+    <Card>
+      <CardHead title="How delivery is priced" />
+      <form className="space-y-4 px-5 py-5" onSubmit={(e) => { e.preventDefault(); run(() => savePricingMode(f)); }}>
+        <div className="space-y-2 text-[13px]">
+          <label className="flex items-start gap-2"><input type="radio" name="mode" checked={f.mode === "zone"} onChange={() => setF({ ...f, mode: "zone" })} /><span><b>Flat zone rates</b> — Semenanjung and East Malaysia pay the rates under Settings. The fallback when EasyParcel is down.</span></label>
+          <label className="flex items-start gap-2"><input type="radio" name="mode" checked={f.mode === "courier"} onChange={() => setF({ ...f, mode: "courier" })} disabled={!connected} /><span><b>Customer picks a courier</b> — live EasyParcel rates at checkout, the customer pays the exact price.{!connected && " Needs EasyParcel connected."}</span></label>
+        </div>
+        <p className="text-[12px] text-[var(--ink-55)]">Overseas orders always use live courier rates, whichever mode Malaysia runs in.</p>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="Couriers offered in Malaysia" hint="Comma-separated name matches, e.g. Ninja. Empty = every pickup courier."><input className={inputCls} value={f.domestic} onChange={(e) => setF({ ...f, domestic: e.target.value })} /></Field>
+          <Field label="Couriers offered overseas" hint="Empty = every pickup courier."><input className={inputCls} value={f.international} onChange={(e) => setF({ ...f, international: e.target.value })} /></Field>
+        </div>
+        <div className="flex items-center gap-4"><button className={btnCls} disabled={pending}>Save</button><Msg error={error} done={done} /></div>
+      </form>
+    </Card>
+  );
+}
+

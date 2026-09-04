@@ -18,9 +18,10 @@ export const TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
 
 export type OrderRow = {
   ref: string; status: OrderStatus; customer: { name: string; email: string; phone: string };
-  delivery: { line1: string; line2?: string; city: string; postcode: string; state: string; region: "west" | "east"; notes?: string };
+  delivery: { country?: string; line1: string; line2?: string; city: string; postcode: string; state: string; region: "west" | "east" | "overseas"; notes?: string };
   attribution: Record<string, string>; subtotal_sen: number; discount_sen: number; shipping_sen: number; total_sen: number; refund_sen: number;
   discount_code: string | null; currency: string; payment_ref: string | null; payment_method: string | null; admin_notes: string | null;
+  shipping_quote_id: string | null; shipping_service_id: string | null; shipping_service_name: string | null; shipping_courier: string | null;
   paid_at: string | null; fulfilled_at: string | null; completed_at: string | null; cancelled_at: string | null; refunded_at: string | null;
   created_at: string; updated_at: string;
 };

@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { createBill } from "@/lib/billplz";
-import { orderInput, priceOrderSen, orderRef } from "@/lib/orders";
+import { orderInput, priceOrderSen, regionFor, orderRef } from "@/lib/orders";
+import { frozenQuoteAmount } from "@/lib/shipping/rates";
 import { applyDiscount, recordRedemption } from "@/lib/discounts";
 import { CONFIG, sku } from "@/lib/products";
 
@@ -16,11 +17,26 @@ export async function POST(req: Request) {
   const [{ data: prods }, { data: cws }, { data: settings }] = await Promise.all([
     db.from("products").select("id,name,price_sen,published").in("id", input.items.map((i) => i.productId)),
     db.from("colourways").select("product_id,id,name"),
-    db.from("store_settings").select("free_shipping_threshold_sen,west_rate_sen,east_rate_sen").eq("id", 1).single(),
+    db.from("store_settings").select("free_shipping_threshold_sen,west_rate_sen,east_rate_sen,domestic_shipping_mode").eq("id", 1).single(),
   ]);
   const prod = (pid: string) => prods?.find((p) => p.id === pid && p.published);
   if (input.items.some((i) => !prod(i.productId))) return NextResponse.json({ error: "One of those pieces is no longer available." }, { status: 409 });
-  const base = priceOrderSen(input.items, input.delivery.state, (i) => prod(i.productId)!.price_sen, settings ?? { free_shipping_threshold_sen: CONFIG.freeShippingOver == null ? null : CONFIG.freeShippingOver * 100, west_rate_sen: CONFIG.shipping.west.rate * 100, east_rate_sen: CONFIG.shipping.east.rate * 100 });
+  const rates = settings ?? { free_shipping_threshold_sen: CONFIG.freeShippingOver == null ? null : CONFIG.freeShippingOver * 100, west_rate_sen: CONFIG.shipping.west.rate * 100, east_rate_sen: CONFIG.shipping.east.rate * 100, domestic_shipping_mode: "zone" };
+  const country = input.delivery.country;
+  const isMY = country === "MY";
+  const courierPriced = !isMY || rates.domestic_shipping_mode === "courier";
+
+  // Zone pricing for Malaysia in zone mode; otherwise the frozen courier quote is the price.
+  let base = priceOrderSen(input.items, isMY ? input.delivery.state : "Selangor", (i) => prod(i.productId)!.price_sen, rates);
+  let chosen: { serviceId: string; serviceName: string; courier: string; quoteId: string } | null = null;
+  if (courierPriced) {
+    if (!input.shipping) return NextResponse.json({ error: "Choose a delivery option before paying." }, { status: 422 });
+    const frozen = await frozenQuoteAmount(input.shipping.quoteId, input.shipping.serviceId);
+    if (!frozen) return NextResponse.json({ error: "Your delivery quote expired. Pick the delivery option again." }, { status: 422 });
+    chosen = { serviceId: input.shipping.serviceId, serviceName: frozen.serviceName, courier: frozen.courier, quoteId: input.shipping.quoteId };
+    const free = isMY && rates.free_shipping_threshold_sen != null && base.subtotal >= rates.free_shipping_threshold_sen;
+    base = { ...base, shipping: free ? 0 : frozen.amountSen, total: base.subtotal + (free ? 0 : frozen.amountSen), region: isMY ? base.region : ("overseas" as typeof base.region) };
+  }
   const disc = await applyDiscount(input.discountCode, base.subtotal, base.shipping);
   if (!disc.ok) return NextResponse.json({ error: disc.error }, { status: 422 });
   const discountSen = disc.applied?.discount_sen ?? 0;
@@ -34,6 +50,10 @@ export async function POST(req: Request) {
     status: "pending",
     customer: input.customer,
     delivery: { ...input.delivery, region: pricing.region, notes: input.notes },
+    shipping_quote_id: chosen?.quoteId ?? null,
+    shipping_service_id: chosen?.serviceId ?? null,
+    shipping_service_name: chosen?.serviceName ?? null,
+    shipping_courier: chosen?.courier ?? null,
     payment_method: "billplz",
     attribution: input.attribution,
     subtotal_sen: pricing.subtotal,

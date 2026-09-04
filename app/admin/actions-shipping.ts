@@ -2,37 +2,33 @@
 import { revalidatePath } from "next/cache";
 import { requireStaff } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase/server";
-import { easyparcelClient, getConnection, senderParty, disconnect } from "@/lib/shipping/config";
+import { easyparcelClient, getShippingConfig, senderParty, disconnect } from "@/lib/shipping/config";
+import { ratesForOrder, type StaffRate } from "@/lib/shipping/rates";
 import { stateToIso } from "@/lib/shipping/states";
+import { PIECE_GRAMS, parcelSizeFor } from "@/lib/shipping/countries";
 import { orderShipped } from "@/lib/email";
 import type { ActionResult } from "@/app/admin/actions";
 
-const PIECE_GRAMS = 400;          // the client's own figure for one dress
-const BOX = { width: 30, height: 8, length: 20 };
 async function audit(actor: string, action: string, target: string | null, detail?: Record<string, unknown>) { await supabaseAdmin().from("audit_log").insert({ actor, action, target, detail: detail ?? null }); }
 
-export type CourierRate = { serviceId: string; serviceName: string; courierName: string; amountSen: number; duration: string | null; pickup: boolean };
+export type CourierRate = StaffRate;
 
 async function orderForShipping(ref: string) {
   const db = supabaseAdmin();
   const [{ data: o }, { data: items }] = await Promise.all([db.from("orders").select("*").eq("ref", ref).maybeSingle(), db.from("order_items").select("*").eq("order_ref", ref)]);
   if (!o) return null;
-  const weightGrams = Math.max(PIECE_GRAMS, (items ?? []).reduce((s, i) => s + i.qty, 0) * PIECE_GRAMS);
-  return { o, items: items ?? [], weightGrams };
+  const pieces = (items ?? []).reduce((s, i) => s + i.qty, 0);
+  const weightGrams = Math.max(PIECE_GRAMS, pieces * PIECE_GRAMS);
+  return { o, items: items ?? [], pieces, weightGrams };
 }
 
-/** Live courier rates for one order. Staff only: it spends API quota and shows HOOR's cost prices. */
-export async function fetchCourierRates(ref: string): Promise<{ rates: CourierRate[]; weightGrams: number } | { error: string }> {
+/** Live courier rates for one order — same pickup/allowlist filters as checkout. Staff only. */
+export async function fetchCourierRates(ref: string): Promise<{ rates: CourierRate[]; weightGrams: number; preferredServiceId: string | null } | { error: string }> {
   await requireStaff();
   const found = await orderForShipping(ref); if (!found) return { error: "Order not found." };
-  const conn = await getConnection(); if (!conn.connected) return { error: "EasyParcel is not connected. Connect it under Shipping." };
-  const recvState = stateToIso(found.o.delivery.state), sendState = stateToIso(conn.sender.state);
-  if (!recvState || !sendState) return { error: "Could not map the state to an EasyParcel code." };
-  try {
-    const client = await easyparcelClient();
-    const options = await client.getQuotations({ senderPostcode: conn.sender.postcode, senderState: sendState, receiverPostcode: found.o.delivery.postcode, receiverState: recvState, totalWeightKg: Math.max(found.weightGrams / 1000, 0.5), dimensions: BOX, parcelValue: found.o.total_sen / 100 });
-    return { weightGrams: found.weightGrams, rates: options.map((r) => ({ serviceId: r.serviceId, serviceName: r.serviceName, courierName: r.courierName, amountSen: r.amountSen, duration: r.deliveryDuration, pickup: r.isPickup })) };
-  } catch (e) { return { error: e instanceof Error ? e.message : "Could not reach EasyParcel." }; }
+  const r = await ratesForOrder(found.o, found.pieces);
+  if ("error" in r) return r;
+  return { ...r, preferredServiceId: found.o.shipping_service_id ?? null };
 }
 
 /**
@@ -44,15 +40,17 @@ export async function bookWithEasyparcel(ref: string, serviceId: string): Promis
   const staff = await requireStaff();
   const db = supabaseAdmin();
   const found = await orderForShipping(ref); if (!found) return { ok: false, error: "Order not found." };
-  const conn = await getConnection(); if (!conn.connected) return { ok: false, error: "EasyParcel is not connected." };
-  const recvState = stateToIso(found.o.delivery.state), sendState = stateToIso(conn.sender.state);
-  if (!recvState || !sendState) return { ok: false, error: "Could not map the state to an EasyParcel code." };
+  const conn = await getShippingConfig(); if (!conn.connected) return { ok: false, error: "EasyParcel is not connected." };
+  const country = (found.o.delivery.country ?? "MY").toUpperCase();
+  const recvState = country === "MY" ? stateToIso(found.o.delivery.state) : found.o.delivery.state;
+  if (country === "MY" && !recvState) return { ok: false, error: "Could not map the state to an EasyParcel code." };
 
   let client; let chosen;
   try {
     client = await easyparcelClient();
-    const options = await client.getQuotations({ senderPostcode: conn.sender.postcode, senderState: sendState, receiverPostcode: found.o.delivery.postcode, receiverState: recvState, totalWeightKg: Math.max(found.weightGrams / 1000, 0.5), dimensions: BOX, parcelValue: found.o.total_sen / 100 });
-    chosen = options.find((x) => x.serviceId === serviceId);
+    const quoted = await ratesForOrder(found.o, found.pieces);
+    if ("error" in quoted) return { ok: false, error: quoted.error };
+    chosen = quoted.rates.find((x) => x.serviceId === serviceId);
     if (!chosen) return { ok: false, error: "That courier option is no longer available. Refresh the rates." };
     try { const bal = await client.getWalletBalanceSen(); if (bal < chosen.amountSen) return { ok: false, error: `EasyParcel wallet is short: balance RM${(bal / 100).toFixed(2)}, this booking costs RM${(chosen.amountSen / 100).toFixed(2)}. Top up and try again.` }; } catch { /* a wallet read failure must not block a booking */ }
   } catch (e) { return { ok: false, error: e instanceof Error ? e.message : "Could not reach EasyParcel." }; }
@@ -64,8 +62,9 @@ export async function bookWithEasyparcel(ref: string, serviceId: string): Promis
   try {
     const c = found.o.customer, d = found.o.delivery;
     const result = await client.submitOrder({
-      reference: ref, serviceId, sender: senderParty(conn.sender), totalWeightKg: Math.max(found.weightGrams / 1000, 0.5), dimensions: BOX, parcelValue: found.o.total_sen / 100,
-      receiver: { name: c.name, phone: c.phone, email: c.email, line1: d.line1, line2: d.line2 || undefined, city: d.city, postcode: d.postcode, state: recvState },
+      reference: ref, serviceId, sender: senderParty(conn.sender), totalWeightKg: Math.max(found.weightGrams / 1000, 0.5), dimensions: parcelSizeFor(found.weightGrams), parcelValue: found.o.total_sen / 100,
+      // The receiver's country travels: omitting it once booked an overseas parcel as domestic (Kalima's incident).
+      receiver: { name: c.name, phone: c.phone, email: c.email, line1: d.line1, line2: d.line2 || undefined, city: d.city, postcode: d.postcode, state: recvState ?? "", country },
       content: found.items.map((i) => `${i.product_name ?? i.product_id} x${i.qty}`).join(", ").slice(0, 200),
     });
     let trackingNo = result.trackingNo, trackingUrl = result.trackingUrl, labelUrl = result.labelUrl;
@@ -137,3 +136,18 @@ export async function walletBalance(): Promise<{ balanceSen: number } | { error:
   await requireStaff();
   try { return { balanceSen: await (await easyparcelClient()).getWalletBalanceSen() }; } catch (e) { return { error: e instanceof Error ? e.message : "Could not reach EasyParcel." }; }
 }
+
+/** Customer-facing pricing: zone rates or courier-picked at checkout, with courier allowlists. */
+export async function savePricingMode(input: { mode: "zone" | "courier"; domestic: string; international: string }): Promise<ActionResult> {
+  const staff = await requireStaff();
+  const cfg = await getShippingConfig();
+  if (input.mode === "courier" && !cfg.connected) return { ok: false, error: "Connect EasyParcel first: courier mode needs live rates, and a checkout that cannot price itself sells nothing." };
+  const parse = (s: string) => s.split(",").map((x) => x.trim()).filter(Boolean).slice(0, 20);
+  const row = { domestic_shipping_mode: input.mode, domestic_allowed_couriers: parse(input.domestic), international_allowed_couriers: parse(input.international) };
+  const { error } = await supabaseAdmin().from("store_settings").update(row).eq("id", 1);
+  if (error) return { ok: false, error: error.message };
+  await audit(staff.email, "shipping.pricing_mode", null, row);
+  revalidatePath("/"); revalidatePath("/admin/shipping");
+  return { ok: true };
+}
+

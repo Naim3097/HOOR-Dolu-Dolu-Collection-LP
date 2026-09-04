@@ -15,17 +15,22 @@ export const easyparcelConfigured = () => Boolean(CLIENT_ID && CLIENT_SECRET && 
 
 export type Sender = { name: string; phone: string; line1: string; line2: string | null; city: string; postcode: string; state: string };
 export type Connection = { configured: boolean; connected: boolean; refreshExpires: string | null; sender: Sender };
+export type ShippingConfig = Connection & { mode: "zone" | "courier"; domesticAllowedCouriers: string[]; internationalAllowedCouriers: string[] };
 
-export async function getConnection(): Promise<Connection> {
-  const { data, error } = await supabaseAdmin().from("store_settings").select("easyparcel_access_token,easyparcel_refresh_token,easyparcel_refresh_expires,sender_name,sender_phone,sender_line1,sender_line2,sender_city,sender_postcode,sender_state").eq("id", 1).single();
+export async function getShippingConfig(): Promise<ShippingConfig> {
+  const { data, error } = await supabaseAdmin().from("store_settings").select("easyparcel_access_token,easyparcel_refresh_token,easyparcel_refresh_expires,sender_name,sender_phone,sender_line1,sender_line2,sender_city,sender_postcode,sender_state,domestic_shipping_mode,domestic_allowed_couriers,international_allowed_couriers").eq("id", 1).single();
   if (error) throw new Error(`reading shipping settings failed: ${error.message}`);
   return {
     configured: easyparcelConfigured(),
     connected: Boolean(data.easyparcel_access_token && data.easyparcel_refresh_token),
     refreshExpires: data.easyparcel_refresh_expires,
     sender: { name: data.sender_name, phone: data.sender_phone, line1: data.sender_line1, line2: data.sender_line2, city: data.sender_city, postcode: data.sender_postcode, state: data.sender_state },
+    mode: data.domestic_shipping_mode as "zone" | "courier",
+    domesticAllowedCouriers: data.domestic_allowed_couriers ?? [],
+    internationalAllowedCouriers: data.international_allowed_couriers ?? [],
   };
 }
+export const getConnection = getShippingConfig;
 export const senderParty = (s: Sender): PartyAddress => ({ name: s.name, phone: s.phone, line1: s.line1, line2: s.line2 ?? undefined, city: s.city, postcode: s.postcode, state: s.state });
 
 function expiresAt(p: Record<string, unknown>): string {

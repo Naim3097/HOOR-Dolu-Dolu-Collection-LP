@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { CONFIG, SIZES } from "@/lib/products";
+import { isKnownCountry } from "@/lib/shipping/countries";
 
 export const EAST = ["Sabah", "Sarawak", "Labuan"] as const;
 export const STATES = [
@@ -17,22 +18,33 @@ export const orderInput = z.object({
   customer: z.object({
     name: z.string().min(2),
     email: z.string().email(),
-    phone: z.string().min(8),
+    phone: z.string().min(6).max(24),
   }),
   delivery: z.object({
+    country: z.string().length(2).transform((s) => s.toUpperCase()).default("MY"),
     line1: z.string().min(3),
     line2: z.string().optional().default(""),
     city: z.string().min(2),
-    postcode: z.string().regex(/^\d{5}$/),
-    state: z.enum(STATES),
+    postcode: z.string().min(2).max(12),
+    state: z.string().max(60).optional().default(""),
+  }).superRefine((d, ctx) => {
+    if (!isKnownCountry(d.country)) ctx.addIssue({ code: "custom", path: ["country"], message: "We do not deliver to that country yet." });
+    if (d.country === "MY") {
+      if (!/^\d{5}$/.test(d.postcode.trim())) ctx.addIssue({ code: "custom", path: ["postcode"], message: "Malaysian postcodes are 5 digits." });
+      if (!(STATES as readonly string[]).includes(d.state)) ctx.addIssue({ code: "custom", path: ["state"], message: "Choose a Malaysian state." });
+    } else if (d.postcode.trim().length < 3) {
+      ctx.addIssue({ code: "custom", path: ["postcode"], message: "Enter the delivery postcode." });
+    }
   }),
+  /** The frozen courier quote the customer picked; required when courier-priced. */
+  shipping: z.object({ quoteId: z.string().uuid(), serviceId: z.string().min(1).max(64) }).optional(),
   notes: z.string().max(500).optional().default(""),
   discountCode: z.string().max(32).optional().default(""),
   attribution: z.record(z.string(), z.string()).default({}),
 });
 export type OrderInput = z.infer<typeof orderInput>;
 
-export function regionFor(state: string): "west" | "east" {
+export function regionFor(state: string): "west" | "east" | "overseas" {
   return (EAST as readonly string[]).includes(state) ? "east" : "west";
 }
 
@@ -42,7 +54,7 @@ export function priceOrder(items: OrderInput["items"], state: string, unit: (i: 
   const subtotal = items.reduce((s, i) => s + i.qty * unit(i), 0);
   const region = regionFor(state);
   const free = rates.freeShippingOver != null && subtotal >= rates.freeShippingOver;
-  const shipping = free ? 0 : rates[region];
+  const shipping = free ? 0 : region === "east" ? rates.east : rates.west;
   return { subtotal, shipping, total: subtotal + shipping, region };
 }
 

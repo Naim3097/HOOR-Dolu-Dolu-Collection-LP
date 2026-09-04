@@ -1,8 +1,9 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CONFIG } from "@/lib/products";
 import { money } from "@/lib/format";
-import { STATES, orderInput, priceOrder } from "@/lib/orders";
+import { STATES, regionFor, orderInput } from "@/lib/orders";
+import { COUNTRIES, countryName } from "@/lib/shipping/countries";
 import { useStore, keyOf } from "@/lib/store";
 import { useCatalog } from "@/lib/catalog-context";
 import { Line, Totals } from "@/components/hoor/overlays";
@@ -13,17 +14,24 @@ export const PAY_METHODS = [
   { id: "billplz", name: "Pay securely with Billplz", sub: "FPX online banking or credit and debit card.", marks: ["FPX", "Visa", "Mastercard"], body: "You will be taken to Billplz, Malaysia's licensed payment gateway, to pay from your own bank or by card, then brought straight back here. Card and bank details are never seen or stored by this site." },
 ];
 
-type Form = { name: string; phone: string; email: string; address1: string; address2: string; postcode: string; city: string; state: string; notes: string };
-const EMPTY: Form = { name: "", phone: "", email: "", address1: "", address2: "", postcode: "", city: "", state: "", notes: "" };
-const V: Record<string, (v: string) => true | string> = {
-  name: (v) => v.trim().length >= 2 || "Please tell us who to address it to.",
-  phone: (v) => /^(\+?6?0)[0-9]{8,10}$/.test(v.replace(/[\s-]/g, "")) || "Use a Malaysian number, e.g. 012 345 6789.",
-  email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) || "We need a working email for your tracking number.",
-  address1: (v) => v.trim().length >= 5 || "Please give us a street address.",
-  postcode: (v) => /^\d{5}$/.test(v.trim()) || "Malaysian postcodes are 5 digits.",
-  city: (v) => v.trim().length >= 2 || "Which city or town?",
-  state: (v) => (STATES as readonly string[]).includes(v) || "Please choose your state so we can price delivery.",
-};
+type Form = { country: string; name: string; phone: string; email: string; address1: string; address2: string; postcode: string; city: string; state: string; notes: string };
+const EMPTY: Form = { country: "MY", name: "", phone: "", email: "", address1: "", address2: "", postcode: "", city: "", state: "", notes: "" };
+
+type QuoteOption = { serviceId: string; label: string; courier: string; amountSen: number; duration: string | null };
+type Quote = { quoteId: string; options: QuoteOption[] };
+
+function validate(f: Form): Record<string, string> {
+  const isMY = f.country === "MY";
+  const e: Record<string, string> = {};
+  if (f.name.trim().length < 2) e.name = "Please tell us who to address it to.";
+  if (isMY ? !/^(\+?6?0)[0-9]{8,10}$/.test(f.phone.replace(/[\s-]/g, "")) : !/^\+?[\d\s()-]{6,20}$/.test(f.phone.trim())) e.phone = isMY ? "Use a Malaysian number, e.g. 012 345 6789." : "Use a phone number the courier can reach, with country code.";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email.trim())) e.email = "We need a working email for your tracking number.";
+  if (f.address1.trim().length < 5) e.address1 = "Please give us a street address.";
+  if (isMY ? !/^\d{5}$/.test(f.postcode.trim()) : f.postcode.trim().length < 3) e.postcode = isMY ? "Malaysian postcodes are 5 digits." : "Enter the delivery postcode.";
+  if (f.city.trim().length < 2) e.city = "Which city or town?";
+  if (isMY && !(STATES as readonly string[]).includes(f.state)) e.state = "Please choose your state so we can price delivery.";
+  return e;
+}
 
 export function Checkout({ open }: { open: boolean }) {
   const { close } = useStore();
@@ -50,18 +58,64 @@ function CheckoutBody() {
   const box = useRef<HTMLDivElement>(null);
   const { products, settings } = useCatalog();
   const unit = (i: { productId: string }) => products.find((p) => p.id === i.productId)?.price ?? CONFIG.basePrice;
-  const base = priceOrder(items, f.state || "Selangor", unit, settings);
+
+  const isMY = f.country === "MY";
+  /** Courier-priced: everywhere overseas, and Malaysia when the store runs in courier mode. */
+  const needsCourier = !isMY || settings.shippingMode === "courier";
+
+  /* ---- live courier quote ------------------------------------------------
+     The quote is tagged with the address+cart it was fetched for; a change of
+     either makes it stale (rendered as "no quote yet") until the debounced
+     re-fetch lands, so no state needs clearing inside the effect. */
+  const itemsKey = items.map((i) => `${i.productId}:${i.qty}`).join(",");
+  const quotable = needsCourier && (isMY ? /^\d{5}$/.test(f.postcode.trim()) && (STATES as readonly string[]).includes(f.state) : f.postcode.trim().length >= 3 && f.city.trim().length >= 2);
+  const quoteKey = quotable ? [f.country, f.postcode.trim(), f.state, itemsKey].join("|") : "";
+  const [qs, setQs] = useState<{ key: string; quote: Quote | null; err: string | null; serviceId: string }>({ key: "", quote: null, err: null, serviceId: "" });
+
+  useEffect(() => {
+    if (!quoteKey) return;
+    let alive = true;
+    const t = setTimeout(async () => {
+      try {
+        const res = await fetch("/api/shipping/quote", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ items: quoteKey.split("|")[3].split(",").map((x) => ({ productId: x.split(":")[0], qty: Number(x.split(":")[1]) })), country: quoteKey.split("|")[0], state: quoteKey.split("|")[2], postcode: quoteKey.split("|")[1] }) });
+        const json = await res.json();
+        if (!alive) return;
+        if (!res.ok) setQs({ key: quoteKey, quote: null, err: json.error ?? "We can't quote delivery to that address right now.", serviceId: "" });
+        else setQs({ key: quoteKey, quote: json, err: null, serviceId: json.options[0]?.serviceId ?? "" });
+      } catch { if (alive) setQs({ key: quoteKey, quote: null, err: "We can't quote delivery right now. Try again in a moment.", serviceId: "" }); }
+    }, 700);
+    return () => { alive = false; clearTimeout(t); };
+  }, [quoteKey]);
+
+  const fresh = qs.key === quoteKey && !!quoteKey;
+  const quote = fresh ? qs.quote : null;
+  const quoteErr = fresh ? qs.err : null;
+  const quoting = !!quoteKey && !fresh;
+  const serviceId = fresh ? qs.serviceId : "";
+  const setServiceId = (id: string) => setQs((prev) => ({ ...prev, serviceId: id }));
+  const selected = quote?.options.find((o) => o.serviceId === serviceId) ?? null;
+
+  /* ---- pricing ----------------------------------------------------------- */
+  const subtotal = items.reduce((s, i) => s + i.qty * unit(i), 0);
+  const freeByThreshold = isMY && settings.freeShippingOver != null && subtotal >= settings.freeShippingOver;
+  const region = isMY ? regionFor(f.state || "Selangor") : "overseas";
+  const zoneShip = region === "east" ? settings.east : settings.west;
+  const rawShip = needsCourier ? (selected ? selected.amountSen / 100 : 0) : zoneShip;
+
   const [code, setCode] = useState("");
   const [applied, setApplied] = useState<{ code: string; discount_sen: number; free_shipping: boolean } | null>(null);
   const [codeErr, setCodeErr] = useState<string | null>(null);
   const [codeBusy, setCodeBusy] = useState(false);
   const discountRm = applied ? (applied.free_shipping ? 0 : applied.discount_sen / 100) : 0;
-  const pricing = { ...base, shipping: applied?.free_shipping ? 0 : base.shipping, total: base.subtotal - discountRm + (applied?.free_shipping ? 0 : base.shipping) };
-  const regionLabel = CONFIG.shipping[f.state ? pricing.region : "west"].label;
+  const shippingRm = freeByThreshold || applied?.free_shipping ? 0 : rawShip;
+  const total = subtotal - discountRm + shippingRm;
+  const regionLabel = isMY ? CONFIG.shipping[region === "east" ? "east" : "west"].label : countryName(f.country);
+  const shippingKnown = !needsCourier || !!selected || freeByThreshold;
+
   const applyCode = async () => {
     setCodeBusy(true); setCodeErr(null);
     try {
-      const res = await fetch("/api/discounts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code, subtotalSen: Math.round(base.subtotal * 100), shippingSen: Math.round(base.shipping * 100) }) });
+      const res = await fetch("/api/discounts", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code, subtotalSen: Math.round(subtotal * 100), shippingSen: Math.round(rawShip * 100) }) });
       const json = await res.json();
       if (!res.ok) { setApplied(null); setCodeErr(json.error ?? "That code is not valid."); } else { setApplied(json); track("select_promotion", { promotion_name: json.code }); }
     } catch { setCodeErr("Could not check that code. Try again."); } finally { setCodeBusy(false); }
@@ -69,21 +123,27 @@ function CheckoutBody() {
   const top = () => box.current?.closest("#checkout")?.scrollTo(0, 0);
 
   const upd = (k: keyof Form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setF({ ...f, [k]: e.target.value });
+  const setCountry = (e: React.ChangeEvent<HTMLSelectElement>) => { setF({ ...f, country: e.target.value, state: "", postcode: "" }); setErrs({}); };
 
   const next = () => {
-    const e: Record<string, string> = {};
-    for (const [k, fn] of Object.entries(V)) { const r = fn(f[k as keyof Form] || ""); if (r !== true) e[k] = r; }
+    const e = validate(f);
+    if (!Object.keys(e).length && needsCourier && !selected) e.courier = quoteErr ?? "Choose a delivery option to continue.";
     setErrs(e);
     if (Object.keys(e).length) { const first = box.current?.querySelector(`[data-f="${Object.keys(e)[0]}"]`); first?.scrollIntoView({ block: "center", behavior: "smooth" }); first?.querySelector<HTMLElement>("input,select")?.focus(); return; }
     setStep(2); top();
-    track("add_shipping_info", { value: pricing.total, shipping_tier: pricing.region });
+    track("add_shipping_info", { value: total, shipping_tier: region });
   };
 
   const pay = async () => {
     setBusy(true); setFail(null);
-    track("add_payment_info", { payment_type: "billplz", value: pricing.total });
+    track("add_payment_info", { payment_type: "billplz", value: total });
     try {
-      const payload = { items, customer: { name: f.name, email: f.email, phone: f.phone }, delivery: { line1: f.address1, line2: f.address2, city: f.city, postcode: f.postcode, state: f.state }, notes: f.notes, discountCode: applied?.code ?? "", attribution: attribution() };
+      const payload = {
+        items, customer: { name: f.name, email: f.email, phone: f.phone },
+        delivery: { country: f.country, line1: f.address1, line2: f.address2, city: f.city, postcode: f.postcode, state: f.state },
+        notes: f.notes, discountCode: applied?.code ?? "", attribution: attribution(),
+        ...(needsCourier && quote && selected ? { shipping: { quoteId: quote.quoteId, serviceId: selected.serviceId } } : {}),
+      };
       const parsed = orderInput.safeParse(payload);
       if (!parsed.success) throw new Error("Please check your details.");
       const res = await fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(parsed.data) });
@@ -111,16 +171,45 @@ function CheckoutBody() {
             <section className="co__step on">
               <h2>Where are we sending it?</h2>
               <div className="fields">
+                <div className="f" data-f="country">
+                  <label htmlFor="f-country">Country</label>
+                  <select id="f-country" autoComplete="country" value={f.country} onChange={setCountry}>{COUNTRIES.map((c) => <option key={c.code} value={c.code}>{c.name}</option>)}</select>
+                </div>
                 {field("name", "Full name", "text", { autoComplete: "name" })}
-                <div className="two">{field("phone", "Phone", "tel", { autoComplete: "tel", placeholder: "012 345 6789", hint: "For the courier only." })}{field("email", "Email", "email", { autoComplete: "email", hint: "Order confirmation and tracking." })}</div>
+                <div className="two">{field("phone", "Phone", "tel", { autoComplete: "tel", placeholder: isMY ? "012 345 6789" : "+65 8123 4567", hint: "For the courier only." })}{field("email", "Email", "email", { autoComplete: "email", hint: "Order confirmation and tracking." })}</div>
                 {field("address1", "Address", "text", { autoComplete: "address-line1" })}
                 {field("address2", "Unit, floor, landmark", "text", { autoComplete: "address-line2", optional: true })}
-                <div className="two">{field("postcode", "Postcode", "text", { autoComplete: "postal-code", inputMode: "numeric", maxLength: 5 })}{field("city", "City", "text", { autoComplete: "address-level2" })}</div>
-                <div className={`f${errs.state ? " invalid" : ""}`} data-f="state">
-                  <label htmlFor="f-state">State</label>
-                  <select id="f-state" autoComplete="address-level1" value={f.state} onChange={upd("state")}><option value="">Choose your state</option>{STATES.map((s) => <option key={s}>{s}</option>)}</select>
-                  <p className="err">Please choose your state so we can price delivery.</p>
-                </div>
+                <div className="two">{field("postcode", "Postcode", "text", { autoComplete: "postal-code", ...(isMY ? { inputMode: "numeric" as const, maxLength: 5 } : { maxLength: 12 }) })}{field("city", "City", "text", { autoComplete: "address-level2" })}</div>
+                {isMY ? (
+                  <div className={`f${errs.state ? " invalid" : ""}`} data-f="state">
+                    <label htmlFor="f-state">State</label>
+                    <select id="f-state" autoComplete="address-level1" value={f.state} onChange={upd("state")}><option value="">Choose your state</option>{STATES.map((s) => <option key={s}>{s}</option>)}</select>
+                    <p className="err">Please choose your state so we can price delivery.</p>
+                  </div>
+                ) : field("state", "State / province", "text", { autoComplete: "address-level1", optional: true })}
+                {needsCourier && (
+                  <div className={`f${errs.courier ? " invalid" : ""}`} data-f="courier">
+                    <label>Delivery</label>
+                    {!quotable && <p className="hint">Fill in your address to see delivery options and prices.</p>}
+                    {quotable && quoting && <p className="hint">Checking couriers…</p>}
+                    {quotable && !quoting && quoteErr && <p className="err" style={{ display: "block" }}>{quoteErr}</p>}
+                    {quote && quote.options.length > 0 && (
+                      <div className="pay-list" role="radiogroup" aria-label="Delivery options">
+                        {quote.options.map((o) => (
+                          <label key={o.serviceId} className={`pay-opt${serviceId === o.serviceId ? " on" : ""}`} onClick={() => setServiceId(o.serviceId)}>
+                            <span className="pay-opt__top">
+                              <input type="radio" name="courier" checked={serviceId === o.serviceId} readOnly />
+                              <span><span className="nm">{o.courier}</span><br /><span className="sub">{o.label}{o.duration ? ` · ${o.duration}` : ""}</span></span>
+                              <span className="marks"><span className="pay-mark">{freeByThreshold ? "Free" : money(o.amountSen / 100)}</span></span>
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                    )}
+                    {freeByThreshold && selected && <p className="hint">Your order qualifies for free delivery. We still book {selected.courier} for you.</p>}
+                    <p className="err">{errs.courier}</p>
+                  </div>
+                )}
                 {field("notes", "Anything we should know?", "textarea", { optional: true })}
               </div>
               <div className="co__actions"><button className="btn btn--solid" onClick={next}>Continue to payment</button><button className="co__back" onClick={close}>Keep shopping</button></div>
@@ -151,11 +240,11 @@ function CheckoutBody() {
               </div>
               <div style={{ marginTop: "1.75rem", borderTop: "1px solid var(--line)", paddingTop: "1.25rem" }}>
                 <span className="label" style={{ color: "var(--ink-55)" }}>Delivering to</span>
-                <p style={{ marginTop: ".5rem", fontSize: "var(--t-small)", lineHeight: 1.5 }}><b>{f.name}</b><br />{f.address1}{f.address2 ? `, ${f.address2}` : ""}<br />{f.postcode} {f.city}, {f.state}<br />{f.phone} · {f.email}</p>
+                <p style={{ marginTop: ".5rem", fontSize: "var(--t-small)", lineHeight: 1.5 }}><b>{f.name}</b><br />{f.address1}{f.address2 ? `, ${f.address2}` : ""}<br />{f.postcode} {f.city}{f.state ? `, ${f.state}` : ""}{!isMY ? `, ${countryName(f.country)}` : ""}<br />{f.phone} · {f.email}{selected ? <><br />{selected.courier} · {freeByThreshold ? "Free delivery" : money(selected.amountSen / 100)}</> : null}</p>
                 <button className="co__back" style={{ marginTop: ".75rem" }} onClick={() => setStep(1)}>Edit details</button>
               </div>
               {fail && <p className="err" style={{ display: "block", marginTop: "1rem", color: "var(--error)" }}>{fail}</p>}
-              <div className="co__actions"><button className="btn btn--solid" disabled={busy} onClick={pay}>{busy ? "Preparing payment…" : `Pay ${money(pricing.total)}`}</button><button className="co__back" onClick={() => setStep(1)}>Back</button></div>
+              <div className="co__actions"><button className="btn btn--solid" disabled={busy} onClick={pay}>{busy ? "Preparing payment…" : `Pay ${money(total)}`}</button><button className="co__back" onClick={() => setStep(1)}>Back</button></div>
               <p className="co__note">By paying you agree to HOOR&apos;s terms and return policy. You will get an order number and an email the moment payment clears.</p>
             </section>
           )}
@@ -163,7 +252,10 @@ function CheckoutBody() {
         <aside className="summary">
           <div className="summary__head"><h3>Your order</h3><span className="label">{count} item{count === 1 ? "" : "s"}</span></div>
           <div className="summary__items">{items.map((l) => <Line key={keyOf(l)} l={l} compact />)}</div>
-          <div className="summary__totals"><Totals subtotal={pricing.subtotal} shipping={f.state ? pricing.shipping : applied?.free_shipping ? 0 : settings.west} regionLabel={regionLabel} discount={applied && !applied.free_shipping ? { label: applied.code, amount: discountRm } : applied ? { label: `${applied.code} · free delivery`, amount: 0 } : undefined} style={{ marginBottom: 0 }} /></div>
+          <div className="summary__totals">
+            <Totals subtotal={subtotal} shipping={shippingKnown ? shippingRm : 0} pending={!shippingKnown} regionLabel={shippingKnown ? regionLabel : "picked at checkout"} discount={applied && !applied.free_shipping ? { label: applied.code, amount: discountRm } : applied ? { label: `${applied.code} · free delivery`, amount: 0 } : undefined} style={{ marginBottom: 0 }} />
+            {!shippingKnown && <p className="hint" style={{ marginTop: ".5rem" }}>Delivery is added once you choose a courier above.</p>}
+          </div>
           <ul className="summary__trust">
             <li><svg aria-hidden="true"><use href="#i-tick-s" /></svg>Dispatched within 24 hours, with tracking</li>
             <li><svg aria-hidden="true"><use href="#i-tick-s" /></svg>{CONFIG.policy.returnDays}-day exchange or return, unworn with tags</li>

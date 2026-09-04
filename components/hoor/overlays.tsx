@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { CONFIG, SIZES, SIZE_CHART, SIZE_LABELS, FABRIC, CARE, SHARED_DETAILS, type Size } from "@/lib/products";
 import { money, numberWord } from "@/lib/format";
 import { useStore, keyOf, inStock, anyStock, type CartItem } from "@/lib/store";
+import { useCatalog } from "@/lib/catalog-context";
 import { Ph } from "@/components/hoor/ph";
 import { Video } from "@/components/hoor/video";
 import { Chart } from "@/components/hoor/fit";
@@ -55,6 +56,7 @@ export function Overlays() {
 /* ---------- product ---------- */
 function ProductDrawer({ open }: { open: boolean }) {
   const { pd, dispatch, resolve, addToCart, close, open: openOverlay } = useStore();
+  const { settings } = useCatalog();
   const [err, setErr] = useState(false);
   const slides = useRef<HTMLDivElement>(null);
   const [dot, setDot] = useState(0);
@@ -135,7 +137,7 @@ function ProductDrawer({ open }: { open: boolean }) {
               <details><summary>Fabric &amp; care<span className="pm" aria-hidden="true" /></summary><div className="acc__body"><p>{FABRIC}</p><p style={{ marginTop: ".6rem" }}>{CARE}</p></div></details>
               <details><summary>Size &amp; fit<span className="pm" aria-hidden="true" /></summary><div className="acc__body"><p>A-Cutline Dress, full length, hangs from the shoulder. Measurements are of the garment, in inches.</p><p style={{ marginTop: ".6rem" }}><button className="btn" onClick={() => openOverlay("size")}>Open the full chart</button></p></div></details>
               <details><summary>Delivery &amp; returns<span className="pm" aria-hidden="true" /></summary><div className="acc__body">
-                <p>Dispatched within 24 hours, at your doorstep in 1–3 days. {money(CONFIG.shipping.west.rate)} to Semenanjung, {money(CONFIG.shipping.east.rate)} to Sabah, Sarawak &amp; Labuan{CONFIG.freeShippingOver ? `, free over ${money(CONFIG.freeShippingOver)}` : ""}.</p>
+                <p>Dispatched within 24 hours, at your doorstep in 1–3 days.{" "}{settings.shippingMode === "courier" ? <>Delivery is priced by courier at checkout{settings.freeShippingOver ? `, free over ${money(settings.freeShippingOver)}` : ""}.</> : <>{money(settings.west)} to Semenanjung, {money(settings.east)} to Sabah, Sarawak &amp; Labuan{settings.freeShippingOver ? `, free over ${money(settings.freeShippingOver)}` : ""}.</>}</p>
                 <p style={{ marginTop: ".6rem" }}>{CONFIG.policy.returnDays} days to exchange or return, unworn with tags. Return postage is not covered.</p></div></details>
             </div>
           </div>
@@ -170,12 +172,12 @@ export function Line({ l, compact }: { l: CartItem; compact?: boolean }) {
   );
 }
 
-export function Totals({ subtotal, shipping, regionLabel, grandLabel = "Total", style, discount }: { subtotal: number; shipping: number; regionLabel: string; grandLabel?: string; style?: React.CSSProperties; discount?: { label: string; amount: number } }) {
+export function Totals({ subtotal, shipping, regionLabel, grandLabel = "Total", style, discount, pending }: { subtotal: number; shipping: number; regionLabel: string; grandLabel?: string; style?: React.CSSProperties; discount?: { label: string; amount: number }; pending?: boolean }) {
   return (
     <div className="totals" style={style}>
       <div><span>Subtotal</span><span>{money(subtotal)}</span></div>
       {discount && discount.amount > 0 && <div><span>Discount <span className="muted">· {discount.label}</span></span><span>−{money(discount.amount)}</span></div>}
-      <div><span>Delivery <span className="muted">· {regionLabel}</span></span><span>{shipping === 0 ? "Free" : money(shipping)}</span></div>
+      <div><span>Delivery <span className="muted">· {regionLabel}</span></span><span>{pending ? "—" : shipping === 0 ? "Free" : money(shipping)}</span></div>
       <div className="grand"><span>{grandLabel}</span><span>{money(subtotal - (discount?.amount ?? 0) + shipping)}</span></div>
     </div>
   );

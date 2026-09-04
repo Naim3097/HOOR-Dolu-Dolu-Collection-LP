@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getOrder, TRANSITIONS } from "@/lib/admin/orders";
 import { rm } from "@/lib/money";
 import { SIZE_LABELS, type Size } from "@/lib/products";
+import { countryName } from "@/lib/shipping/countries";
 import { Card, CardHead, PageHead, Pill, Table, Td, Tr, fmtDate, btnGhostCls } from "@/components/admin/ui";
 import { StatusActions, RefundForm, ShipmentForm, NotesForm } from "@/components/admin/order-actions";
 import { EasyparcelBooking, EasyparcelParcelButtons } from "@/components/admin/shipping-panels";
@@ -43,8 +44,9 @@ export default async function OrderPage({ params }: { params: Promise<{ ref: str
           <div className="px-5 py-4 text-[13px] leading-relaxed">
             <p className="font-bold">{c.name}</p>
             <p>{d.line1}{d.line2 ? `, ${d.line2}` : ""}</p>
-            <p>{d.postcode} {d.city}, {d.state}</p>
-            <p className="mt-2 text-[12px] text-[var(--ink-55)]">{d.region === "east" ? "Sabah / Sarawak / Labuan" : "Semenanjung"} · delivery {rm(o.shipping_sen)}</p>
+            <p>{d.postcode} {d.city}{d.state ? `, ${d.state}` : ""}</p>
+            {d.region === "overseas" && <p className="font-bold">{countryName(d.country ?? "")}</p>}
+            <p className="mt-2 text-[12px] text-[var(--ink-55)]">{d.region === "overseas" ? "International" : d.region === "east" ? "Sabah / Sarawak / Labuan" : "Semenanjung"} · delivery {o.shipping_sen ? rm(o.shipping_sen) : "free"}{o.shipping_courier ? ` · customer chose ${o.shipping_courier}` : ""}</p>
             {d.notes && <p className="mt-2 border-l-2 border-[var(--line)] pl-3 text-[12px] italic">{d.notes}</p>}
           </div>
         </Card>

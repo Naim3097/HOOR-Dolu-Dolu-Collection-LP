@@ -4,7 +4,7 @@ import { CONFIG, type Product } from "@/lib/products";
 import type { StoreSettings } from "@/lib/catalog";
 import { registerImageMeta, type ImageMeta } from "@/lib/format";
 
-const FALLBACK: StoreSettings = { email: CONFIG.support.email, phone: CONFIG.support.phone, whatsapp: CONFIG.support.whatsapp, hours: CONFIG.support.hours, instagram: CONFIG.support.instagram, freeShippingOver: CONFIG.freeShippingOver, west: CONFIG.shipping.west.rate, east: CONFIG.shipping.east.rate, returnDays: CONFIG.policy.returnDays };
+const FALLBACK: StoreSettings = { email: CONFIG.support.email, phone: CONFIG.support.phone, whatsapp: CONFIG.support.whatsapp, hours: CONFIG.support.hours, instagram: CONFIG.support.instagram, freeShippingOver: CONFIG.freeShippingOver, west: CONFIG.shipping.west.rate, east: CONFIG.shipping.east.rate, returnDays: CONFIG.policy.returnDays, shippingMode: "zone" };
 const Ctx = createContext<{ products: Product[]; settings: StoreSettings }>({ products: [], settings: FALLBACK });
 
 /**

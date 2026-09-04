@@ -4,7 +4,7 @@ import { getSettings } from "@/lib/admin/config";
 import { getConnection } from "@/lib/shipping/config";
 import { rm } from "@/lib/money";
 import { Card, CardHead, PageHead, btnGhostCls } from "@/components/admin/ui";
-import { EasyparcelConnection, SenderForm } from "@/components/admin/shipping-panels";
+import { EasyparcelConnection, SenderForm, PricingModeForm } from "@/components/admin/shipping-panels";
 
 export const dynamic = "force-dynamic";
 
@@ -20,10 +20,11 @@ export default async function ShippingPage({ searchParams }: { searchParams: Pro
         <dl className="grid gap-y-2 px-5 py-4 text-[13px] sm:grid-cols-[14rem_1fr]">
           <dt className="text-[var(--ink-55)]">Semenanjung</dt><dd>{rm(s.west_rate_sen)}</dd>
           <dt className="text-[var(--ink-55)]">Sabah, Sarawak, Labuan</dt><dd>{rm(s.east_rate_sen)}</dd>
-          <dt className="text-[var(--ink-55)]">Free delivery</dt><dd>{s.free_shipping_threshold_sen == null ? "Never" : `Orders of ${rm(s.free_shipping_threshold_sen)} and above`}</dd>
+          <dt className="text-[var(--ink-55)]">Free delivery</dt><dd>{s.free_shipping_threshold_sen == null ? "Never" : `Malaysian orders of ${rm(s.free_shipping_threshold_sen)} and above`}</dd>
         </dl>
         <p className="border-t border-[var(--line-soft)] px-5 py-3 text-[12px] text-[var(--ink-55)]">Customers always pay the zone rate. Booking a courier is HOOR&apos;s own cost, paid from the EasyParcel wallet; the difference is margin or subsidy.</p>
       </Card>
+      <PricingModeForm mode={conn.mode} domestic={conn.domesticAllowedCouriers} international={conn.internationalAllowedCouriers} connected={conn.connected} />
       <EasyparcelConnection configured={conn.configured} connected={conn.connected} refreshExpires={conn.refreshExpires} isOwner={me?.role === "owner"} />
       <SenderForm sender={conn.sender} />
       <Card>

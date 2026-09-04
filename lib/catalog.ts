@@ -3,13 +3,14 @@ import { supabaseAnon, supabaseAdmin } from "@/lib/supabase/server";
 import { SIZES, type Product, type Colourway, type Size } from "@/lib/products";
 
 export type ImageMeta = { lqip: string; dims: [number, number]; widths: number[] };
-export type StoreSettings = { email: string; phone: string; whatsapp: string; hours: string; instagram: string; freeShippingOver: number | null; west: number; east: number; returnDays: number };
+export type StoreSettings = { email: string; phone: string; whatsapp: string; hours: string; instagram: string; freeShippingOver: number | null; west: number; east: number; returnDays: number; shippingMode: "zone" | "courier" };
 export type Catalog = { products: Product[]; images: Record<string, ImageMeta>; settings: StoreSettings };
 const toSettings = (s: Record<string, unknown> | null): StoreSettings => ({
   email: (s?.store_email as string) ?? "hooriemodestwear@gmail.com", phone: (s?.store_phone as string) ?? "+60 17-250 0323", whatsapp: (s?.whatsapp as string) ?? "60172500323",
   hours: (s?.hours as string) ?? "Every day, 10am – 9pm", instagram: (s?.instagram as string) ?? "@we.are.hoor",
   freeShippingOver: s?.free_shipping_threshold_sen == null ? null : (s.free_shipping_threshold_sen as number) / 100,
   west: ((s?.west_rate_sen as number) ?? 800) / 100, east: ((s?.east_rate_sen as number) ?? 1500) / 100, returnDays: (s?.return_days as number) ?? 7,
+  shippingMode: ((s?.domestic_shipping_mode as "zone" | "courier") ?? "zone"),
 });
 
 type ProductRow = { id: string; name: string; print: string; story: string; note: string | null; price_sen: number; published: boolean; position: number };
@@ -39,7 +40,7 @@ export async function loadCatalog(): Promise<Catalog> {
     db.from("colourways").select("*").order("position"),
     db.from("product_images").select("*").order("position"),
     db.from("variants").select("sku,product_id,colourway_id,size,stock"),
-    db.from("store_settings").select("store_email,store_phone,whatsapp,hours,instagram,free_shipping_threshold_sen,west_rate_sen,east_rate_sen,return_days").eq("id", 1).maybeSingle(),
+    db.from("store_settings").select("store_email,store_phone,whatsapp,hours,instagram,free_shipping_threshold_sen,west_rate_sen,east_rate_sen,return_days,domestic_shipping_mode").eq("id", 1).maybeSingle(),
   ]);
   return { ...assemble((p ?? []) as ProductRow[], (c ?? []) as CwRow[], (i ?? []) as ImgRow[], (v ?? []) as VarRow[]), settings: toSettings(s) };
 }

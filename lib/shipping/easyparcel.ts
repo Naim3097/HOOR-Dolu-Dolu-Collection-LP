@@ -1,4 +1,5 @@
 import "server-only";
+import { dialCodeFor } from "./countries";
 
 /**
  * EasyParcel Open API client, written against the published spec
@@ -31,13 +32,20 @@ function formatDuration(raw: unknown): string | null {
   const v = num(d.value); return v === null ? null : `${v} ${unit}${v === 1 ? "" : "s"}`;
 }
 
-/** Country code and subscriber number, no trunk zero, no international prefix. Malaysia only here. */
+/**
+ * Dialling country and subscriber number in separate fields, no trunk zero and
+ * no international prefix. The prefix is stripped only from numbers that
+ * announced themselves as international (+ or 00), and the country comes from
+ * the ADDRESS: a Singapore landline is eight digits starting 65, and stripping
+ * on digits alone would mangle it.
+ */
 function phoneParts(p: PartyAddress) {
+  const code = (p.country ?? "MY").toUpperCase();
   const raw = (p.phone ?? "").trim(); const intl = /^\+|^00/.test(raw);
   let digits = raw.replace(/\D+/g, "");
-  if (intl) { if (digits.startsWith("00")) digits = digits.slice(2); if (digits.startsWith("60")) digits = digits.slice(2); }
+  if (intl) { if (digits.startsWith("00")) digits = digits.slice(2); const dial = dialCodeFor(code); if (dial && digits.startsWith(dial)) digits = digits.slice(dial.length); }
   if (digits.startsWith("0")) digits = digits.slice(1);
-  return { code: (p.country ?? "MY").toUpperCase(), number: digits };
+  return { code, number: digits };
 }
 const todayInMalaysia = () => new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kuala_Lumpur", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
 
@@ -58,11 +66,11 @@ export class EasyParcelClient {
   }
 
   /** Live rates. Response is data[] of shipments, each with quotations[]; total_amount is the price actually charged. */
-  async getQuotations(i: { senderPostcode: string; senderState: string; receiverPostcode: string; receiverState: string; totalWeightKg: number; dimensions?: { width: number; height: number; length: number }; parcelValue: number }): Promise<QuotationOption[]> {
+  async getQuotations(i: { senderPostcode: string; senderState: string; receiverPostcode: string; receiverState: string; receiverCountry?: string; totalWeightKg: number; dimensions?: { width: number; height: number; length: number }; parcelValue: number }): Promise<QuotationOption[]> {
     const dims = i.dimensions ?? { width: 30, height: 8, length: 20 };
     const json = await this.request<Record<string, unknown>>("/shipment/quotations", { method: "POST", body: JSON.stringify({ shipment: [{
       sender: { postcode: i.senderPostcode, subdivision_code: i.senderState, country: "MY" },
-      receiver: { postcode: i.receiverPostcode, subdivision_code: i.receiverState, country: "MY" },
+      receiver: { postcode: i.receiverPostcode, subdivision_code: i.receiverState, country: i.receiverCountry ?? "MY" },
       weight: i.totalWeightKg, width: dims.width, height: dims.height, length: dims.length, parcel_value: i.parcelValue,
     }] }) });
     const shipments = Array.isArray(json?.data) ? (json.data as Record<string, unknown>[]) : [];
