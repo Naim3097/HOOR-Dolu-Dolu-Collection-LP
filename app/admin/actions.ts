@@ -3,7 +3,8 @@ import { revalidatePath } from "next/cache";
 import { requireStaff } from "@/lib/auth";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { TRANSITIONS, type OrderStatus } from "@/lib/admin/orders";
-import { orderShipped, orderRefunded } from "@/lib/email";
+import { orderRefunded } from "@/lib/email";
+import { sendTrackingEmailOnce } from "@/lib/notify";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
 
@@ -71,18 +72,11 @@ export async function saveShipment(input: { ref: string; id?: number; courier: s
     shipped_at: input.status === "shipped" || input.status === "delivered" ? new Date().toISOString() : null,
     delivered_at: input.status === "delivered" ? new Date().toISOString() : null,
   };
-  const { data: before } = input.id ? await db.from("shipments").select("status").eq("id", input.id).maybeSingle() : { data: null };
-  const { error } = input.id ? await db.from("shipments").update(row).eq("id", input.id) : await db.from("shipments").insert(row);
+  const { data: saved, error } = input.id ? await db.from("shipments").update(row).eq("id", input.id).select("id").single() : await db.from("shipments").insert(row).select("id").single();
   if (error) return { ok: false, error: error.message };
   await audit(staff.email, input.id ? "shipment.update" : "shipment.create", input.ref, { courier: row.courier, tracking_no: row.tracking_no, status: row.status });
-  // First time a parcel is marked shipped, tell the customer.
-  if (row.status === "shipped" && before?.status !== "shipped") {
-    const [{ data: o }, { data: items }] = await Promise.all([db.from("orders").select("*").eq("ref", input.ref).single(), db.from("order_items").select("*").eq("order_ref", input.ref).order("id")]);
-    if (o && items) {
-      const sent = await orderShipped(o, items, { courier: row.courier, tracking_no: row.tracking_no, tracking_url: row.tracking_url });
-      await audit("system", sent ? "email.shipped" : "email.shipped_failed", input.ref);
-    }
-  }
+  // The tracking email fires once, when a shipped parcel has its tracking number.
+  if (["booked", "shipped", "delivered"].includes(row.status) && row.tracking_no) await sendTrackingEmailOnce(db, input.ref, saved.id);
   revalidatePath(`/admin/orders/${input.ref}`);
   return { ok: true };
 }

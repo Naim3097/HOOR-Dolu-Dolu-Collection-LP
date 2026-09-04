@@ -1,6 +1,7 @@
 import crypto from "node:crypto";
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
+import { sendTrackingEmailOnce } from "@/lib/notify";
 
 /**
  * EasyParcel status pushes. No HMAC scheme is published, so a shared secret
@@ -33,6 +34,7 @@ export async function POST(req: Request) {
       if (typeof body.awb_url === "string" && body.awb_url) patch.label_url = body.awb_url;
       if (next && next !== s.status) { patch.status = next; if (next === "delivered") patch.delivered_at = new Date().toISOString(); if (next === "shipped" && !("shipped_at" in patch)) patch.shipped_at = new Date().toISOString(); }
       if (Object.keys(patch).length) await db.from("shipments").update(patch).eq("id", s.id);
+      if (patch.tracking_no || next === "shipped") await sendTrackingEmailOnce(db, s.order_ref, s.id);
       if (next === "delivered") await db.from("orders").update({ status: "completed", completed_at: new Date().toISOString() }).eq("ref", s.order_ref).eq("status", "fulfilled");
       await db.from("audit_log").insert({ actor: "easyparcel", action: "shipment.webhook", target: s.order_ref, detail: { shipment: shipmentNo, status: word || code, applied: patch } });
     }

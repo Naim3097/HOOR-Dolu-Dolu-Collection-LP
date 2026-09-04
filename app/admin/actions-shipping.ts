@@ -6,7 +6,7 @@ import { easyparcelClient, getShippingConfig, senderParty, disconnect } from "@/
 import { ratesForOrder, type StaffRate } from "@/lib/shipping/rates";
 import { stateToIso } from "@/lib/shipping/states";
 import { PIECE_GRAMS, parcelSizeFor } from "@/lib/shipping/countries";
-import { orderShipped } from "@/lib/email";
+import { sendTrackingEmailOnce } from "@/lib/notify";
 import type { ActionResult } from "@/app/admin/actions";
 
 async function audit(actor: string, action: string, target: string | null, detail?: Record<string, unknown>) { await supabaseAdmin().from("audit_log").insert({ actor, action, target, detail: detail ?? null }); }
@@ -74,7 +74,8 @@ export async function bookWithEasyparcel(ref: string, serviceId: string): Promis
     }
     await db.from("shipments").update({ provider_ref: result.shipmentId, courier: result.courierName ?? chosen.courierName, tracking_no: trackingNo, tracking_url: trackingUrl, label_url: labelUrl, cost_sen: result.priceSen || chosen.amountSen, status: "shipped", shipped_at: new Date().toISOString() }).eq("id", row.id);
     if (found.o.status === "paid") await db.from("orders").update({ status: "fulfilled", fulfilled_at: new Date().toISOString() }).eq("ref", ref).eq("status", "paid");
-    const sent = await orderShipped(found.o, found.items, { courier: result.courierName ?? chosen.courierName, tracking_no: trackingNo, tracking_url: trackingUrl });
+    // Tracking email fires when the AWB is in hand; otherwise Fetch AWB or the webhook sends it later.
+    const sent = trackingNo ? await sendTrackingEmailOnce(db, ref, row.id) : false;
     await audit(staff.email, "shipment.booked", ref, { shipment: result.shipmentId, service: serviceId, cost_sen: result.priceSen || chosen.amountSen, awb: trackingNo, email: sent });
     revalidatePath(`/admin/orders/${ref}`); revalidatePath("/admin/orders");
     return { ok: true, trackingNo: trackingNo ?? undefined };
@@ -92,6 +93,7 @@ export async function refreshAwb(ref: string, shipmentId: number): Promise<Actio
     if (!det.awbNumber && !det.labelUrl) return { ok: false, error: "EasyParcel has not issued the AWB yet. Try again in a minute." };
     const patch: Record<string, unknown> = {}; if (det.awbNumber) patch.tracking_no = det.awbNumber; if (det.labelUrl) patch.label_url = det.labelUrl; if (det.trackingUrl) patch.tracking_url = det.trackingUrl;
     await db.from("shipments").update(patch).eq("id", shipmentId);
+    if (det.awbNumber) await sendTrackingEmailOnce(db, ref, shipmentId);
     await audit(staff.email, "shipment.awb_fetched", ref, { awb: det.awbNumber });
     revalidatePath(`/admin/orders/${ref}`);
     return { ok: true };
