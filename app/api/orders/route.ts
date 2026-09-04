@@ -26,13 +26,9 @@ export async function POST(req: Request) {
   const discountSen = disc.applied?.discount_sen ?? 0;
   const pricing = { ...base, shipping: disc.applied?.free_shipping ? 0 : base.shipping, total: base.subtotal - (disc.applied?.free_shipping ? 0 : discountSen) + (disc.applied?.free_shipping ? 0 : base.shipping) };
 
-  // Reserve stock atomically (RPC defined in supabase/migrations). Fails if any line is short.
-  const { error: reserveErr } = await db.rpc("reserve_stock", {
-    p_items: input.items.map((i) => ({ sku: sku(i.productId, i.colourwayId, i.size), qty: i.qty })),
-    p_order_ref: ref,
-  });
-  if (reserveErr) return NextResponse.json({ error: "Some items are no longer in stock." }, { status: 409 });
-
+  // The order row goes in first: the stock ledger references it, so reserving
+  // before the insert would trip the foreign key. A failed reservation deletes
+  // the row again.
   const { error: insErr } = await db.from("orders").insert({
     ref,
     status: "pending",
@@ -48,6 +44,18 @@ export async function POST(req: Request) {
     currency: CONFIG.currency,
   });
   if (insErr) return NextResponse.json({ error: insErr.message }, { status: 500 });
+
+  // Reserve stock atomically (RPC in supabase/migrations); each line leaves a ledger row against this order.
+  const { error: reserveErr } = await db.rpc("reserve_stock", {
+    p_items: input.items.map((i) => ({ sku: sku(i.productId, i.colourwayId, i.size), qty: i.qty })),
+    p_order_ref: ref,
+  });
+  if (reserveErr) {
+    await db.from("orders").delete().eq("ref", ref);
+    const short = /insufficient stock/.test(reserveErr.message);
+    if (!short) console.error("reserve_stock failed:", reserveErr);
+    return NextResponse.json({ error: short ? "Some items are no longer in stock." : "We could not start the payment. Please try again." }, { status: short ? 409 : 500 });
+  }
 
   await db.from("order_items").insert(
     input.items.map((i) => ({
