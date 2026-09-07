@@ -4,20 +4,27 @@ import { supabaseAdmin } from "@/lib/supabase/server";
 import { sendTrackingEmailOnce } from "@/lib/notify";
 
 /**
- * EasyParcel status pushes. No HMAC scheme is published, so a shared secret
- * header is required and the route fails closed without one. Always answers
- * 200 once authorised so EasyParcel stops retrying; failures go to the logs.
+ * EasyParcel status pushes. Their webhooks are plain JSON POSTs — no
+ * signature, no custom headers — so the shared secret rides in the URL path
+ * (never a query string, which lands in access logs and Referers). A header
+ * is also accepted for synthetic tests. Fails closed when unconfigured.
+ * Always answers 200 once authorised so EasyParcel stops retrying; failures
+ * go to the logs.
  */
 export const dynamic = "force-dynamic";
 const SECRET = process.env.EASYPARCEL_WEBHOOK_SECRET ?? "";
 const STATUS: Record<string, string> = { pending: "pending", booked: "booked", processing: "booked", "to be collected": "booked", "schedule in arrangement": "booked", collected: "shipped", "drop off": "shipped", in_transit: "shipped", "in transit": "shipped", "delivery in transit": "shipped", out_for_delivery: "shipped", delivered: "delivered", completed: "delivered", cancelled: "cancelled", canceled: "cancelled", cancel: "cancelled" };
 const CODE: Record<number, string> = { 0: "cancelled", 2: "booked", 3: "shipped", 4: "shipped", 5: "delivered", 7: "booked", 11: "shipped" };
 
-export async function POST(req: Request) {
-  if (!SECRET) return NextResponse.json({ error: "webhook not configured" }, { status: 503 });
-  const given = req.headers.get("x-webhook-secret") ?? "";
+function matches(given: string): boolean {
   const a = Buffer.from(given), b = Buffer.from(SECRET);
-  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return NextResponse.json({ error: "unauthorised" }, { status: 401 });
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
+}
+
+export async function POST(req: Request, ctx: { params: Promise<{ secret: string }> }) {
+  if (!SECRET) return NextResponse.json({ error: "webhook not configured" }, { status: 503 });
+  const { secret } = await ctx.params;
+  if (!matches(secret) && !matches(req.headers.get("x-webhook-secret") ?? "")) return NextResponse.json({ error: "unauthorised" }, { status: 401 });
 
   const body = (await req.json().catch(() => ({}))) as Record<string, unknown>;
   const shipmentNo = String(body.shipment_number ?? body.shipment_id ?? "");
