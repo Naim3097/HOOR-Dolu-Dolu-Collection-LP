@@ -1,3 +1,4 @@
+import { timingSafeEqual } from "node:crypto";
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { CONFIG, SIZE_LABELS, type Size } from "@/lib/products";
@@ -14,8 +15,19 @@ export const dynamic = "force-dynamic";
 export default async function ReturnPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const q = await searchParams;
   const ref = typeof q.ref === "string" ? q.ref : undefined;
+  const token = typeof q.t === "string" ? q.t : "";
   const db = supabaseAdmin();
   let { data: o } = ref ? await db.from("orders").select("*").eq("ref", ref).single() : { data: null };
+
+  // Refs are guessable; the token from the Billplz redirect (or the email
+  // link) is what proves this is the customer's own order. Without it the
+  // page shows nothing and triggers nothing.
+  const tokenOk = (want: unknown) => {
+    if (typeof want !== "string" || !want || !token) return false;
+    const a = Buffer.from(token), b = Buffer.from(want);
+    return a.length === b.length && timingSafeEqual(a, b);
+  };
+  if (o && !tokenOk(o.access_token)) o = null;
 
   // Billplz sends the customer back here whether or not they paid. The callback
   // usually lands first, but not always, so settle from Billplz's own record of

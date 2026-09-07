@@ -9,8 +9,9 @@ import { supabaseAdmin } from "@/lib/supabase/server";
  * re-reserves stock when it can.
  */
 export async function GET(req: Request) {
+  // Fails closed: without the secret configured nobody can trigger expiry.
   const secret = process.env.CRON_SECRET;
-  if (secret && req.headers.get("authorization") !== `Bearer ${secret}`) return NextResponse.json({ error: "unauthorised" }, { status: 401 });
+  if (!secret || req.headers.get("authorization") !== `Bearer ${secret}`) return NextResponse.json({ error: "unauthorised" }, { status: 401 });
   const db = supabaseAdmin();
   const cutoff = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
   const { data: stale } = await db.from("orders").select("ref").eq("status", "pending").lt("created_at", cutoff);
@@ -19,5 +20,5 @@ export async function GET(req: Request) {
     await db.from("orders").update({ status: "failed", admin_notes: "Expired: unpaid after 24 hours." }).eq("ref", o.ref).eq("status", "pending");
     await db.from("audit_log").insert({ actor: "system", action: "order.expire", target: o.ref });
   }
-  return NextResponse.json({ expired: (stale ?? []).map((o) => o.ref) });
+  return NextResponse.json({ expired: (stale ?? []).length });
 }

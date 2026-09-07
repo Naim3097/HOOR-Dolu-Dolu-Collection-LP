@@ -12,10 +12,10 @@ import { rm } from "@/lib/money";
  */
 const API = "https://api.resend.com/emails";
 const FROM = process.env.EMAIL_FROM ?? "HOOR <onboarding@resend.dev>";
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://hoor-dolu-dolu-collection-lp.vercel.app";
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.hoorboutique.my";
 
 type Line = { product_name: string; colour_name: string; size: string; qty: number; unit_price_sen: number };
-type Order = { ref: string; customer: { name: string; email: string }; delivery: { line1: string; line2?: string; postcode: string; city: string; state: string }; subtotal_sen: number; discount_sen: number; discount_code: string | null; shipping_sen: number; total_sen: number };
+type Order = { ref: string; access_token?: string | null; customer: { name: string; email: string }; delivery: { line1: string; line2?: string; postcode: string; city: string; state: string }; subtotal_sen: number; discount_sen: number; discount_code: string | null; shipping_sen: number; total_sen: number };
 
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]!));
 const SIZE: Record<string, string> = { SM: "S/M", LXL: "L/XL" };
@@ -55,12 +55,14 @@ export function orderConfirmation(o: Order, items: Line[]) {
     `<p style="font-size:14px;line-height:1.6">Payment received. We pack within 24 hours and you will get another email with the tracking number the moment it leaves us.</p>
      ${lines(items)}${totals(o)}
      <p style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#746C63;margin:24px 0 6px">Delivering to</p>${address(o)}
-     <p style="margin-top:24px"><a href="${SITE}/checkout/return?ref=${encodeURIComponent(o.ref)}" style="display:inline-block;background:#1E1B18;color:#FAF6F1;text-decoration:none;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:12px 20px">View your order</a></p>`);
+     <p style="margin-top:24px"><a href="${SITE}/checkout/return?ref=${encodeURIComponent(o.ref)}${o.access_token ? `&t=${encodeURIComponent(o.access_token)}` : ""}" style="display:inline-block;background:#1E1B18;color:#FAF6F1;text-decoration:none;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:12px 20px">View your order</a></p>`);
   return send(o.customer.email, `Order ${o.ref} confirmed · HOOR`, html, "order_confirmation");
 }
 
 export function orderShipped(o: Order, items: Line[], s: { courier: string | null; tracking_no: string | null; tracking_url: string | null }) {
-  const track = s.tracking_no ? (s.tracking_url ? `<a href="${s.tracking_url}" style="color:#1E1B18">${esc(s.tracking_no)}</a>` : esc(s.tracking_no)) : "coming shortly";
+  // The tracking URL can arrive from the courier webhook: only link http(s), escaped.
+  const url = s.tracking_url && /^https?:\/\//i.test(s.tracking_url) ? esc(s.tracking_url) : null;
+  const track = s.tracking_no ? (url ? `<a href="${url}" style="color:#1E1B18">${esc(s.tracking_no)}</a>` : esc(s.tracking_no)) : "coming shortly";
   const html = shell(`Order ${o.ref} is on its way.`,
     `<p style="font-size:14px;line-height:1.6">Handed to ${esc(s.courier ?? "the courier")}. Tracking number: <b>${track}</b>. Semenanjung usually arrives in 1–3 days, Sabah, Sarawak and Labuan in 3–7.</p>
      ${lines(items)}

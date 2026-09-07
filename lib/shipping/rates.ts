@@ -88,12 +88,17 @@ export async function quoteForCart(input: { pieces: number; country: string; pos
   };
 }
 
-/** The frozen amount for one picked service, or null if the quote is unknown, expired, or never offered that service. */
-export async function frozenQuoteAmount(quoteId: string, serviceId: string): Promise<{ amountSen: number; serviceName: string; courier: string } | null> {
-  const { data } = await supabaseAdmin().from("shipping_quotes").select("options,expires_at").eq("id", quoteId).maybeSingle();
+/**
+ * The frozen amount for one picked service, or null if the quote is unknown,
+ * expired, or never offered that service. Returns the inputs the quote was
+ * priced for as well: the caller must check they match the order, or a cheap
+ * quote for one address could pay for delivery to another.
+ */
+export async function frozenQuoteAmount(quoteId: string, serviceId: string): Promise<{ amountSen: number; serviceName: string; courier: string; inputs: { country: string; postcode: string; subdivision: string; weight_grams: number } } | null> {
+  const { data } = await supabaseAdmin().from("shipping_quotes").select("options,inputs,expires_at").eq("id", quoteId).maybeSingle();
   if (!data || new Date(data.expires_at).getTime() < Date.now()) return null;
   const opt = (data.options as { service_id: string; service_name: string; courier: string; amount_sen: number }[]).find((o) => o.service_id === serviceId);
-  return opt ? { amountSen: opt.amount_sen, serviceName: opt.service_name, courier: opt.courier } : null;
+  return opt ? { amountSen: opt.amount_sen, serviceName: opt.service_name, courier: opt.courier, inputs: data.inputs as { country: string; postcode: string; subdivision: string; weight_grams: number } } : null;
 }
 
 export type StaffRate = { serviceId: string; serviceName: string; courierName: string; amountSen: number; duration: string | null; pickup: boolean };

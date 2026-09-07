@@ -14,7 +14,7 @@ export const orderInput = z.object({
     colourwayId: z.string(),
     size: z.enum(SIZES),
     qty: z.number().int().min(1).max(10),
-  })).min(1),
+  })).min(1).max(20),
   customer: z.object({
     name: z.string().min(2),
     email: z.string().email(),
@@ -40,7 +40,7 @@ export const orderInput = z.object({
   shipping: z.object({ quoteId: z.string().uuid(), serviceId: z.string().min(1).max(64) }).optional(),
   notes: z.string().max(500).optional().default(""),
   discountCode: z.string().max(32).optional().default(""),
-  attribution: z.record(z.string(), z.string()).default({}),
+  attribution: z.record(z.string().max(64), z.string().max(256)).refine((a) => Object.keys(a).length <= 20, "Too many attribution keys.").default({}),
 });
 export type OrderInput = z.infer<typeof orderInput>;
 
@@ -70,6 +70,9 @@ export function priceOrderSen(items: OrderInput["items"], state: string, unitSen
 export function orderRef() {
   const d = new Date();
   const ymd = d.toISOString().slice(2, 10).replace(/-/g, "");
-  const rand = Math.random().toString(36).slice(2, 6).toUpperCase();
+  // CSPRNG, not Math.random(): refs appear in URLs and emails, so they must
+  // not be predictable. Web Crypto keeps this file importable client-side.
+  const bytes = globalThis.crypto.getRandomValues(new Uint8Array(4));
+  const rand = Array.from(bytes, (b) => (b % 36).toString(36)).join("").toUpperCase();
   return `HR${ymd}-${rand}`;
 }

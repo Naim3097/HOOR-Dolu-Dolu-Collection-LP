@@ -1,12 +1,27 @@
+import { randomBytes } from "node:crypto";
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { createBill } from "@/lib/billplz";
 import { orderInput, priceOrderSen, regionFor, orderRef } from "@/lib/orders";
 import { frozenQuoteAmount } from "@/lib/shipping/rates";
-import { applyDiscount, recordRedemption } from "@/lib/discounts";
+import { PIECE_GRAMS } from "@/lib/shipping/countries";
+import { applyDiscount } from "@/lib/discounts";
 import { CONFIG, sku } from "@/lib/products";
 
+// Best-effort per-instance limiter: each order reserves real stock and
+// creates a live Billplz bill, so a naive loop must not run unchecked.
+const hits = new Map<string, number[]>();
+function limited(key: string): boolean {
+  const now = Date.now();
+  const list = (hits.get(key) ?? []).filter((t) => now - t < 60_000);
+  list.push(now); hits.set(key, list);
+  if (hits.size > 5000) hits.clear();
+  return list.length > 8;
+}
+
 export async function POST(req: Request) {
+  const ip = (req.headers.get("x-forwarded-for") ?? "?").split(",")[0].trim();
+  if (limited(ip)) return NextResponse.json({ error: "Too many attempts. Give it a minute." }, { status: 429 });
   const parsed = orderInput.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   const input = parsed.data;
@@ -33,6 +48,13 @@ export async function POST(req: Request) {
     if (!input.shipping) return NextResponse.json({ error: "Choose a delivery option before paying." }, { status: 422 });
     const frozen = await frozenQuoteAmount(input.shipping.quoteId, input.shipping.serviceId);
     if (!frozen) return NextResponse.json({ error: "Your delivery quote expired. Pick the delivery option again." }, { status: 422 });
+    // The quote must have been priced for THIS address and THIS cart, or a
+    // cheap quote for one destination could pay for delivery to another.
+    const pieces = input.items.reduce((s, i) => s + i.qty, 0);
+    const expectedGrams = Math.max(PIECE_GRAMS, pieces * PIECE_GRAMS);
+    const q = frozen.inputs;
+    if (q.country !== country || q.postcode !== input.delivery.postcode.trim() || q.subdivision !== input.delivery.state.trim() || q.weight_grams !== expectedGrams)
+      return NextResponse.json({ error: "Your delivery quote does not match this address. Pick the delivery option again." }, { status: 422 });
     chosen = { serviceId: input.shipping.serviceId, serviceName: frozen.serviceName, courier: frozen.courier, quoteId: input.shipping.quoteId };
     const free = isMY && rates.free_shipping_threshold_sen != null && base.subtotal >= rates.free_shipping_threshold_sen;
     base = { ...base, shipping: free ? 0 : frozen.amountSen, total: base.subtotal + (free ? 0 : frozen.amountSen), region: isMY ? base.region : ("overseas" as typeof base.region) };
@@ -45,8 +67,11 @@ export async function POST(req: Request) {
   // The order row goes in first: the stock ledger references it, so reserving
   // before the insert would trip the foreign key. A failed reservation deletes
   // the row again.
+  // Refs are short enough to guess; the token is what gates the return page.
+  const accessToken = randomBytes(16).toString("base64url");
   const { error: insErr } = await db.from("orders").insert({
     ref,
+    access_token: accessToken,
     status: "pending",
     customer: input.customer,
     delivery: { ...input.delivery, region: pricing.region, notes: input.notes },
@@ -100,12 +125,13 @@ export async function POST(req: Request) {
       email: input.customer.email,
       phone: input.customer.phone,
       description: `${CONFIG.brand} ${CONFIG.collection} — ${ref}`,
-      redirectUrl: `${site}/checkout/return?ref=${ref}`,
+      redirectUrl: `${site}/checkout/return?ref=${ref}&t=${accessToken}`,
       callbackUrl: `${site}/api/webhooks/billplz`,
     });
     await db.from("orders").update({ payment_ref: bill.id }).eq("ref", ref);
     await db.from("payments").insert({ order_ref: ref, provider: "billplz", provider_ref: bill.id, status: "pending", amount_sen: bill.amount, raw: bill });
-    if (disc.applied) await recordRedemption(disc.applied.code, ref, disc.applied.free_shipping ? base.shipping : discountSen);
+    // The discount redemption is recorded in settleOrder, when the money
+    // actually arrives — unpaid checkouts must not burn a limited-use code.
     return NextResponse.json({ orderRef: ref, redirectUrl: bill.url });
   } catch (e) {
     await db.rpc("release_stock", { p_order_ref: ref, p_type: "release", p_actor: "system" });

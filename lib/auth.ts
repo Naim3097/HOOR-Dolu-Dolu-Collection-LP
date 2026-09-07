@@ -16,7 +16,8 @@ export const getStaff = cache(async (): Promise<Staff | null> => {
   const { data: { user } } = await sb.auth.getUser();
   if (!user) return null;
   const { data: p } = await sb.from("profiles").select("email, full_name, role").eq("id", user.id).maybeSingle();
-  if (!p) return null;
+  // A profile alone is not enough: self-served signups land as 'pending'.
+  if (!p || (p.role !== "owner" && p.role !== "staff")) return null;
   return { id: user.id, email: p.email, name: p.full_name, role: p.role as Role };
 });
 

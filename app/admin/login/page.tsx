@@ -16,7 +16,9 @@ function LoginForm() {
     e.preventDefault(); setBusy(true); setError(null);
     const { error } = await createClient().auth.signInWithPassword({ email: email.trim(), password });
     if (error) { setError("That email and password do not match a staff account."); setBusy(false); return; }
-    router.replace(params.get("next") || "/admin"); router.refresh();
+    // Same-site paths only: ?next= must never send fresh credentials' owner to another origin.
+    const next = params.get("next") ?? "";
+    router.replace(/^\/(?!\/)/.test(next) ? next : "/admin"); router.refresh();
   };
 
   return (
