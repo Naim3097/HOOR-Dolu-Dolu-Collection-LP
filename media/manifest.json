@@ -109,6 +109,76 @@
    "type": "detail"
   },
   {
+   "src": "hoor_flower-forest_ivory-marble-sage_01.png",
+   "out": "flower-forest_ivory-marble-sage_full_01",
+   "type": "full"
+  },
+  {
+   "src": "hoor_flower-forest_ivory-marble-sage_02.png",
+   "out": "flower-forest_ivory-marble-sage_detail_01",
+   "type": "detail"
+  },
+  {
+   "src": "hoor_flower-forest_ivory-marble-sage_03.png",
+   "out": "flower-forest_ivory-marble-sage_back_01",
+   "type": "back"
+  },
+  {
+   "src": "hoor_flower-forest_ivory-marble-sage_04.png",
+   "out": "flower-forest_ivory-marble-sage_detail_02",
+   "type": "detail"
+  },
+  {
+   "src": "hoor_flower-forest_ivory-marble-sage_05.png",
+   "out": "flower-forest_ivory-marble-sage_detail_03",
+   "type": "detail"
+  },
+  {
+   "src": "hoor_flower-forest_ivory-marble-sage_06.png",
+   "out": "flower-forest_ivory-marble-sage_full_02",
+   "type": "full"
+  },
+  {
+   "src": "hoor_lily-rimbun_bronze-batik_01.png",
+   "out": "lily-rimbun_bronze-batik_full_01",
+   "type": "full"
+  },
+  {
+   "src": "hoor_lily-rimbun_bronze-batik_02.png",
+   "out": "lily-rimbun_bronze-batik_full_02",
+   "type": "full"
+  },
+  {
+   "src": "6068796078267503227.jpg",
+   "out": "lily-rimbun_bronze-batik_back_01",
+   "type": "back"
+  },
+  {
+   "src": "hoor_lily-rimbun_bronze-batik_04.png",
+   "out": "lily-rimbun_bronze-batik_full_03",
+   "type": "full"
+  },
+  {
+   "src": "hoor_lily-rimbun_bronze-batik_05.png",
+   "out": "lily-rimbun_bronze-batik_detail_01",
+   "type": "detail"
+  },
+  {
+   "src": "hoor_lily-rimbun_bronze-batik_06.png",
+   "out": "lily-rimbun_bronze-batik_detail_02",
+   "type": "detail"
+  },
+  {
+   "src": "hoor_lily-rimbun_bronze-batik_07.png",
+   "out": "lily-rimbun_bronze-batik_detail_03",
+   "type": "detail"
+  },
+  {
+   "src": "6068796078267503225.jpg",
+   "out": "lily-rimbun_bronze-batik_lifestyle_01",
+   "type": "lifestyle"
+  },
+  {
    "src": "hoor_size_chart_a-cut.png",
    "out": "hoor_size_chart_a-cut",
    "type": "sizechart"
@@ -149,21 +219,21 @@
   {
    "src": "IMG_2806.MOV",
    "out": "senja_midnight",
-   "poster": 2.0,
+   "poster": 2,
    "w": 720,
    "kbps": 1400
   },
   {
    "src": "IMG_2821.MOV",
    "out": "renda_camel",
-   "poster": 1.0,
+   "poster": 1,
    "w": 720,
    "kbps": 1200
   },
   {
    "src": "IMG_2815.MOV",
    "out": "pusaka_deep-teal",
-   "poster": 1.0,
+   "poster": 1,
    "w": 720,
    "kbps": 1100
   }
