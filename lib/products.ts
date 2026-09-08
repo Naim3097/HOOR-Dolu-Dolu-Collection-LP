@@ -45,12 +45,12 @@ export const SIZE_CHART = {
   } satisfies Record<Size, number[]>,
 };
 
+/* One inch of ease decides the size: a bust up to the garment's bust minus 1" takes that
+   size, so 39" is S/M (garment 40"), 40" to 43" is L/XL (garment 44"), 44" is 2XL, and so on.
+   Past 53" there is no listed size. Client instruction, 8 Sep 2026. */
+export const FIT_EASE = 1;
 export const FIT_RULES: { max: number; size: Size | null }[] = [
-  { max: 37, size: "SM" },
-  { max: 41, size: "LXL" },
-  { max: 43, size: "2XL" },
-  { max: 47, size: "3XL" },
-  { max: 51, size: "4XL" },
+  ...SIZES.map((size) => ({ max: SIZE_CHART.data[size][1] - FIT_EASE, size })),
   { max: Infinity, size: null },
 ];
 
