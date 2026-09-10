@@ -1,6 +1,7 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "hoor-dev", "runtimeExecutable": "node", "runtimeArgs": [".claude/server.js"], "port": 5273 }
+    { "name": "hoor-next", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev"], "port": 3000, "autoPort": true },
+    { "name": "hoor-static-legacy", "runtimeExecutable": "node", "runtimeArgs": [".claude/server.js"], "port": 5273 }
   ]
 }

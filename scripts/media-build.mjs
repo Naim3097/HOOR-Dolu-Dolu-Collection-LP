@@ -73,16 +73,21 @@ if (doVideos) {
     const outWebm = path.join(DIST, "video", `${v.out}.webm`);
     const outMp4 = path.join(DIST, "video", `${v.out}.mp4`);
     const log = path.join(tmpdir(), `hoor-vp9-${v.out}`);
-    const common = ["-y", "-hide_banner", "-loglevel", "error", "-i", file, "-an", "-vf", vf];
+    // `audio` names a soundtrack in /assets, mixed in and cut at the film's
+    // length (the source films are silent; playback still autoplays muted and
+    // the speaker toggle lets the audio out). Without it the output is silent.
+    const music = v.audio ? path.join(SRC, v.audio) : null;
+    const common = ["-y", "-hide_banner", "-loglevel", "error", "-i", file, ...(music ? ["-i", music] : []), "-vf", vf];
+    const mix = (codec) => (music ? ["-map", "0:v", "-map", "1:a", ...codec, "-shortest"] : ["-an"]);
 
     // VP9 constrained quality, two passes: CRF for quality, `kbps` as the ceiling.
     const vp9 = ["-c:v", "libvpx-vp9", "-crf", String(v.crf ?? 35), "-b:v", `${v.kbps}k`, "-row-mt", "1", "-deadline", "good", "-cpu-used", "2", "-passlogfile", log];
-    await run("ffmpeg", [...common, ...vp9, "-pass", "1", "-f", "null", process.platform === "win32" ? "NUL" : "/dev/null"]);
-    await run("ffmpeg", [...common, ...vp9, "-pass", "2", outWebm]);
+    await run("ffmpeg", [...common, "-an", ...vp9, "-pass", "1", "-f", "null", process.platform === "win32" ? "NUL" : "/dev/null"]);
+    await run("ffmpeg", [...common, ...mix(["-c:a", "libopus", "-b:a", "96k"]), ...vp9, "-pass", "2", outWebm]);
     await rm(`${log}-0.log`, { force: true });
 
     // H.264 fallback for anything that will not play VP9.
-    await run("ffmpeg", [...common, "-c:v", "libx264", "-crf", "27", "-maxrate", `${v.kbps}k`, "-bufsize", `${v.kbps * 2}k`, "-preset", "slow", "-profile:v", "high", "-movflags", "+faststart", outMp4]);
+    await run("ffmpeg", [...common, ...mix(["-c:a", "aac", "-b:a", "128k"]), "-c:v", "libx264", "-crf", "27", "-maxrate", `${v.kbps}k`, "-bufsize", `${v.kbps * 2}k`, "-preset", "slow", "-profile:v", "high", "-movflags", "+faststart", outMp4]);
 
     // Poster frame as WebP, same width as the film.
     const png = path.join(tmpdir(), `hoor-poster-${v.out}.png`);

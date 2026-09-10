@@ -11,10 +11,16 @@ const mode = () => matchMedia(Q[1]).matches || nav().connection?.saveData ? "pos
 export function Video({ name, caption, start = 0, className }: { name: string; caption: string; start?: number; className: string }) {
   const m = useSyncExternalStore(sub, mode, () => "tap");
   const [tapped, setTapped] = useState(false);
+  const [sound, setSound] = useState(false);
   const box = useRef<HTMLDivElement>(null);
   const vid = useRef<HTMLVideoElement>(null);
   const poster = asset(`video/${name}_poster.webp`);
   const playing = m === "auto" || tapped;
+
+  // The films carry their soundtrack, but autoplay must start muted (browser
+  // rule); the speaker button is the user gesture that lets the audio out.
+  // React does not reliably write `muted` back to the DOM, hence the ref.
+  useEffect(() => { const v = vid.current; if (v) v.muted = !sound; }, [sound, playing]);
 
   useEffect(() => {
     if (m !== "auto" || !box.current) return;
@@ -26,12 +32,22 @@ export function Video({ name, caption, start = 0, className }: { name: string; c
   return (
     <div ref={box} className={className} data-video={name}>
       {playing ? (
-        <video ref={vid} poster={poster} muted loop playsInline preload="none" autoPlay={tapped} aria-label={caption}
-          onLoadedMetadata={(e) => { if (start) e.currentTarget.currentTime = start; }}
-          onClick={(e) => { if (tapped) { const v = e.currentTarget; if (v.paused) v.play(); else v.pause(); } }}>
-          <source src={asset(`video/${name}.webm`)} type="video/webm" />
-          <source src={asset(`video/${name}.mp4`)} type="video/mp4" />
-        </video>
+        <>
+          <video ref={vid} poster={poster} muted loop playsInline preload="none" autoPlay={tapped} aria-label={caption}
+            onLoadedMetadata={(e) => { if (start) e.currentTarget.currentTime = start; }}
+            onClick={(e) => { if (tapped) { const v = e.currentTarget; if (v.paused) v.play(); else v.pause(); } }}>
+            <source src={asset(`video/${name}.webm`)} type="video/webm" />
+            <source src={asset(`video/${name}.mp4`)} type="video/mp4" />
+          </video>
+          <button className="sound" type="button" aria-pressed={sound} aria-label={sound ? "Mute the film" : "Play the film with sound"}
+            onClick={() => { const v = vid.current; if (v) { v.muted = sound; if (v.paused) v.play().catch(() => {}); } setSound(!sound); track("film_sound", { film: name, on: !sound }); }}>
+            {sound ? (
+              <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 5v4h2.5L8 12V2L4.5 5H2z" fill="currentColor" /><path d="M9.8 4.6a3.2 3.2 0 0 1 0 4.8M11.4 3a5.6 5.6 0 0 1 0 8" fill="none" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" /></svg>
+            ) : (
+              <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 5v4h2.5L8 12V2L4.5 5H2z" fill="currentColor" /><path d="m9.6 5.4 3.2 3.2m0-3.2-3.2 3.2" fill="none" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" /></svg>
+            )}
+          </button>
+        </>
       ) : (
         <>
           {/* eslint-disable-next-line @next/next/no-img-element */}

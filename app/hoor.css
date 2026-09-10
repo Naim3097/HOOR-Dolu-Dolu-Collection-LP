@@ -1190,6 +1190,24 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .play svg { width: 11px; height: 13px; flex: none; }
 .occ__video, .fabric__video { position: relative; }
 
+/* Speaker toggle: the films carry a soundtrack but start muted (browser rule) */
+.sound {
+  position: absolute;
+  right: .7rem;
+  bottom: .7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: rgba(18, 16, 14, .62);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--paper);
+}
+.sound svg { width: 15px; height: 15px; }
+
 /* ---------- 28. COLLECTION COLOUR DETAILS -------------------------------- */
 /* Each card names its colourway with the colour itself. */
 .cw-dot {

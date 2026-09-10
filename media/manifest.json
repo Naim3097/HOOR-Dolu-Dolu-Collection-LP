@@ -213,6 +213,126 @@
     480,
     765
    ]
+  },
+  {
+   "src": "6068796078267503238.jpg",
+   "out": "dilla_navy-blue_full_01",
+   "type": "full"
+  },
+  {
+   "src": "6070954664405963001.jpg",
+   "out": "dilla_navy-blue_detail_01",
+   "type": "detail"
+  },
+  {
+   "src": "6068796078267503237.jpg",
+   "out": "puspa_black-white_full_01",
+   "type": "full"
+  },
+  {
+   "src": "6070954664405963004.jpg",
+   "out": "puspa_black-white_detail_01",
+   "type": "detail"
+  },
+  {
+   "src": "6068796078267503242.jpg",
+   "out": "juwita_black-green_full_01",
+   "type": "full"
+  },
+  {
+   "src": "6070954664405962996.jpg",
+   "out": "juwita_black-green_detail_01",
+   "type": "detail"
+  },
+  {
+   "src": "6068796078267503243.jpg",
+   "out": "juwita_ash-blue_full_01",
+   "type": "full"
+  },
+  {
+   "src": "6070954664405962995.jpg",
+   "out": "juwita_ash-blue_detail_01",
+   "type": "detail"
+  },
+  {
+   "src": "6068796078267503248.jpg",
+   "out": "juwita_ribena_full_01",
+   "type": "full"
+  },
+  {
+   "src": "6070954664405962997.jpg",
+   "out": "juwita_ribena_detail_01",
+   "type": "detail"
+  },
+  {
+   "src": "6068796078267503245.jpg",
+   "out": "juwita_royal-blue_full_01",
+   "type": "full"
+  },
+  {
+   "src": "6068796078267503246.jpg",
+   "out": "jasmin_teal-blue_full_01",
+   "type": "full"
+  },
+  {
+   "src": "6070954664405963000.jpg",
+   "out": "jasmin_teal-blue_detail_01",
+   "type": "detail"
+  },
+  {
+   "src": "6068796078267503233.jpg",
+   "out": "navy-royal_navy-royal_full_01",
+   "type": "full"
+  },
+  {
+   "src": "6068796078267503232.jpg",
+   "out": "navy-royal_navy-royal_detail_01",
+   "type": "detail"
+  },
+  {
+   "src": "6068796078267503231.jpg",
+   "out": "navy-royal_navy-royal_detail_02",
+   "type": "detail"
+  },
+  {
+   "src": "6068796078267503244.jpg",
+   "out": "olive_olive_full_01",
+   "type": "full"
+  },
+  {
+   "src": "6070954664405962999.jpg",
+   "out": "olive_olive_detail_01",
+   "type": "detail"
+  },
+  {
+   "src": "6068796078267503247.jpg",
+   "out": "blackest-black_blackest-black_full_01",
+   "type": "full"
+  },
+  {
+   "src": "6070954664405962998.jpg",
+   "out": "blackest-black_blackest-black_detail_01",
+   "type": "detail"
+  },
+  {
+   "src": "6070954664405963002.jpg",
+   "out": "blackest-black_blackest-black_detail_02",
+   "type": "detail"
+  },
+  {
+   "src": "6068796078267503260.jpg",
+   "out": "pink-flower_pink-flower_full_01",
+   "type": "full"
+  },
+  {
+   "src": "6070954664405962994.jpg",
+   "out": "pink-flower_pink-flower_detail_01",
+   "type": "detail"
+  },
+  {
+   "src": "6070954664405963003.jpg",
+   "out": "pink-flower_pink-flower_detail_02",
+   "type": "detail"
   }
  ],
  "videos": [
@@ -221,21 +341,24 @@
    "out": "senja_midnight",
    "poster": 2,
    "w": 720,
-   "kbps": 1400
+   "kbps": 1400,
+   "audio": "melancholy.wav"
   },
   {
    "src": "IMG_2821.MOV",
    "out": "renda_camel",
    "poster": 1,
    "w": 720,
-   "kbps": 1200
+   "kbps": 1200,
+   "audio": "melancholy.wav"
   },
   {
    "src": "IMG_2815.MOV",
    "out": "pusaka_deep-teal",
    "poster": 1,
    "w": 720,
-   "kbps": 1100
+   "kbps": 1100,
+   "audio": "melancholy.wav"
   }
  ]
 }
