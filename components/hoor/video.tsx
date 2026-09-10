@@ -36,8 +36,10 @@ export function Video({ name, caption, start = 0, className }: { name: string; c
           <video ref={vid} poster={poster} muted loop playsInline preload="none" autoPlay={tapped} aria-label={caption}
             onLoadedMetadata={(e) => { if (start) e.currentTarget.currentTime = start; }}
             onClick={(e) => { if (tapped) { const v = e.currentTarget; if (v.paused) v.play(); else v.pause(); } }}>
-            <source src={asset(`video/${name}.webm`)} type="video/webm" />
-            <source src={asset(`video/${name}.mp4`)} type="video/mp4" />
+            {/* ?v=2 — the films gained a soundtrack on 10 Sep 2026 and ship with a
+                one-year cache header; the query busts every older, silent copy. */}
+            <source src={`${asset(`video/${name}.webm`)}?v=2`} type="video/webm" />
+            <source src={`${asset(`video/${name}.mp4`)}?v=2`} type="video/mp4" />
           </video>
           <button className="sound" type="button" aria-pressed={sound} aria-label={sound ? "Mute the film" : "Play the film with sound"}
             onClick={() => { const v = vid.current; if (v) { v.muted = sound; if (v.paused) v.play().catch(() => {}); } setSound(!sound); track("film_sound", { film: name, on: !sound }); }}>

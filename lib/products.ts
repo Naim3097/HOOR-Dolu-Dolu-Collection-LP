@@ -96,8 +96,9 @@ export type Product = {
 
 /* The catalogue itself lives in the database (products, colourways, product_images,
    variants) and reaches the storefront through lib/catalog.ts. Only the shapes stay here. */
-/** Cards shown before the visitor presses "View all". */
-export const GRID_PREVIEW = 6;
+/** Cards shown before the visitor presses "View all". Infinity since 10 Sep
+ *  2026: the client wants the whole collection on the page, no reveal step. */
+export const GRID_PREVIEW = Infinity;
 
 export const STORE = {
   name: "The Linc, Kuala Lumpur",
