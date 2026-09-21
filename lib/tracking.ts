@@ -1,8 +1,10 @@
 "use client";
 
-/** Same event map as landing/js/app.js; pushes to dataLayer and mirrors to Meta Pixel. */
+/** Same event map as landing/js/app.js; pushes to dataLayer and mirrors to Meta Pixel.
+ *  page_view is deliberately absent: the pixel bootstrap in app/layout.tsx fires
+ *  PageView itself, and mirroring it here would double-count every visit (the
+ *  bootstrap also wins the race — fbq may not exist yet when Chrome mounts). */
 const META: Record<string, string> = {
-  page_view: "PageView",
   view_item: "ViewContent",
   add_to_cart: "AddToCart",
   view_cart: "ViewCart",
