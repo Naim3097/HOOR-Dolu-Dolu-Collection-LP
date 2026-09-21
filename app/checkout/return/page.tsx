@@ -6,7 +6,7 @@ import { imgSrc, registerImageMeta } from "@/lib/format";
 import { productNames } from "@/lib/catalog";
 import { rm } from "@/lib/money";
 import { Sprite } from "@/components/hoor/sprite";
-import { PurchaseEvent } from "./purchase-event";
+import { PurchaseEvent, FailedPurchaseEvent } from "./purchase-event";
 import { getBill } from "@/lib/billplz";
 import { settleOrder, abandonOrder } from "@/lib/settle";
 
@@ -50,7 +50,7 @@ export default async function ReturnPage({ searchParams }: { searchParams: Promi
   const firstImage = (pid: string, cid: string) => imgs?.find((i) => i.product_id === pid && i.colourway_id === cid)?.name;
 
   if (!o) return <Shell title="We could not find that order." lead={`Email ${CONFIG.support.email} with any details you have and we will track it down.`} />;
-  if (o.status === "failed") return <Shell title="The payment did not go through." lead="Nothing was charged. Your bag is saved — go back and try again." />;
+  if (o.status === "failed") return <><Shell title="The payment did not go through." lead="Nothing was charged. Your bag is saved — go back and try again." /><FailedPurchaseEvent orderRef={o.ref} value={o.total_sen / 100} /></>;
   if (o.status !== "paid") return <Shell title="Confirming your payment…" lead={`Order ${o.ref}. This page refreshes on its own.`} refresh />;
 
   const method = "Billplz";

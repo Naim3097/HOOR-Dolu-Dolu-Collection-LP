@@ -27,14 +27,24 @@ declare global {
   }
 }
 
-export function track(event: TrackEvent, data: Record<string, unknown> = {}) {
+export function track(event: TrackEvent, data: Record<string, unknown> = {}, opts?: { eventID?: string }) {
   if (typeof window === "undefined") return;
   const payload = { event, ...data };
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push(payload);
   const fb = META[event];
-  if (fb && typeof window.fbq === "function") window.fbq("track", fb, data);
+  // eventID lets Meta drop repeats of the same conversion (a reopened
+  // confirmation page, or a later server-side CAPI mirror of the event).
+  if (fb && typeof window.fbq === "function") window.fbq("track", fb, data, opts);
   if (new URLSearchParams(window.location.search).get("debug") === "1") console.log("[track]", payload);
+}
+
+/** Non-standard Meta events (fbq trackCustom), e.g. FailedPurchase. */
+export function trackCustom(event: string, data: Record<string, unknown> = {}, opts?: { eventID?: string }) {
+  if (typeof window === "undefined") return;
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({ event, ...data });
+  if (typeof window.fbq === "function") window.fbq("trackCustom", event, data, opts);
 }
 
 /** Every URL param the visitor arrived with (utm_*, fbclid, ad ids) — goes into the order payload. */
